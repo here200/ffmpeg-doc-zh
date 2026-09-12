@@ -1,0 +1,918 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+  <head>
+    <meta charset="utf-8">
+    <title>
+      ffplay 文档
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+      ffplay 文档
+      </h1>
+
+
+<a name="SEC_Top"></a>
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">目录</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Synopsis" href="#Synopsis">1 概要</a></li>
+  <li><a id="toc-Description" href="#Description">2 描述</a></li>
+  <li><a id="toc-Options" href="#Options">3 选项</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Stream-specifiers" href="#Stream-specifiers-1">3.1 流标识符</a></li>
+    <li><a id="toc-Generic-options" href="#Generic-options">3.2 通用选项</a></li>
+    <li><a id="toc-AVOptions" href="#AVOptions">3.3 AVOptions</a></li>
+    <li><a id="toc-Main-options" href="#Main-options">3.4 主要选项</a></li>
+    <li><a id="toc-Advanced-options" href="#Advanced-options">3.5 高级选项</a></li>
+    <li><a id="toc-While-playing" href="#While-playing">3.6 播放过程中</a></li>
+  </ul></li>
+  <li><a id="toc-See-Also" href="#See-Also">4 参见</a></li>
+  <li><a id="toc-Authors" href="#Authors">5 作者</a></li>
+</ul>
+</div>
+</div>
+
+<a name="Synopsis"></a>
+<h2 class="chapter">1 概要<span class="pull-right"><a class="anchor hidden-xs" href="#Synopsis" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Synopsis" aria-hidden="true">TOC</a></span></h2>
+
+<p>ffplay [<var class="var">options</var>] [<samp class="file">input_url</samp>]
+</p>
+<a name="Description"></a>
+<h2 class="chapter">2 描述<span class="pull-right"><a class="anchor hidden-xs" href="#Description" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Description" aria-hidden="true">TOC</a></span></h2>
+
+<p>FFplay 是一个非常简洁且可移植的媒体播放器，它使用 FFmpeg
+库和 SDL 库。它主要用作各种 FFmpeg API 的
+测试平台。
+</p>
+<a name="Options"></a>
+<h2 class="chapter">3 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options" aria-hidden="true">TOC</a></span></h2>
+
+<p>所有数值选项，除非另有说明，都接受一个字符串
+表示数字作为输入，其后可以跟一个 SI
+单位前缀，例如：&rsquo;K&rsquo;、&rsquo;M&rsquo; 或 &rsquo;G&rsquo;。
+</p>
+<p>如果在 SI 单位前缀后附加 &rsquo;i&rsquo;，整个前缀将被
+解释为二进制倍数的单位前缀，它们基于
+1024 的幂而非 1000 的幂。在 SI 单位
+前缀后附加 &rsquo;B&rsquo; 会将数值乘以 8。这样就可以使用例如：
+&rsquo;KB&rsquo;、&rsquo;MiB&rsquo;、&rsquo;G&rsquo; 和 &rsquo;B&rsquo; 作为数字后缀。
+</p>
+<p>不接受参数的选项是布尔选项，会把
+相应的值设为 true。可以通过在选项名前加上 &quot;no&quot; 将它们
+设为 false。例如使用 &quot;-nofoo&quot;
+会把名为 &quot;foo&quot; 的布尔选项设为 false。
+</p>
+<p>接受参数的选项支持一种特殊语法：命令行上
+给出的参数被解释为文件的路径，实际的
+参数值从该文件加载。要使用此功能，请在选项名之前
+（前导短横线之后）紧接一个正斜杠 &rsquo;/&rsquo;。例如
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -/filter:v filter.script OUTPUT
+</pre></div>
+<p>将从名为 <samp class="file">filter.script</samp> 的文件加载滤镜图描述。
+</p>
+<a class="anchor" id="Stream-specifiers"></a><a name="Stream-specifiers-1"></a>
+<h3 class="section">3.1 流标识符<span class="pull-right"><a class="anchor hidden-xs" href="#Stream-specifiers" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Stream-specifiers" aria-hidden="true">TOC</a></span></h3>
+<p>有些选项是按流生效的，例如码率或编解码器。流标识符
+用于精确指定某个给定选项属于哪些流。
+</p>
+<p>流标识符是一个通常附加在选项名之后并
+用冒号与之分隔的字符串。例如 <code class="code">-codec:a:1 ac3</code> 包含
+<code class="code">a:1</code> 流标识符，它匹配第二个音频流。因此，它
+将为第二个音频流选择 ac3 编解码器。
+</p>
+<p>一个流标识符可以匹配多个流，从而使该选项应用于
+所有这些流。例如 <code class="code">-b:a 128k</code> 中的流标识符匹配所有音频
+流。
+</p>
+<p>空的流标识符匹配所有流。例如，<code class="code">-codec copy</code>
+或 <code class="code">-codec: copy</code> 会复制所有流而不重新编码。
+</p>
+<p>流标识符可能的形式有：
+</p><dl class="table">
+<dt><samp class="option"><var class="var">stream_index</var></samp></dt>
+<dd><p>匹配具有该索引的流。例如 <code class="code">-threads:1 4</code> 会把
+第二个流的线程数设为 4。如果 <var class="var">stream_index</var> 用作
+附加流标识符（见下文），那么它从匹配的流中选择编号为
+<var class="var">stream_index</var> 的流。流编号基于 libavformat
+检测到的流的顺序，除非同时指定了流组
+标识符或节目 ID。在这种情况下，它基于
+流在该组或节目中的顺序。
+</p></dd>
+<dt><samp class="option"><var class="var">stream_type</var>[:<var class="var">additional_stream_specifier</var>]</samp></dt>
+<dd><p><var class="var">stream_type</var> 是以下之一：&rsquo;v&rsquo; 或 &rsquo;V&rsquo; 表示视频，&rsquo;a&rsquo; 表示音频，&rsquo;s&rsquo;
+表示字幕，&rsquo;d&rsquo; 表示数据，&rsquo;t&rsquo; 表示附件。&rsquo;v&rsquo; 匹配所有视频
+流，&rsquo;V&rsquo; 只匹配不是附加图片、视频
+缩略图或封面图的视频流。如果使用了 <var class="var">additional_stream_specifier</var>，那么
+它匹配既具有该类型又匹配
+<var class="var">additional_stream_specifier</var> 的流。否则，它匹配
+指定类型的所有流。
+</p></dd>
+<dt><samp class="option">g:<var class="var">group_specifier</var>[:<var class="var">additional_stream_specifier</var>]</samp></dt>
+<dd><p>匹配组标识符为 <var class="var">group_specifier</var> 的组中的流。
+如果使用了 <var class="var">additional_stream_specifier</var>，那么它匹配既
+属于该组又匹配 <var class="var">additional_stream_specifier</var> 的流。
+<var class="var">group_specifier</var> 可以是以下之一：
+</p><dl class="table">
+<dt><samp class="option"><var class="var">group_index</var></samp></dt>
+<dd><p>匹配具有该组索引的流。
+</p></dd>
+<dt><samp class="option">#<var class="var">group_id</var> or i:<var class="var">group_id</var></samp></dt>
+<dd><p>匹配具有该组 id 的流。
+</p></dd>
+</dl>
+</dd>
+<dt><samp class="option">p:<var class="var">program_id</var>[:<var class="var">additional_stream_specifier</var>]</samp></dt>
+<dd><p>匹配 id 为 <var class="var">program_id</var> 的节目中的流。如果
+使用了 <var class="var">additional_stream_specifier</var>，那么它匹配既
+属于该节目又匹配 <var class="var">additional_stream_specifier</var> 的流。
+</p>
+</dd>
+<dt><samp class="option">#<var class="var">stream_id</var> or i:<var class="var">stream_id</var></samp></dt>
+<dd><p>按流 id 匹配流（例如 MPEG-TS 容器中的 PID）。
+</p></dd>
+<dt><samp class="option">m:<var class="var">key</var>[:<var class="var">value</var>]</samp></dt>
+<dd><p>匹配元数据标签 <var class="var">key</var> 具有指定值的流。如果
+未给出 <var class="var">value</var>，则匹配包含给定标签且值
+任意的流。<var class="var">key</var> 或 <var class="var">value</var> 中的冒号字符 &rsquo;:&rsquo; 需要
+用反斜杠转义。
+</p></dd>
+<dt><samp class="option">disp:<var class="var">dispositions</var>[:<var class="var">additional_stream_specifier</var>]</samp></dt>
+<dd><p>匹配具有给定处置方式（disposition）的流。<var class="var">dispositions</var> 是一个
+或多个处置方式的列表（由 <samp class="option">-dispositions</samp> 选项打印），
+用 &rsquo;+&rsquo; 连接。
+</p></dd>
+<dt><samp class="option">u</samp></dt>
+<dd><p>匹配具有可用配置的流，编解码器必须已定义，并且
+视频尺寸或音频采样率等必要信息必须存在。
+</p>
+<p>请注意，在 <code class="command">ffmpeg</code> 中，按元数据匹配只对
+输入文件正常生效。
+</p></dd>
+</dl>
+
+<a name="Generic-options"></a>
+<h3 class="section">3.2 通用选项<span class="pull-right"><a class="anchor hidden-xs" href="#Generic-options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Generic-options" aria-hidden="true">TOC</a></span></h3>
+
+<p>这些选项由所有 ff* 工具共享。
+</p>
+<dl class="table">
+<dt><samp class="option">-L, -license</samp></dt>
+<dd><p>显示许可证。
+</p>
+</dd>
+<dt><samp class="option">-h, -?, -help, --help [<var class="var">arg</var>]</samp></dt>
+<dd><p>显示帮助。可以指定一个可选参数，用于打印关于某个特定
+条目的帮助信息。如果未指定参数，则只显示基本的（非高级）
+工具选项。
+</p>
+<p><var class="var">arg</var> 的可能取值有：
+</p><dl class="table">
+<dt><samp class="option">long</samp></dt>
+<dd><p>在基本工具选项之外，额外打印高级工具选项。
+</p>
+</dd>
+<dt><samp class="option">full</samp></dt>
+<dd><p>打印完整的选项列表，包括编码器、解码器、解复用器、复用器、滤镜
+等的共享选项和私有选项。
+</p>
+</dd>
+<dt><samp class="option">decoder=<var class="var">decoder_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">decoder_name</var> 的解码器的详细信息。使用
+<samp class="option">-decoders</samp> 选项可获取所有解码器的列表。
+</p>
+</dd>
+<dt><samp class="option">encoder=<var class="var">encoder_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">encoder_name</var> 的编码器的详细信息。使用
+<samp class="option">-encoders</samp> 选项可获取所有编码器的列表。
+</p>
+</dd>
+<dt><samp class="option">demuxer=<var class="var">demuxer_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">demuxer_name</var> 的解复用器的详细信息。使用
+<samp class="option">-formats</samp> 选项可获取所有解复用器和复用器的列表。
+</p>
+</dd>
+<dt><samp class="option">muxer=<var class="var">muxer_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">muxer_name</var> 的复用器的详细信息。使用
+<samp class="option">-formats</samp> 选项可获取所有复用器和解复用器的列表。
+</p>
+</dd>
+<dt><samp class="option">filter=<var class="var">filter_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">filter_name</var> 的滤镜的详细信息。使用
+<samp class="option">-filters</samp> 选项可获取所有滤镜的列表。
+</p>
+</dd>
+<dt><samp class="option">bsf=<var class="var">bitstream_filter_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">bitstream_filter_name</var> 的比特流滤波器的详细信息。
+使用 <samp class="option">-bsfs</samp> 选项可获取所有比特流滤波器的列表。
+</p>
+</dd>
+<dt><samp class="option">protocol=<var class="var">protocol_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">protocol_name</var> 的协议的详细信息。
+使用 <samp class="option">-protocols</samp> 选项可获取所有协议的列表。
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">-version</samp></dt>
+<dd><p>显示版本。
+</p>
+</dd>
+<dt><samp class="option">-buildconf</samp></dt>
+<dd><p>显示构建配置，每行一个选项。
+</p>
+</dd>
+<dt><samp class="option">-formats</samp></dt>
+<dd><p>显示可用的格式（包括设备）。
+</p>
+</dd>
+<dt><samp class="option">-demuxers</samp></dt>
+<dd><p>显示可用的解复用器。
+</p>
+</dd>
+<dt><samp class="option">-muxers</samp></dt>
+<dd><p>显示可用的复用器。
+</p>
+</dd>
+<dt><samp class="option">-devices</samp></dt>
+<dd><p>显示可用的设备。
+</p>
+</dd>
+<dt><samp class="option">-codecs</samp></dt>
+<dd><p>显示 libavcodec 已知的所有编解码器。
+</p>
+<p>请注意，本文档中通篇使用术语 &rsquo;codec&rsquo; 作为简称，用以指代
+更准确地称为媒体比特流格式的东西。
+</p>
+</dd>
+<dt><samp class="option">-decoders</samp></dt>
+<dd><p>显示可用的解码器。
+</p>
+</dd>
+<dt><samp class="option">-encoders</samp></dt>
+<dd><p>显示所有可用的编码器。
+</p>
+</dd>
+<dt><samp class="option">-bsfs</samp></dt>
+<dd><p>显示可用的比特流滤波器。
+</p>
+</dd>
+<dt><samp class="option">-protocols</samp></dt>
+<dd><p>显示可用的协议。
+</p>
+</dd>
+<dt><samp class="option">-filters</samp></dt>
+<dd><p>显示可用的 libavfilter 滤镜。
+</p>
+</dd>
+<dt><samp class="option">-pix_fmts</samp></dt>
+<dd><p>显示可用的像素格式。
+</p>
+</dd>
+<dt><samp class="option">-sample_fmts</samp></dt>
+<dd><p>显示可用的采样格式。
+</p>
+</dd>
+<dt><samp class="option">-layouts</samp></dt>
+<dd><p>显示声道名称和标准声道布局。
+</p>
+</dd>
+<dt><samp class="option">-dispositions</samp></dt>
+<dd><p>显示流的处置信息。
+</p>
+</dd>
+<dt><samp class="option">-colors</samp></dt>
+<dd><p>显示可识别的颜色名称。
+</p>
+</dd>
+<dt><samp class="option">-sources <var class="var">device</var>[,<var class="var">opt1</var>=<var class="var">val1</var>[,<var class="var">opt2</var>=<var class="var">val2</var>]...]</samp></dt>
+<dd><p>显示输入设备自动检测到的源。
+某些设备可能提供依赖系统的源名称，这些名称无法被自动检测。
+不能假定返回的列表始终是完整的。
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -sources pulse,server=192.168.0.4
+</pre></div>
+
+</dd>
+<dt><samp class="option">-sinks <var class="var">device</var>[,<var class="var">opt1</var>=<var class="var">val1</var>[,<var class="var">opt2</var>=<var class="var">val2</var>]...]</samp></dt>
+<dd><p>显示输出设备自动检测到的接收端（sink）。
+某些设备可能提供依赖系统的接收端名称，这些名称无法被自动检测。
+不能假定返回的列表始终是完整的。
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -sinks pulse,server=192.168.0.4
+</pre></div>
+
+</dd>
+<dt><samp class="option">-loglevel [<var class="var">flags</var>+]<var class="var">loglevel</var> | -v [<var class="var">flags</var>+]<var class="var">loglevel</var></samp></dt>
+<dd><p>设置库所使用的日志级别和标志。
+</p>
+<p>可选的 <var class="var">flags</var> 前缀可以包含以下取值：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">repeat</samp>&rsquo;</dt>
+<dd><p>表示重复的日志输出不应被压缩到第一行，
+并且将省略 &quot;Last message repeated n times&quot; 这一行。
+</p></dd>
+<dt>&lsquo;<samp class="samp">level</samp>&rsquo;</dt>
+<dd><p>表示日志输出应为每条消息行添加 <code class="code">[level]</code> 前缀。
+这可以作为日志着色的一种替代方式，例如在把日志
+转储到文件时。
+</p></dd>
+<dt>&lsquo;<samp class="samp">time</samp>&rsquo;</dt>
+<dd><p>表示日志行应加上时间信息前缀。
+</p></dd>
+<dt>&lsquo;<samp class="samp">datetime</samp>&rsquo;</dt>
+<dd><p>表示日志行应加上日期和时间信息前缀。
+</p></dd>
+</dl>
+<p>标志也可以单独使用，只需在单个标志前加上 &rsquo;+&rsquo;/&rsquo;-&rsquo; 前缀即可设置/重置该标志，
+而不影响其他 <var class="var">flags</var>，也不改变 <var class="var">loglevel</var>。同时设置
+<var class="var">flags</var> 和 <var class="var">loglevel</var> 时，应在最后一个 <var class="var">flags</var> 值
+与 <var class="var">loglevel</var> 之间使用 &rsquo;+&rsquo; 分隔符。
+</p>
+<p><var class="var">loglevel</var> 是一个字符串或数字，其取值为下列之一：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">quiet, -8</samp>&rsquo;</dt>
+<dd><p>完全不显示任何内容；保持静默。
+</p></dd>
+<dt>&lsquo;<samp class="samp">panic, 0</samp>&rsquo;</dt>
+<dd><p>只显示可能导致进程崩溃的致命错误，例如
+断言失败。此级别目前不用于任何用途。
+</p></dd>
+<dt>&lsquo;<samp class="samp">fatal, 8</samp>&rsquo;</dt>
+<dd><p>只显示致命错误。这类错误发生之后进程绝对
+无法继续。
+</p></dd>
+<dt>&lsquo;<samp class="samp">error, 16</samp>&rsquo;</dt>
+<dd><p>显示所有错误，包括可以恢复的错误。
+</p></dd>
+<dt>&lsquo;<samp class="samp">warning, 24</samp>&rsquo;</dt>
+<dd><p>显示所有警告和错误。任何与可能不正确或意外事件
+相关的消息都会显示。
+</p></dd>
+<dt>&lsquo;<samp class="samp">info, 32</samp>&rsquo;</dt>
+<dd><p>在处理过程中显示提示性消息。这是在警告和错误之外
+额外显示的内容。这是默认值。
+</p></dd>
+<dt>&lsquo;<samp class="samp">verbose, 40</samp>&rsquo;</dt>
+<dd><p>与 <code class="code">info</code> 相同，只是更详细。
+</p></dd>
+<dt>&lsquo;<samp class="samp">debug, 48</samp>&rsquo;</dt>
+<dd><p>显示所有内容，包括调试信息。
+</p></dd>
+<dt>&lsquo;<samp class="samp">trace, 56</samp>&rsquo;</dt>
+</dl>
+
+<p>例如，要启用重复日志输出，请添加 <code class="code">level</code> 前缀，并将
+<var class="var">loglevel</var> 设置为 <code class="code">verbose</code>：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -loglevel repeat+level+verbose -i input output
+</pre></div>
+<p>另一个例子：在不影响 <code class="code">level</code> 前缀标志或 <var class="var">loglevel</var> 的
+当前状态的情况下启用重复日志输出：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg [...] -loglevel +repeat
+</pre></div>
+
+<p>默认情况下，程序将日志输出到 stderr。如果终端支持着色，
+则会用颜色标记错误和警告。可以通过设置环境变量
+<code class="env">AV_LOG_FORCE_NOCOLOR</code> 禁用日志着色，也可以通过设置
+环境变量 <code class="env">AV_LOG_FORCE_COLOR</code> 强制启用。
+</p>
+</dd>
+<dt><samp class="option">-report</samp></dt>
+<dd><p>将完整的命令行和日志输出转储到当前目录下名为
+<code class="code"><var class="var">program</var>-<var class="var">YYYYMMDD</var>-<var class="var">HHMMSS</var>.log</code> 的文件中。
+该文件对提交 bug 报告很有用。
+它同时隐含 <code class="code">-loglevel debug</code>。
+</p>
+<p>将环境变量 <code class="env">FFREPORT</code> 设置为任意值具有相同的
+效果。如果该值是以 &rsquo;:&rsquo; 分隔的 key=value 序列，这些
+选项将影响报告；如果选项值中包含特殊字符或选项分隔符 &rsquo;:&rsquo;，
+则必须对选项值进行转义（参见 ffmpeg-utils 手册中的
+&ldquo;引用与转义&rdquo; 一节）。
+</p>
+<p>可识别以下选项：
+</p><dl class="table">
+<dt><samp class="option">file</samp></dt>
+<dd><p>设置报告要使用的文件名；<code class="code">%p</code> 会展开为程序
+名，<code class="code">%t</code> 会展开为时间戳，<code class="code">%%</code> 会展开
+为普通的 <code class="code">%</code>
+</p></dd>
+<dt><samp class="option">level</samp></dt>
+<dd><p>使用数值设置日志详细程度级别（参见 <code class="code">-loglevel</code>）。
+</p></dd>
+</dl>
+
+<p>例如，要以日志级别 <code class="code">32</code>（日志级别 <code class="code">info</code> 的别名）
+将报告输出到名为 <samp class="file">ffreport.log</samp> 的文件：
+</p>
+<div class="example">
+<pre class="example-preformatted">FFREPORT=file=ffreport.log:level=32 ffmpeg -i input output
+</pre></div>
+
+<p>解析环境变量时出现的错误不是致命错误，也不会
+出现在报告中。
+</p>
+</dd>
+<dt><samp class="option">-hide_banner</samp></dt>
+<dd><p>禁止打印横幅信息。
+</p>
+<p>所有 FFmpeg 工具通常都会显示版权声明、编译选项
+和库版本信息。可以使用此选项禁止打印
+这些信息。
+</p>
+</dd>
+<dt><samp class="option">-cpuflags flags (<em class="emph">global</em>)</samp></dt>
+<dd><p>允许设置和清除 cpu 标志。此选项仅用于
+测试。除非你清楚自己在做什么，否则不要使用它。
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -cpuflags -sse+mmx ...
+ffmpeg -cpuflags mmx ...
+ffmpeg -cpuflags 0 ...
+</pre></div>
+<p>此选项可用的标志有：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">x86</samp>&rsquo;</dt>
+<dd><dl class="table">
+<dt>&lsquo;<samp class="samp">mmx</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">mmxext</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse2slow</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse3</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse3slow</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">ssse3</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">atom</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse4.1</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse4.2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">avx</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">avx2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">xop</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">fma3</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">fma4</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">3dnow</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">3dnowext</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">bmi1</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">bmi2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">cmov</samp>&rsquo;</dt>
+</dl>
+</dd>
+<dt>&lsquo;<samp class="samp">ARM</samp>&rsquo;</dt>
+<dd><dl class="table">
+<dt>&lsquo;<samp class="samp">armv5te</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">armv6</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">armv6t2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">vfp</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">vfpv3</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">neon</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">setend</samp>&rsquo;</dt>
+</dl>
+</dd>
+<dt>&lsquo;<samp class="samp">AArch64</samp>&rsquo;</dt>
+<dd><dl class="table">
+<dt>&lsquo;<samp class="samp">armv8</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">vfp</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">neon</samp>&rsquo;</dt>
+</dl>
+</dd>
+<dt>&lsquo;<samp class="samp">PowerPC</samp>&rsquo;</dt>
+<dd><dl class="table">
+<dt>&lsquo;<samp class="samp">altivec</samp>&rsquo;</dt>
+</dl>
+</dd>
+<dt>&lsquo;<samp class="samp">Specific Processors</samp>&rsquo;</dt>
+<dd><dl class="table">
+<dt>&lsquo;<samp class="samp">pentium2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">pentium3</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">pentium4</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">k6</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">k62</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">athlon</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">athlonxp</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">k8</samp>&rsquo;</dt>
+</dl>
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">-cpucount <var class="var">count</var> (<em class="emph">global</em>)</samp></dt>
+<dd><p>覆盖对 CPU 数量的检测。此选项仅用于
+测试。除非你清楚自己在做什么，否则不要使用它。
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -cpucount 2
+</pre></div>
+
+</dd>
+<dt><samp class="option">-max_alloc <var class="var">bytes</var></samp></dt>
+<dd><p>设置 ffmpeg 的 malloc 函数族在堆上分配内存块的最大大小
+限制。使用此选项时请<strong class="strong">极其谨慎</strong>。如果你不了解这样做
+带来的全部后果，请不要使用。
+默认值为 INT_MAX。
+</p></dd>
+</dl>
+<a name="AVOptions"></a>
+<h3 class="section">3.3 AVOptions<span class="pull-right"><a class="anchor hidden-xs" href="#AVOptions" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-AVOptions" aria-hidden="true">TOC</a></span></h3>
+
+<p>这些选项由 libavformat、libavdevice 和
+libavcodec 库直接提供。要查看可用的 AVOptions 列表，请使用
+<samp class="option">-help</samp> 选项。它们分为两类：
+</p><dl class="table">
+<dt><samp class="option">generic</samp></dt>
+<dd><p>这些选项可为任何容器、编解码器或设备设置。通用选项
+在容器/设备下列于 AVFormatContext 选项之下，在
+编解码器下列于 AVCodecContext 选项之下。
+</p></dd>
+<dt><samp class="option">private</samp></dt>
+<dd><p>这些选项特定于给定的容器、设备或编解码器。私有
+选项列在各自对应的容器/设备/编解码器之下。
+</p></dd>
+</dl>
+
+<p>例如，要向 MP3 文件写入 ID3v2.3 头部而不是默认的 ID3v2.4，
+请使用 MP3 复用器的 <samp class="option">id3v2_version</samp> 私有
+选项：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i input.flac -id3v2_version 3 out.mp3
+</pre></div>
+
+<p>所有编解码器 AVOptions 都是按流生效的，因此应为它们附加
+流标识符：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i multichannel.mxf -map 0:v:0 -map 0:a:0 -map 0:a:0 -c:a:0 ac3 -b:a:0 640k -ac:a:1 2 -c:a:1 aac -b:2 128k out.mp4
+</pre></div>
+
+<p>在上面的例子中，一个多声道音频流被映射了两次用于输出。
+第一个实例使用编解码器 ac3 编码，码率为 640k。
+第二个实例被缩混为 2 个声道，并使用编解码器 aac 编码。通过
+输出流的绝对索引为它指定了 128k 的码率。
+</p>
+<p>注意：<samp class="option">-nooption</samp> 语法不能用于布尔型
+AVOptions，请使用 <samp class="option">-option 0</samp>/<samp class="option">-option 1</samp>。
+</p>
+<p>注意：通过在选项名前加 v/a/s 来指定按流 AVOptions 的
+旧有未文档化方式现已废弃，并将在
+不久后移除。
+</p>
+<a name="Main-options"></a>
+<h3 class="section">3.4 主要选项<span class="pull-right"><a class="anchor hidden-xs" href="#Main-options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Main-options" aria-hidden="true">TOC</a></span></h3>
+
+<dl class="table">
+<dt><samp class="option">-x <var class="var">width</var></samp></dt>
+<dd><p>强制显示的宽度。
+</p></dd>
+<dt><samp class="option">-y <var class="var">height</var></samp></dt>
+<dd><p>强制显示的高度。
+</p></dd>
+<dt><samp class="option">-fs</samp></dt>
+<dd><p>以全屏模式启动。
+</p></dd>
+<dt><samp class="option">-an</samp></dt>
+<dd><p>禁用音频。
+</p></dd>
+<dt><samp class="option">-vn</samp></dt>
+<dd><p>禁用视频。
+</p></dd>
+<dt><samp class="option">-sn</samp></dt>
+<dd><p>禁用字幕。
+</p></dd>
+<dt><samp class="option">-ss <var class="var">pos</var></samp></dt>
+<dd><p>定位到 <var class="var">pos</var>。请注意，在大多数格式中无法精确
+定位，因此 <code class="command">ffplay</code> 会定位到最接近
+<var class="var">pos</var> 的定位点。
+</p>
+<p><var class="var">pos</var> 必须是一个时间时长规格，
+参见 <a data-manual="ffmpeg-utils" href="./ffmpeg-utils.html#time-duration-syntax">ffmpeg-utils(1) 手册中的时间时长一节</a>。
+</p></dd>
+<dt><samp class="option">-t <var class="var">duration</var></samp></dt>
+<dd><p>播放 <var class="var">duration</var> 秒的音频/视频。
+</p>
+<p><var class="var">duration</var> 必须是一个时间时长规格，
+参见 <a data-manual="ffmpeg-utils" href="./ffmpeg-utils.html#time-duration-syntax">ffmpeg-utils(1) 手册中的时间时长一节</a>。
+</p></dd>
+<dt><samp class="option">-bytes</samp></dt>
+<dd><p>按字节定位。
+</p></dd>
+<dt><samp class="option">-seek_interval</samp></dt>
+<dd><p>设置使用左/右方向键定位时的自定义间隔，单位为秒。默认值为 10 秒。
+</p></dd>
+<dt><samp class="option">-nodisp</samp></dt>
+<dd><p>禁用图形显示。
+</p></dd>
+<dt><samp class="option">-noborder</samp></dt>
+<dd><p>无边框窗口。
+</p></dd>
+<dt><samp class="option">-alwaysontop</samp></dt>
+<dd><p>窗口始终置顶。可用于：带 SDL &gt;= 2.0.5 的 X11、Windows SDL &gt;= 2.0.6。
+</p></dd>
+<dt><samp class="option">-volume</samp></dt>
+<dd><p>设置启动音量。0 表示静音，100 表示不做音量衰减或
+放大。负值按 0 处理，大于 100 的值按
+100 处理。
+</p></dd>
+<dt><samp class="option">-f <var class="var">fmt</var></samp></dt>
+<dd><p>强制使用格式。
+</p></dd>
+<dt><samp class="option">-window_title <var class="var">title</var></samp></dt>
+<dd><p>设置窗口标题（默认为输入文件名）。
+</p></dd>
+<dt><samp class="option">-left <var class="var">title</var></samp></dt>
+<dd><p>设置窗口左边缘的 x 坐标（默认为窗口居中）。
+</p></dd>
+<dt><samp class="option">-top <var class="var">title</var></samp></dt>
+<dd><p>设置窗口上边缘的 y 坐标（默认为窗口居中）。
+</p></dd>
+<dt><samp class="option">-loop <var class="var">number</var></samp></dt>
+<dd><p>将影片播放循环 &lt;number&gt; 次。0 表示无限循环。
+</p></dd>
+<dt><samp class="option">-showmode <var class="var">mode</var></samp></dt>
+<dd><p>设置要使用的显示模式。
+<var class="var">mode</var> 的可用取值为：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">0, video</samp>&rsquo;</dt>
+<dd><p>显示视频
+</p></dd>
+<dt>&lsquo;<samp class="samp">1, waves</samp>&rsquo;</dt>
+<dd><p>显示音频波形
+</p></dd>
+<dt>&lsquo;<samp class="samp">2, rdft</samp>&rsquo;</dt>
+<dd><p>使用 RDFT（（逆）实离散傅里叶变换）显示音频频带
+</p></dd>
+</dl>
+
+<p>默认值为 &quot;video&quot;，如果视频不存在或无法播放，
+则自动选择 &quot;rdft&quot;。
+</p>
+<p>你可以通过按 <kbd class="key">w</kbd> 键在可用的显示模式之间
+交互式循环切换。
+</p>
+</dd>
+<dt><samp class="option">-vf <var class="var">filtergraph</var></samp></dt>
+<dd><p>创建由 <var class="var">filtergraph</var> 指定的滤镜图，并用它对
+视频流进行滤镜处理。
+</p>
+<p><var class="var">filtergraph</var> 是要应用于该流的滤镜图的描述，
+它必须有一个视频输入和一个视频
+输出。在滤镜图中，输入端关联到标签
+<code class="code">in</code>，输出端关联到标签 <code class="code">out</code>。有关滤镜图
+语法的更多信息，请参见
+ffmpeg-filters 手册。
+</p>
+<p>你可以多次指定该参数，并通过按 <kbd class="key">w</kbd> 键在指定的
+滤镜图与显示模式之间循环切换。
+</p>
+</dd>
+<dt><samp class="option">-af <var class="var">filtergraph</var></samp></dt>
+<dd><p><var class="var">filtergraph</var> 是要应用于输入音频的
+滤镜图的描述。
+使用 &quot;-filters&quot; 选项可显示所有可用的滤镜（包括
+源和汇）。
+</p>
+</dd>
+<dt><samp class="option">-i <var class="var">input_url</var></samp></dt>
+<dd><p>读取 <var class="var">input_url</var>。
+</p></dd>
+</dl>
+
+<a name="Advanced-options"></a>
+<h3 class="section">3.5 高级选项<span class="pull-right"><a class="anchor hidden-xs" href="#Advanced-options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Advanced-options" aria-hidden="true">TOC</a></span></h3>
+<dl class="table">
+<dt><samp class="option">-stats</samp></dt>
+<dd><p>打印若干播放统计信息，特别是显示流
+时长、编解码器参数、流中的当前位置以及
+音频/视频同步偏移。默认会显示，除非
+日志级别低于 <code class="code">info</code>。可以通过手动
+指定此选项来强制显示。要禁用它，需要指定 <code class="code">-nostats</code>。
+</p>
+</dd>
+<dt><samp class="option">-fast</samp></dt>
+<dd><p>不符合规范的优化。
+</p></dd>
+<dt><samp class="option">-genpts</samp></dt>
+<dd><p>生成 pts。
+</p></dd>
+<dt><samp class="option">-sync <var class="var">type</var></samp></dt>
+<dd><p>将主时钟设置为音频（<code class="code">type=audio</code>）、视频
+（<code class="code">type=video</code>）或外部（<code class="code">type=ext</code>）。默认为音频。主
+时钟用于控制音视频同步。大多数媒体
+播放器使用音频作为主时钟，但在某些情况下（流式传输或高
+质量广播）有必要改变这一点。此选项主要
+用于调试目的。
+</p></dd>
+<dt><samp class="option">-ast <var class="var">audio_stream_specifier</var></samp></dt>
+<dd><p>使用给定的流标识符选择所需的音频流。流
+标识符在 <a class="ref" href="#Stream-specifiers">流标识符</a> 一章中描述。如果此选项
+未指定，则会在已选视频流所属的节目中
+选择“最佳”音频流。
+</p></dd>
+<dt><samp class="option">-vst <var class="var">video_stream_specifier</var></samp></dt>
+<dd><p>使用给定的流标识符选择所需的视频流。流
+标识符在 <a class="ref" href="#Stream-specifiers">流标识符</a> 一章中描述。如果此选项
+未指定，则会选择“最佳”视频流。
+</p></dd>
+<dt><samp class="option">-sst <var class="var">subtitle_stream_specifier</var></samp></dt>
+<dd><p>使用给定的流标识符选择所需的字幕流。流
+标识符在 <a class="ref" href="#Stream-specifiers">流标识符</a> 一章中描述。如果此选项
+未指定，则会在已选视频流或音频流所属的节目中
+选择“最佳”字幕流。
+</p></dd>
+<dt><samp class="option">-autoexit</samp></dt>
+<dd><p>视频播放完毕时退出。
+</p></dd>
+<dt><samp class="option">-exitonkeydown</samp></dt>
+<dd><p>按下任意键时退出。
+</p></dd>
+<dt><samp class="option">-exitonmousedown</samp></dt>
+<dd><p>按下任意鼠标键时退出。
+</p>
+</dd>
+<dt><samp class="option">-codec:<var class="var">media_specifier</var> <var class="var">codec_name</var></samp></dt>
+<dd><p>为由 <var class="var">media_specifier</var> 标识的流强制使用特定的解码器实现，
+它可以取以下值：<code class="code">a</code>（音频）、
+<code class="code">v</code>（视频）和 <code class="code">s</code>（字幕）。
+</p>
+</dd>
+<dt><samp class="option">-acodec <var class="var">codec_name</var></samp></dt>
+<dd><p>强制使用特定的音频解码器。
+</p>
+</dd>
+<dt><samp class="option">-vcodec <var class="var">codec_name</var></samp></dt>
+<dd><p>强制使用特定的视频解码器。
+</p>
+</dd>
+<dt><samp class="option">-scodec <var class="var">codec_name</var></samp></dt>
+<dd><p>强制使用特定的字幕解码器。
+</p>
+</dd>
+<dt><samp class="option">-autorotate</samp></dt>
+<dd><p>根据文件元数据自动旋转视频。默认启用，
+使用 <samp class="option">-noautorotate</samp> 禁用它。
+</p>
+</dd>
+<dt><samp class="option">-framedrop</samp></dt>
+<dd><p>当视频不同步时丢弃视频帧。如果主时钟未设置为视频，则默认
+启用。使用此选项可为所有主时钟来源启用丢帧，
+使用 <samp class="option">-noframedrop</samp> 禁用它。
+</p>
+</dd>
+<dt><samp class="option">-infbuf</samp></dt>
+<dd><p>不限制输入缓冲区大小，尽快从输入中读取尽可能多的数据。
+对于实时流默认启用，因为如果数据未被及时读取，
+数据可能会被丢弃。使用此选项可为所有输入启用
+无限缓冲区，使用 <samp class="option">-noinfbuf</samp> 禁用它。
+</p>
+</dd>
+<dt><samp class="option">-filter_threads <var class="var">nb_threads</var></samp></dt>
+<dd><p>定义使用多少个线程来处理一条滤镜管线。每条管线
+都会创建一个线程池，其中包含这么多可用于并行
+处理的线程。默认值为 0，这意味着线程数将由
+可用 CPU 的数量决定。
+</p>
+</dd>
+<dt><samp class="option">-enable_vulkan</samp></dt>
+<dd><p>使用 vulkan 渲染器而非 SDL 内置渲染器。依赖于 libplacebo。
+</p>
+</dd>
+<dt><samp class="option">-vulkan_params</samp></dt>
+<dd>
+<p>使用以
+&quot;:&quot; 分隔的 <var class="var">key</var>=<var class="var">value</var> 对列表进行 Vulkan 配置。
+</p>
+</dd>
+<dt><samp class="option">-hwaccel</samp></dt>
+<dd><p>使用硬件加速解码。启用此选项将自动启用 vulkan 渲染器。
+</p>
+</dd>
+<dt><samp class="option">-video_bg <var class="var">pattern</var></samp></dt>
+<dd><p>设置用于透明视频的视频背景图案。对于纯色
+图案，可以使用
+<a data-manual="ffmpeg-utils" href="./ffmpeg-utils.html#color-syntax">ffmpeg-utils(1) 手册中的颜色一节</a>
+中指定的颜色名称或颜色代码。
+还可以使用特殊关键字 <code class="code">tiles</code> 来表示棋盘格风格的
+图案。这也是默认值。<code class="code">none</code> 图案在不进行 alpha 混合的
+情况下渲染，实际上忽略 alpha 通道。
+</p>
+</dd>
+</dl>
+
+<a name="While-playing"></a>
+<h3 class="section">3.6 播放过程中<span class="pull-right"><a class="anchor hidden-xs" href="#While-playing" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-While-playing" aria-hidden="true">TOC</a></span></h3>
+
+<dl class="table">
+<dt><kbd class="key">q, ESC</kbd></dt>
+<dd><p>退出。
+</p>
+</dd>
+<dt><kbd class="key">f</kbd></dt>
+<dd><p>切换全屏。
+</p>
+</dd>
+<dt><kbd class="key">p, SPC</kbd></dt>
+<dd><p>暂停。
+</p>
+</dd>
+<dt><kbd class="key">m</kbd></dt>
+<dd><p>切换静音。
+</p>
+</dd>
+<dt><kbd class="key">9, 0</kbd></dt>
+<dt><kbd class="key">/, *</kbd></dt>
+<dd><p>分别降低和增大音量。
+</p>
+</dd>
+<dt><kbd class="key">a</kbd></dt>
+<dd><p>在当前节目中循环切换音频轨。
+</p>
+</dd>
+<dt><kbd class="key">v</kbd></dt>
+<dd><p>循环切换视频轨。
+</p>
+</dd>
+<dt><kbd class="key">t</kbd></dt>
+<dd><p>在当前节目中循环切换字幕轨。
+</p>
+</dd>
+<dt><kbd class="key">c</kbd></dt>
+<dd><p>循环切换节目。
+</p>
+</dd>
+<dt><kbd class="key">w</kbd></dt>
+<dd><p>循环切换视频滤镜或显示模式。
+</p>
+</dd>
+<dt><kbd class="key">s</kbd></dt>
+<dd><p>步进到下一帧。
+</p>
+<p>如果流尚未暂停则先暂停，
+步进到下一个视频帧，然后暂停。
+</p>
+</dd>
+<dt><kbd class="key">left/right</kbd></dt>
+<dd><p>向后/向前定位 10 秒，若设置了 -seek_interval 则按自定义间隔定位。
+</p>
+</dd>
+<dt><kbd class="key">down/up</kbd></dt>
+<dd><p>向后/向前定位 1 分钟。
+</p>
+</dd>
+<dt><kbd class="key">page down/page up</kbd></dt>
+<dd><p>定位到上一个/下一个章节，若没有章节则向后/向前定位 10 分钟。
+</p>
+</dd>
+<dt><kbd class="key">right mouse click</kbd></dt>
+<dd><p>按鼠标位置在窗口宽度中所占的比例定位到文件中的相应百分比处。
+</p>
+</dd>
+<dt><kbd class="key">left mouse double-click</kbd></dt>
+<dd><p>切换全屏。
+</p>
+</dd>
+</dl>
+
+
+
+<a name="See-Also"></a>
+<h2 class="chapter">4 参见<span class="pull-right"><a class="anchor hidden-xs" href="#See-Also" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-See-Also" aria-hidden="true">TOC</a></span></h2>
+
+<p><a class="url" href="ffplay-all.html">ffmpeg-all</a>,
+<a class="url" href="ffmpeg.html">ffmpeg</a>, <a class="url" href="ffprobe.html">ffprobe</a>,
+<a class="url" href="ffmpeg-utils.html">ffmpeg-utils</a>,
+<a class="url" href="ffmpeg-scaler.html">ffmpeg-scaler</a>,
+<a class="url" href="ffmpeg-resampler.html">ffmpeg-resampler</a>,
+<a class="url" href="ffmpeg-codecs.html">ffmpeg-codecs</a>,
+<a class="url" href="ffmpeg-bitstream-filters.html">ffmpeg-bitstream-filters</a>,
+<a class="url" href="ffmpeg-formats.html">ffmpeg-formats</a>,
+<a class="url" href="ffmpeg-devices.html">ffmpeg-devices</a>,
+<a class="url" href="ffmpeg-protocols.html">ffmpeg-protocols</a>,
+<a class="url" href="ffmpeg-filters.html">ffmpeg-filters</a>
+</p>
+
+<a name="Authors"></a>
+<h2 class="chapter">5 作者<span class="pull-right"><a class="anchor hidden-xs" href="#Authors" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Authors" aria-hidden="true">TOC</a></span></h2>
+
+<p>FFmpeg 开发者。
+</p>
+<p>关于作者身份的详细信息，请参阅项目的 Git 历史
+（https://git.ffmpeg.org/ffmpeg），例如在 FFmpeg 源代码目录中输入命令
+<code class="command">git log</code>，或浏览位于
+<a class="url" href="https://git.ffmpeg.org/ffmpeg">https://git.ffmpeg.org/ffmpeg</a> 的在线仓库。
+</p>
+<p>各具体组件的维护者列于源代码树中的
+<samp class="file">MAINTAINERS</samp> 文件。
+</p>
+
+      <p style="font-size: small;">
+        本文档由 <a class="uref" href="https://www.gnu.org/software/texinfo/"><em class="emph">makeinfo</em></a> 生成。
+      </p>
+    </div>
+  </body>
+</html>
