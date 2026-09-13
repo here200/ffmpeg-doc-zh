@@ -18,10 +18,4 @@
 
 ## 在线预览
 
-[ffmpeg-zh.html](https://here200.github.io/ffmpeg-doc-zh/ffmpeg-zh.html)
-
-
-[ffplay-zh.html](https://here200.github.io/ffmpeg-doc-zh/ffplay-zh.html)
-
-[ffprobe-zh.html](https://here200.github.io/ffmpeg-doc-zh/ffprobe-zh.html)
-
+https://here200.github.io/ffmpeg-doc-zh/
