@@ -4,6 +4,8 @@
 
 
 
+官方文档：https://ffmpeg.org/documentation.html
+
 ## Command Line Tools Documentation
 
 [ffmpeg](./zh-cn/ffmpeg-zh.html): ffmpeg tool

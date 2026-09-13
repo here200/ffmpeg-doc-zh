@@ -8,6 +8,8 @@
 
 翻译基于ffmpeg版本：[ffmpeg-2026-09-10-git-fd7c73d01e-essentials_build.7z](https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-essentials.7z)
 
+官方文档：https://ffmpeg.org/documentation.html
+
 
 
 ## 翻译目标
