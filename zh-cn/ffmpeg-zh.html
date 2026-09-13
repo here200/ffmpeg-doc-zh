@@ -1,0 +1,4003 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+  <head>
+    <meta charset="utf-8">
+    <title>
+      ffmpeg 文档
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+      ffmpeg 文档
+      </h1>
+
+
+<a name="SEC_Top"></a>
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">目录</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Synopsis" href="#Synopsis">1 概要</a></li>
+  <li><a id="toc-Description" href="#Description">2 描述</a></li>
+  <li><a id="toc-Detailed-description" href="#Detailed-description">3 详细描述</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Streamcopy" href="#Streamcopy">3.1 流复制</a></li>
+    <li><a id="toc-Transcoding" href="#Transcoding">3.2 转码</a></li>
+    <li><a id="toc-Filtering" href="#Filtering">3.3 滤镜</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Simple-filtergraphs" href="#Simple-filtergraphs">3.3.1 简单滤镜图</a></li>
+      <li><a id="toc-Complex-filtergraphs" href="#Complex-filtergraphs">3.3.2 复杂滤镜图</a></li>
+    </ul></li>
+    <li><a id="toc-Loopback-decoders" href="#Loopback-decoders-1">3.4 回环解码器</a></li>
+  </ul></li>
+  <li><a id="toc-Stream-selection" href="#Stream-selection-1">4 流选择</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Description-1" href="#Description-1">4.1 描述</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Automatic-stream-selection" href="#Automatic-stream-selection">4.1.1 自动流选择</a></li>
+      <li><a id="toc-Manual-stream-selection" href="#Manual-stream-selection">4.1.2 手动流选择</a></li>
+      <li><a id="toc-Complex-filtergraphs-1" href="#Complex-filtergraphs-1">4.1.3 复杂滤镜图</a></li>
+      <li><a id="toc-Stream-handling" href="#Stream-handling">4.1.4 流处理</a></li>
+    </ul></li>
+    <li><a id="toc-Examples" href="#Examples">4.2 示例</a></li>
+  </ul></li>
+  <li><a id="toc-Options" href="#Options">5 选项</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Stream-specifiers" href="#Stream-specifiers-1">5.1 流标识符</a></li>
+    <li><a id="toc-Generic-options" href="#Generic-options">5.2 通用选项</a></li>
+    <li><a id="toc-AVOptions" href="#AVOptions">5.3 AVOptions</a></li>
+    <li><a id="toc-Main-options" href="#Main-options">5.4 主要选项</a></li>
+    <li><a id="toc-Video-Options" href="#Video-Options">5.5 视频选项</a></li>
+    <li><a id="toc-Advanced-Video-options" href="#Advanced-Video-options">5.6 高级视频选项</a></li>
+    <li><a id="toc-Audio-Options" href="#Audio-Options">5.7 音频选项</a></li>
+    <li><a id="toc-Advanced-Audio-options" href="#Advanced-Audio-options">5.8 高级音频选项</a></li>
+    <li><a id="toc-Subtitle-options" href="#Subtitle-options">5.9 字幕选项</a></li>
+    <li><a id="toc-Advanced-Subtitle-options" href="#Advanced-Subtitle-options">5.10 高级字幕选项</a></li>
+    <li><a id="toc-Advanced-options" href="#Advanced-options">5.11 高级选项</a></li>
+    <li><a id="toc-Preset-files" href="#Preset-files">5.12 预设文件</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-ffpreset-files" href="#ffpreset-files">5.12.1 ffpreset 文件</a></li>
+      <li><a id="toc-avpreset-files" href="#avpreset-files">5.12.2 avpreset 文件</a></li>
+    </ul></li>
+    <li><a id="toc-vstats-file-format" href="#vstats-file-format">5.13 vstats 文件格式</a></li>
+  </ul></li>
+  <li><a id="toc-Examples-1" href="#Examples-1">6 示例</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Video-and-Audio-grabbing" href="#Video-and-Audio-grabbing">6.1 视频和音频采集</a></li>
+    <li><a id="toc-X11-grabbing" href="#X11-grabbing">6.2 X11 采集</a></li>
+    <li><a id="toc-Video-and-Audio-file-format-conversion" href="#Video-and-Audio-file-format-conversion">6.3 视频和音频文件格式转换</a></li>
+  </ul></li>
+  <li><a id="toc-See-Also" href="#See-Also">7 参见</a></li>
+  <li><a id="toc-Authors" href="#Authors">8 作者</a></li>
+</ul>
+</div>
+</div>
+
+<a name="Synopsis"></a>
+<h2 class="chapter">1 概要<span class="pull-right"><a class="anchor hidden-xs" href="#Synopsis" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Synopsis" aria-hidden="true">TOC</a></span></h2>
+
+<p>ffmpeg [<var class="var">global_options</var>] {[<var class="var">input_file_options</var>] -i <samp class="file">input_url</samp>} ... {[<var class="var">output_file_options</var>] <samp class="file">output_url</samp>} ...
+</p>
+<a name="Description"></a>
+<h2 class="chapter">2 描述<span class="pull-right"><a class="anchor hidden-xs" href="#Description" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Description" aria-hidden="true">TOC</a></span></h2>
+
+<p><code class="command">ffmpeg</code> 是一款通用的媒体转换器。它可以读取种类繁多的
+输入——包括实时采集/录制设备——对它们进行滤镜处理和转码，
+转换成各式各样的输出格式。
+</p>
+<p><code class="command">ffmpeg</code> 从任意数量的输入读取数据（这些输入可以是普通
+文件、管道、网络流、采集设备等），输入由
+<code class="code">-i</code> 选项指定；它写入任意数量的输出，输出由
+一个普通的输出 url 指定。命令行上任何无法
+被解释为选项的内容都被视为一个输出 url。
+</p>
+<p>原则上，每个输入或输出都可以包含任意数量的不同类型的
+基本流（视频/音频/字幕/附件/数据），不过允许的
+流数量和/或类型可能受容器格式限制。选择
+哪些输入中的哪些流会进入哪个输出，可以自动
+完成，也可以用 <code class="code">-map</code> 选项来完成（参见 <a class="ref" href="#Stream-selection">流选择</a>
+章节）。
+</p>
+<p>在选项中引用输入/输出时，必须使用它们的索引（从 0 开始）。
+例如，第一个输入是 <code class="code">0</code>，第二个是 <code class="code">1</code>，依此类推。同样，
+某个输入/输出内部的流也用它们的索引来引用。例如 <code class="code">2:3</code>
+指的是第三个输入或输出中的第四条流。另请参见
+<a class="ref" href="#Stream-specifiers">流标识符</a>章节。
+</p>
+<p>作为一般规则，选项会作用于其后指定的
+文件。因此顺序很重要，而且同一个选项可以在命令行上
+多次出现。每次出现都会
+作用于其后的输入或输出文件。
+这条规则的例外是全局选项（例如详细程度级别），
+它们应当最先指定。
+</p>
+<p>不要混用输入文件和输出文件 &ndash; 先指定所有输入文件，再指定所有
+输出文件。也不要混用属于不同文件的选项。所有
+选项都只作用于其后的输入或输出文件，并在文件之间被重置。
+</p>
+<p>下面是一些简单的例子。
+</p>
+<ul class="itemize mark-bullet">
+<li>通过重新编码媒体流，把输入媒体文件转换为另一种格式：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i input.avi output.mp4
+</pre></div>
+
+</li><li>把输出文件的视频码率设为 64 kbit/s：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i input.avi -b:v 64k -bufsize 64k output.mp4
+</pre></div>
+
+</li><li>强制输出文件的帧率为 24 fps：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i input.avi -r 24 output.mp4
+</pre></div>
+
+</li><li>强制输入文件的帧率（仅对原始格式有效）为 1 fps，
+并把输出文件的帧率设为 24 fps：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -r 1 -i input.m2v -r 24 output.mp4
+</pre></div>
+</li></ul>
+
+<p>对于原始输入文件，可能需要指定格式选项。
+</p>
+
+<a name="Detailed-description"></a>
+<h2 class="chapter">3 详细描述<span class="pull-right"><a class="anchor hidden-xs" href="#Detailed-description" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Detailed-description" aria-hidden="true">TOC</a></span></h2>
+
+<p><code class="command">ffmpeg</code> 用下面列出的这些组件构建出一条转码
+流水线。程序的工作方式就是：输入数据块从源端
+沿着管道向下游的汇端流动，同时被沿途遇到的
+组件所变换。
+</p>
+<p>可用的组件有以下几类：
+</p><ul class="itemize mark-bullet">
+<li><em class="emph">解复用器</em>（&quot;demultiplexers&quot; 的简称）读取输入源，以
+提取
+
+<ul class="itemize mark-bullet">
+<li>诸如元数据或章节之类的全局属性；
+</li><li>输入基本流的列表及其属性
+</li></ul>
+
+<p>每个 <samp class="option">-i</samp> 选项都会创建一个解复用器实例，它把编码后的
+<em class="emph">包</em>发送给<em class="emph">解码器</em>或<em class="emph">复用器</em>。
+</p>
+<p>在其他文献中，解复用器有时被称为<em class="emph">分离器</em>，因为
+它们的主要功能是把文件拆分成若干基本流（尽管有些
+文件只包含一条基本流）。
+</p>
+<p>解复用器的示意图如下所示：
+</p><pre class="verbatim">┌──────────┬───────────────────────┐
+│ demuxer  │                       │ packets for stream 0
+╞══════════╡ elementary stream 0   ├──────────────────────►
+│          │                       │
+│  global  ├───────────────────────┤
+│properties│                       │ packets for stream 1
+│   and    │ elementary stream 1   ├──────────────────────►
+│ metadata │                       │
+│          ├───────────────────────┤
+│          │                       │
+│          │     ...........       │
+│          │                       │
+│          ├───────────────────────┤
+│          │                       │ packets for stream N
+│          │ elementary stream N   ├──────────────────────►
+│          │                       │
+└──────────┴───────────────────────┘
+     ▲
+     │
+     │ read from file, network stream,
+     │     grabbing device, etc.
+     │
+</pre>
+</li><li><em class="emph">解码器</em>接收音频、视频或字幕基本流的编码（压缩）后的<em class="emph">包</em>，
+并把它们解码成原始<em class="emph">帧</em>（视频为像素数组，
+音频为 PCM）。解码器通常与<em class="emph">解复用器</em>中的某条基本流相关联
+（并从那里接收输入），但有时
+也可以独立存在（参见 <a class="ref" href="#Loopback-decoders">环回解码器</a>）。
+
+<p>解码器的示意图如下所示：
+</p><pre class="verbatim">          ┌─────────┐
+ packets  │         │ raw frames
+─────────►│ decoder ├────────────►
+          │         │
+          └─────────┘
+</pre>
+</li><li><em class="emph">滤镜图</em>处理并变换原始音频或视频<em class="emph">帧</em>。一个
+滤镜图由一个或多个连接成图的独立<em class="emph">滤镜</em>组成。
+滤镜图有<em class="emph">简单</em>和<em class="emph">复杂</em>两种形式，
+分别用 <samp class="option">-filter</samp> 和 <samp class="option">-filter_complex</samp> 选项配置，
+两者各对应其中一种。
+
+<p>简单滤镜图与一条<em class="emph">输出基本流</em>相关联；它
+从<em class="emph">解码器</em>接收待滤镜的输入，并把滤镜后的
+输出发送给该输出流的<em class="emph">编码器</em>。
+</p>
+<p>一个执行去隔行（使用 <code class="code">yadif</code>
+去隔行器）随后进行缩放（使用 <code class="code">scale</code> 滤镜）的简单视频滤镜图，
+可能如下所示：
+</p><pre class="verbatim">
+             ┌────────────────────────┐
+             │  simple filtergraph    │
+ frames from ╞════════════════════════╡ frames for
+ a decoder   │  ┌───────┐  ┌───────┐  │ an encoder
+────────────►├─►│ yadif ├─►│ scale ├─►│────────────►
+             │  └───────┘  └───────┘  │
+             └────────────────────────┘
+</pre>
+<p>复杂滤镜图是独立的，不与任何特定的流相关联。
+它可能有多个（或零个）输入，类型可能各不相同（音频或
+视频），每个输入都从解码器或另一个复杂
+滤镜图的输出接收数据。它还有一个或多个输出，馈送给
+编码器或另一个复杂滤镜图的输入。
+</p>
+<p>下面的示例图展示了一个具有 3 个输入和
+2 个输出（全部为视频）的复杂滤镜图：
+</p><pre class="verbatim">          ┌─────────────────────────────────────────────────┐
+          │               complex filtergraph               │
+          ╞═════════════════════════════════════════════════╡
+ frames   ├───────┐  ┌─────────┐      ┌─────────┐  ┌────────┤ frames
+─────────►│input 0├─►│ overlay ├─────►│ overlay ├─►│output 0├────────►
+          ├───────┘  │         │      │         │  └────────┤
+ frames   ├───────┐╭►│         │    ╭►│         │           │
+─────────►│input 1├╯ └─────────┘    │ └─────────┘           │
+          ├───────┘                 │                       │
+ frames   ├───────┐ ┌─────┐ ┌─────┬─╯              ┌────────┤ frames
+─────────►│input 2├►│scale├►│split├───────────────►│output 1├────────►
+          ├───────┘ └─────┘ └─────┘                └────────┤
+          └─────────────────────────────────────────────────┘
+</pre><p>来自第二个输入的帧叠加在来自第一个输入的帧之上。来自
+第三个输入的帧先被重新缩放，然后被复制成两条相同的流。其中
+一条叠加到前两个输入合并后的结果之上，结果作为
+滤镜图的第一个输出。另一份副本则成为
+滤镜图的第二个输出。
+</p>
+</li><li><em class="emph">编码器</em>接收原始音频、视频或字幕<em class="emph">帧</em>，并把
+它们编码成编码后的<em class="emph">包</em>。编码（压缩）过程
+通常是<em class="emph">有损的</em> - 它会降低流的质量以使输出更小；
+有些编码器是<em class="emph">无损的</em>，但代价是输出体积大得多。一个
+视频或音频编码器从某个滤镜图的输出接收输入，
+字幕编码器则从解码器接收输入（因为目前尚不支持
+字幕滤镜）。每个编码器都与某个复用器的<em class="emph">输出
+基本流</em>相关联，并把它的输出发送给该复用器。
+
+<p>编码器的示意图如下所示：
+</p><pre class="verbatim">             ┌─────────┐
+ raw frames  │         │ packets
+────────────►│ encoder ├─────────►
+             │         │
+             └─────────┘
+</pre>
+</li><li><em class="emph">复用器</em>（&quot;multiplexers&quot; 的简称）从编码器（<em class="emph">转码</em>路径）
+或直接从解复用器（<em class="emph">流复制</em>路径）接收其各条基本流的编码后<em class="emph">包</em>，
+把它们交织在一起（当存在多于一条基本流时），
+并把得到的字节写入输出文件
+（或管道、网络流等）。
+
+<p>复用器的示意图如下所示：
+</p><pre class="verbatim">                       ┌──────────────────────┬───────────┐
+ packets for stream 0  │                      │   muxer   │
+──────────────────────►│  elementary stream 0 ╞═══════════╡
+                       │                      │           │
+                       ├──────────────────────┤  global   │
+ packets for stream 1  │                      │properties │
+──────────────────────►│  elementary stream 1 │   and     │
+                       │                      │ metadata  │
+                       ├──────────────────────┤           │
+                       │                      │           │
+                       │     ...........      │           │
+                       │                      │           │
+                       ├──────────────────────┤           │
+ packets for stream N  │                      │           │
+──────────────────────►│  elementary stream N │           │
+                       │                      │           │
+                       └──────────────────────┴─────┬─────┘
+                                                    │
+                     write to file, network stream, │
+                         grabbing device, etc.      │
+                                                    │
+                                                    ▼
+</pre>
+</li></ul>
+
+<a name="Streamcopy"></a>
+<h3 class="section">3.1 流复制<span class="pull-right"><a class="anchor hidden-xs" href="#Streamcopy" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Streamcopy" aria-hidden="true">TOC</a></span></h3>
+<p><code class="command">ffmpeg</code> 中最简单的流水线是单流
+<em class="emph">流复制</em>，即在不进行解码、滤镜处理或编码的情况下复制一个<em class="emph">输入基本流</em>的包。作为一个例子，考虑一个名为 <samp class="file">INPUT.mkv</samp> 的输入
+文件，其中有 3 条基本流，我们取出其中的
+第二条并写入文件 <samp class="file">OUTPUT.mp4</samp>。这样一条流水线的
+示意图如下所示：
+</p><pre class="verbatim">┌──────────┬─────────────────────┐
+│ demuxer  │                     │ unused
+╞══════════╡ elementary stream 0 ├────────╳
+│          │                     │
+│INPUT.mkv ├─────────────────────┤          ┌──────────────────────┬───────────┐
+│          │                     │ packets  │                      │   muxer   │
+│          │ elementary stream 1 ├─────────►│  elementary stream 0 ╞═══════════╡
+│          │                     │          │                      │OUTPUT.mp4 │
+│          ├─────────────────────┤          └──────────────────────┴───────────┘
+│          │                     │ unused
+│          │ elementary stream 2 ├────────╳
+│          │                     │
+└──────────┴─────────────────────┘
+</pre>
+<p>上图的流水线可以用下面的命令行构建：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT.mkv -map 0:1 -c copy OUTPUT.mp4
+</pre></div>
+
+<p>在这个命令行中
+</p><ul class="itemize mark-bullet">
+<li>只有一个输入 <samp class="file">INPUT.mkv</samp>；
+
+</li><li>这个输入没有任何输入选项；
+
+</li><li>只有一个输出 <samp class="file">OUTPUT.mp4</samp>；
+
+</li><li>这个输出有两个输出选项：
+
+<ul class="itemize mark-bullet">
+<li><code class="code">-map 0:1</code> 选择要使用的输入流 —— 从索引为 0 的输入
+（即第一个输入）中选择索引为 1 的流（即第二条流）；
+
+</li><li><code class="code">-c copy</code> 选择 <code class="code">copy</code> 编码器，即不进行解码
+或编码的流复制。
+</li></ul>
+
+</li></ul>
+
+<p>流复制可用于更改基本流的数量、容器格式，
+或修改容器层面的元数据。由于没有解码或编码，
+它非常快，而且没有质量损失。然而，由于各种
+因素（例如目标容器所需的某些信息在源中不可用），
+它在某些情况下可能无法工作。应用滤镜显然
+也是不可能的，因为滤镜作用于解码后的帧。
+</p>
+<p>可以构建更复杂的流复制场景 —— 例如把两个输入文件中的
+流合并到单个输出中：
+</p><pre class="verbatim">┌──────────┬────────────────────┐         ┌────────────────────┬───────────┐
+│ demuxer 0│                    │ packets │                    │   muxer   │
+╞══════════╡elementary stream 0 ├────────►│elementary stream 0 ╞═══════════╡
+│INPUT0.mkv│                    │         │                    │OUTPUT.mp4 │
+└──────────┴────────────────────┘         ├────────────────────┤           │
+┌──────────┬────────────────────┐         │                    │           │
+│ demuxer 1│                    │ packets │elementary stream 1 │           │
+╞══════════╡elementary stream 0 ├────────►│                    │           │
+│INPUT1.aac│                    │         └────────────────────┴───────────┘
+└──────────┴────────────────────┘
+</pre><p>这可以用以下命令行构建
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT0.mkv -i INPUT1.aac -map 0:0 -map 1:0 -c copy OUTPUT.mp4
+</pre></div>
+
+<p>这里 <samp class="option">-map</samp> 输出选项被使用了两次，在输出文件中创建了
+两条流 —— 一条由第一个输入供给，一条由第二个输入供给。<samp class="option">-c</samp> 选项的
+单个实例为这两条流都选择了流复制。
+你还可以将此选项的多个实例与
+<a class="ref" href="#Stream-specifiers">流标识符</a> 一起使用，以便为每条流应用不同的值，这将在
+后续章节中演示。
+</p>
+<p>一个相反的场景是把单个输入中的多条流拆分成
+多个输出：
+</p><pre class="verbatim">┌──────────┬─────────────────────┐          ┌───────────────────┬───────────┐
+│ demuxer  │                     │ packets  │                   │ muxer 0   │
+╞══════════╡ elementary stream 0 ├─────────►│elementary stream 0╞═══════════╡
+│          │                     │          │                   │OUTPUT0.mp4│
+│INPUT.mkv ├─────────────────────┤          └───────────────────┴───────────┘
+│          │                     │ packets  ┌───────────────────┬───────────┐
+│          │ elementary stream 1 ├─────────►│                   │ muxer 1   │
+│          │                     │          │elementary stream 0╞═══════════╡
+└──────────┴─────────────────────┘          │                   │OUTPUT1.mp4│
+                                            └───────────────────┴───────────┘
+</pre><p>用以下命令构建
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT.mkv -map 0:0 -c copy OUTPUT0.mp4 -map 0:1 -c copy OUTPUT1.mp4
+</pre></div>
+<p>注意，即使各个输出文件的值相同，每个输出文件也都需要
+一个单独的 <samp class="option">-c</samp> 选项实例。这是因为非全局
+选项（大多数选项都是非全局的）只在放置它们的文件
+的上下文中生效。
+</p>
+<p>当然，这些示例还可以进一步推广为把任意数量的输入
+任意重新映射到任意数量的输出。
+</p>
+<a name="Transcoding"></a>
+<h3 class="section">3.2 转码<span class="pull-right"><a class="anchor hidden-xs" href="#Transcoding" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Transcoding" aria-hidden="true">TOC</a></span></h3>
+<p><em class="emph">转码</em>是指先解码一条流、然后再重新编码它的
+过程。由于编码往往在计算上开销很大，并且在大多数情况下
+会降低流的质量（即它是<em class="emph">有损</em>的），因此你应当只在
+需要时才转码，其他情况下应进行流复制。需要转码的典型
+原因有：
+</p>
+<ul class="itemize mark-bullet">
+<li>应用滤镜 —— 例如缩放、去隔行或叠加视频；重采样
+或混合音频；
+
+</li><li>你想把这条流送给无法解码原始编解码器的某个东西。
+</li></ul>
+<p>请注意，除非你为音频、视频和字幕流指定 <samp class="option">-c copy</samp>，
+否则 <code class="command">ffmpeg</code> 将转码它们中的全部。
+</p>
+<p>考虑一个示例流水线：它读取一个包含一条音频流和一条
+视频流的输入文件，对视频进行转码并复制音频，写入单个输出
+文件。这可以示意如下
+</p><pre class="verbatim">┌──────────┬─────────────────────┐
+│ demuxer  │                     │       audio packets
+╞══════════╡ stream 0 (audio)    ├─────────────────────────────────────╮
+│          │                     │                                     │
+│INPUT.mkv ├─────────────────────┤ video    ┌─────────┐     raw        │
+│          │                     │ packets  │  video  │ video frames   │
+│          │ stream 1 (video)    ├─────────►│ decoder ├──────────────╮ │
+│          │                     │          │         │              │ │
+└──────────┴─────────────────────┘          └─────────┘              │ │
+                                                                     ▼ ▼
+                                                                     │ │
+┌──────────┬─────────────────────┐ video    ┌─────────┐              │ │
+│ muxer    │                     │ packets  │  video  │              │ │
+╞══════════╡ stream 0 (video)    │◄─────────┤ encoder ├──────────────╯ │
+│          │                     │          │(libx264)│                │
+│OUTPUT.mp4├─────────────────────┤          └─────────┘                │
+│          │                     │                                     │
+│          │ stream 1 (audio)    │◄────────────────────────────────────╯
+│          │                     │
+└──────────┴─────────────────────┘
+</pre><p>并用以下命令行实现：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT.mkv -map 0:v -map 0:a -c:v libx264 -c:a copy OUTPUT.mp4
+</pre></div>
+<p>注意它如何使用流标识符 <code class="code">:v</code> 和 <code class="code">:a</code> 来选择输入
+流，并为它们应用 <samp class="option">-c</samp> 选项的不同值；更多细节请参见
+<a class="ref" href="#Stream-specifiers">流标识符</a> 一节。
+</p>
+
+<a name="Filtering"></a>
+<h3 class="section">3.3 滤镜<span class="pull-right"><a class="anchor hidden-xs" href="#Filtering" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Filtering" aria-hidden="true">TOC</a></span></h3>
+
+<p>转码时，音频流和视频流可以在编码之前被滤镜处理，可以使用
+<em class="emph">简单</em>滤镜图或<em class="emph">复杂</em>滤镜图。
+</p>
+<a name="Simple-filtergraphs"></a>
+<h4 class="subsection">3.3.1 简单滤镜图<span class="pull-right"><a class="anchor hidden-xs" href="#Simple-filtergraphs" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Simple-filtergraphs" aria-hidden="true">TOC</a></span></h4>
+
+<p>简单滤镜图是指恰好有一个输入和一个输出、且二者类型相同
+（音频或视频）的滤镜图。它们通过每条流的
+<samp class="option">-filter</samp> 选项进行配置（分别有 <samp class="option">-vf</samp> 和 <samp class="option">-af</samp> 作为
+<samp class="option">-filter:v</samp>（视频）和 <samp class="option">-filter:a</samp>（音频）的别名）。请注意，
+简单滤镜图与其输出流绑定，因此例如如果你有
+多条音频流，<samp class="option">-af</samp> 会为每一条分别创建一个滤镜图。
+one.
+</p>
+<p>以之前的转码示例为例，加入滤镜处理（为清晰起见省去音频）
+后它看起来像这样：
+</p><pre class="verbatim">┌──────────┬───────────────┐
+│ demuxer  │               │          ┌─────────┐
+╞══════════╡ video stream  │ packets  │  video  │ frames
+│INPUT.mkv │               ├─────────►│ decoder ├─────►───╮
+│          │               │          └─────────┘         │
+└──────────┴───────────────┘                              │
+                                  ╭───────────◄───────────╯
+                                  │   ┌────────────────────────┐
+                                  │   │  simple filtergraph    │
+                                  │   ╞════════════════════════╡
+                                  │   │  ┌───────┐  ┌───────┐  │
+                                  ╰──►├─►│ yadif ├─►│ scale ├─►├╮
+                                      │  └───────┘  └───────┘  ││
+                                      └────────────────────────┘│
+                                                                │
+                                                                │
+┌──────────┬───────────────┐ video    ┌─────────┐               │
+│ muxer    │               │ packets  │  video  │               │
+╞══════════╡ video stream  │◄─────────┤ encoder ├───────◄───────╯
+│OUTPUT.mp4│               │          │         │
+│          │               │          └─────────┘
+└──────────┴───────────────┘
+</pre>
+<a name="Complex-filtergraphs"></a>
+<h4 class="subsection">3.3.2 复杂滤镜图<span class="pull-right"><a class="anchor hidden-xs" href="#Complex-filtergraphs" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Complex-filtergraphs" aria-hidden="true">TOC</a></span></h4>
+
+<p>复杂滤镜图是那些不能简单地描述为作用于一条流的线性
+处理链的滤镜图。例如，当滤镜图有不止一个输入和/或输出时，
+或者当输出流的类型与输入不同时，就属于这种情况。复杂滤镜图通过
+<samp class="option">-filter_complex</samp> 选项进行配置。请注意该选项是全局的，因为
+复杂滤镜图从本质上讲无法明确地关联到
+单条流或单个文件。每个 <samp class="option">-filter_complex</samp> 实例都会创建一个新的
+复杂滤镜图，并且可以有任意多个这样的实例。
+</p>
+<p>复杂滤镜图的一个简单例子是 <code class="code">overlay</code> 滤镜，它有
+两个视频输入和一个视频输出，其内容是一路视频叠加在另一路
+之上。与之对应的音频版本是 <code class="code">amix</code> 滤镜。
+</p>
+<a class="anchor" id="Loopback-decoders"></a><a name="Loopback-decoders-1"></a>
+<h3 class="section">3.4 回环解码器<span class="pull-right"><a class="anchor hidden-xs" href="#Loopback-decoders" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Loopback-decoders" aria-hidden="true">TOC</a></span></h3>
+<p>虽然解码器通常与解复用器流相关联，但也可以
+创建 &quot;环路&quot; 解码器，用来解码某个编码器的输出，并
+允许把它送回复杂滤镜图。这是通过 <code class="code">-dec</code>
+指令完成的，该指令以一个应当被解码的输出流的索引作为
+参数。每一条这样的指令都会创建一个新的回环解码器，索引从
+零开始以连续整数编号。这些索引随后应被用于在复杂滤镜图
+链接标签中引用回环解码器，具体描述见
+<samp class="option">-filter_complex</samp> 的文档。
+</p>
+<p>可以通过把解码 AVOptions 放在 <code class="code">-dec</code> 之前来传给
+回环解码器，这与输入/输出选项类似。
+</p>
+<p>例如，下面的例子：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT                                        \
+  -map 0:v:0 -c:v libx264 -crf 45 -f null -            \
+  -threads 3 -dec 0:0                                  \
+  -filter_complex '[0:v][dec:0]hstack[stack]'          \
+  -map '[stack]' -c:v ffv1 OUTPUT
+</pre></div>
+
+<p>读取一个输入视频，并
+</p><ul class="itemize mark-bullet">
+<li>（第 2 行）以低质量用 <code class="code">libx264</code> 对它编码；
+
+</li><li>（第 3 行）使用 3 个线程解码这个已编码的流；
+
+</li><li>（第 4 行）把解码后的视频与原始输入视频并排放在一起；
+
+</li><li>（第 5 行）合并后的视频随后被无损编码并写入
+<samp class="file">OUTPUT</samp>。
+
+</li></ul>
+
+<p>这样一条转码流水线可以用下面的图表示：
+</p><pre class="verbatim">┌──────────┬───────────────┐
+│ demuxer  │               │   ┌─────────┐            ┌─────────┐    ┌────────────────────┐
+╞══════════╡ video stream  │   │  video  │            │  video  │    │ null muxer         │
+│   INPUT  │               ├──►│ decoder ├──┬────────►│ encoder ├─┬─►│(discards its input)│
+│          │               │   └─────────┘  │         │(libx264)│ │  └────────────────────┘
+└──────────┴───────────────┘                │         └─────────┘ │
+                                 ╭───────◄──╯   ┌─────────┐       │
+                                 │              │loopback │       │
+                                 │ ╭─────◄──────┤ decoder ├────◄──╯
+                                 │ │            └─────────┘
+                                 │ │
+                                 │ │
+                                 │ │  ┌───────────────────┐
+                                 │ │  │complex filtergraph│
+                                 │ │  ╞═══════════════════╡
+                                 │ │  │  ┌─────────────┐  │
+                                 ╰─╫─►├─►│   hstack    ├─►├╮
+                                   ╰─►├─►│             │  ││
+                                      │  └─────────────┘  ││
+                                      └───────────────────┘│
+                                                           │
+┌──────────┬───────────────┐  ┌─────────┐                  │
+│ muxer    │               │  │  video  │                  │
+╞══════════╡ video stream  │◄─┤ encoder ├───────◄──────────╯
+│  OUTPUT  │               │  │ (ffv1)  │
+│          │               │  └─────────┘
+└──────────┴───────────────┘
+</pre>
+
+
+<a class="anchor" id="Stream-selection"></a><a name="Stream-selection-1"></a>
+<h2 class="chapter">4 流选择<span class="pull-right"><a class="anchor hidden-xs" href="#Stream-selection" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Stream-selection" aria-hidden="true">TOC</a></span></h2>
+
+<p><code class="command">ffmpeg</code> 提供了 <code class="code">-map</code> 选项，用于手动控制每个
+输出文件中的流选择。用户可以跳过 <code class="code">-map</code>，让 ffmpeg 按下文所述
+执行自动流选择。<code class="code">-vn / -an / -sn / -dn</code> 选项可用于分别跳过对
+视频、音频、字幕和数据流的包含，无论这些流是手动映射的还是自动
+选择的，复杂滤镜图的输出流除外。
+</p>
+<a name="Description-1"></a>
+<h3 class="section">4.1 描述<span class="pull-right"><a class="anchor hidden-xs" href="#Description-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Description-1" aria-hidden="true">TOC</a></span></h3>
+<p>后续各小节介绍流选择所涉及的各种规则。
+再往后的示例则展示这些规则在实际中如何应用。
+</p>
+<p>尽管我们尽力准确反映该程序的行为，但 FFmpeg 一直在持续开发中，
+代码可能自本文撰写以来已经发生变化。
+</p>
+<a name="Automatic-stream-selection"></a>
+<h4 class="subsection">4.1.1 自动流选择<span class="pull-right"><a class="anchor hidden-xs" href="#Automatic-stream-selection" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Automatic-stream-selection" aria-hidden="true">TOC</a></span></h4>
+
+<p>当某个输出文件没有任何 map 选项时，ffmpeg 会检查输出格式，以确认其中可以包含哪些类型的流，
+即视频流、音频流和/或字幕流。对于每一种可接受的流类型，只要有可用的流，
+ffmpeg 就会从所有输入中挑选出一条这样的流。
+</p>
+<p>它将依据以下准则来选择该流：
+</p><ul class="itemize mark-bullet">
+<li>对于视频，选择分辨率最高的流，
+</li><li>对于音频，选择声道数最多的流，
+</li><li>对于字幕，选择找到的第一条字幕流，但这里有个需要注意的地方。
+输出格式的默认字幕编码器可能是基于文本的，也可能是基于图像的，
+因此只会选择同类型的字幕流。
+</li></ul>
+
+<p>如果有若干条同类型的流条件相当，则选择索引最小的那条流。
+</p>
+<p>数据流或附件流不会被自动选中，只能通过 <code class="code">-map</code> 来包含。
+</p><a name="Manual-stream-selection"></a>
+<h4 class="subsection">4.1.2 手动流选择<span class="pull-right"><a class="anchor hidden-xs" href="#Manual-stream-selection" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Manual-stream-selection" aria-hidden="true">TOC</a></span></h4>
+
+<p>使用 <code class="code">-map</code> 时，该输出文件中只包含用户映射的流，
+下文所述的滤镜图输出是一个可能的例外。
+</p>
+<a name="Complex-filtergraphs-1"></a>
+<h4 class="subsection">4.1.3 复杂滤镜图<span class="pull-right"><a class="anchor hidden-xs" href="#Complex-filtergraphs-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Complex-filtergraphs-1" aria-hidden="true">TOC</a></span></h4>
+
+<p>如果存在任何带有未标记 pad 的复杂滤镜图输出流，它们会被添加到第一个输出文件。
+如果输出格式不支持该流类型，这会导致致命错误。在没有 map 选项时，
+包含这些流会使它们所属类型的自动流选择被跳过。如果存在 map 选项，
+则这些滤镜图流会在映射的流之外额外被包含进来。
+</p>
+<p>带有已标记 pad 的复杂滤镜图输出流必须被映射，且只能映射一次。
+</p>
+<a name="Stream-handling"></a>
+<h4 class="subsection">4.1.4 流处理<span class="pull-right"><a class="anchor hidden-xs" href="#Stream-handling" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Stream-handling" aria-hidden="true">TOC</a></span></h4>
+
+<p>流处理与流选择彼此独立，下文所述的字幕是一个例外。流处理通过
+针对特定<em class="emph">输出</em>文件中的流的 <code class="code">-codec</code> 选项来设置。特别是，编解码器选项由 ffmpeg
+在流选择过程之后应用，因此不会影响后者。如果没有为某种流类型指定
+<code class="code">-codec</code> 选项，ffmpeg 将选择由输出文件复用器注册的默认编码器。
+</p>
+<p>字幕存在一个例外。如果为某个输出文件指定了字幕编码器，那么找到的
+第一条任意类型（文本或图像）的字幕流都会被包含进来。ffmpeg 不会验证
+指定的编码器能否转换所选的流，也不会验证转换后的流在输出格式中是否可接受。
+这一点同样普遍适用：当用户手动设置编码器时，流选择过程无法检查编码后的流
+能否被复用进输出文件。如果不能，ffmpeg 将中止，并且<em class="emph">所有</em>输出文件都将处理失败。
+</p>
+<a name="Examples"></a>
+<h3 class="section">4.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples" aria-hidden="true">TOC</a></span></h3>
+
+<p>以下示例演示了 ffmpeg 流选择方法的行为、怪癖和局限。
+</p>
+<p>它们假定存在下面三个输入文件。
+</p>
+<pre class="verbatim">
+input file 'A.avi'
+      stream 0: video 640x360
+      stream 1: audio 2 channels
+
+input file 'B.mp4'
+      stream 0: video 1920x1080
+      stream 1: audio 2 channels
+      stream 2: subtitles (text)
+      stream 3: audio 5.1 channels
+      stream 4: subtitles (text)
+
+input file 'C.mkv'
+      stream 0: video 1280x720
+      stream 1: audio 2 channels
+      stream 2: subtitles (image)
+</pre>
+<a name="Example_003a-automatic-stream-selection"></a>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i A.avi -i B.mp4 out1.mkv out2.wav -map 1:a -c:a copy out3.mov
+</pre></div>
+<p>这里指定了三个输出文件，而前两个没有设置 <code class="code">-map</code> 选项，
+因此 ffmpeg 会自动为这两个文件选择流。
+</p>
+<p><samp class="file">out1.mkv</samp> 是 Matroska 容器文件，接受视频流、音频流和字幕流，
+所以 ffmpeg 会尝试为每种类型各选择一条流。<br>
+对于视频，它会选择 <samp class="file">B.mp4</samp> 中的 <code class="code">stream 0</code>，其分辨率
+在所有输入视频流中最高。<br>
+对于音频，它会选择 <samp class="file">B.mp4</samp> 中的 <code class="code">stream 3</code>，因为它的
+声道数最多。<br>
+对于字幕，它会选择 <samp class="file">B.mp4</samp> 中的 <code class="code">stream 2</code>，这是
+<samp class="file">A.avi</samp> 和 <samp class="file">B.mp4</samp> 中的第一条字幕流。
+</p>
+<p><samp class="file">out2.wav</samp> 只接受音频流，因此只选择了 <samp class="file">B.mp4</samp> 中的
+<code class="code">stream 3</code>。
+</p>
+<p>对于 <samp class="file">out3.mov</samp>，由于设置了 <code class="code">-map</code> 选项，不会发生自动流选择。
+<code class="code">-map 1:a</code> 选项将选择第二个输入 <samp class="file">B.mp4</samp> 中的所有音频流。
+该输出文件中不会包含其他任何流。
+</p>
+<p>对于前两个输出，所有被包含的流都将被转码。所选的编码器将是各输出格式注册的
+默认编码器，它们可能与被选中的输入流的编解码器并不一致。
+</p>
+<p>对于第三个输出，音频流的编解码器选项已被设置为 <code class="code">copy</code>，
+因此不会发生、也<em class="emph">不能</em>发生解码-滤镜-编码操作。
+被选中流的包将从输入文件传递出来，并在输出文件内被复用。
+</p>
+<a name="Example_003a-automatic-subtitles-selection"></a>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i C.mkv out1.mkv -c:s dvdsub -an out2.mkv
+</pre></div>
+<p>尽管 <samp class="file">out1.mkv</samp> 是接受字幕流的 Matroska 容器文件，
+但只会选择一条视频流和一条音频流。<samp class="file">C.mkv</samp> 中的字幕流是基于图像的，
+而 Matroska 复用器的默认字幕编码器是基于文本的，因此对字幕的转码操作
+预计会失败，所以不会选择该流。然而在 <samp class="file">out2.mkv</samp> 中，
+命令里指定了字幕编码器，因此除视频流之外，字幕流也会被选中。
+<code class="code">-an</code> 的存在则禁用了 <samp class="file">out2.mkv</samp> 的音频流选择。
+</p>
+<a name="Example_003a-unlabeled-filtergraph-outputs"></a>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i A.avi -i C.mkv -i B.mp4 -filter_complex &quot;overlay&quot; out1.mp4 out2.srt
+</pre></div>
+<p>这里使用 <code class="code">-filter_complex</code> 选项建立了一个滤镜图，它由单个
+视频滤镜构成。<code class="code">overlay</code> 滤镜恰好需要两路视频输入，但并未指定，
+因此会使用最先可用的两条视频流，即 <samp class="file">A.avi</samp> 和
+<samp class="file">C.mkv</samp> 的流。该滤镜的输出 pad 没有标签，因此被送往第一个输出文件
+<samp class="file">out1.mp4</samp>。正因如此，视频流的自动选择被跳过，
+否则本应选中 <samp class="file">B.mp4</samp> 中的流。声道数最多的音频流，即
+<samp class="file">B.mp4</samp> 中的 <code class="code">stream 3</code>，被自动选中。不过没有选择任何字幕流，
+因为 MP4 格式没有注册默认字幕编码器，而用户也没有指定字幕编码器。
+</p>
+<p>第二个输出文件 <samp class="file">out2.srt</samp> 只接受基于文本的字幕流。因此，即便
+最先可用的字幕流属于 <samp class="file">C.mkv</samp>，由于它是基于图像的，也会被跳过。
+被选中的流是 <samp class="file">B.mp4</samp> 中的 <code class="code">stream 2</code>，即第一条基于文本的字幕流。
+</p>
+<a name="Example_003a-labeled-filtergraph-outputs"></a>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i A.avi -i B.mp4 -i C.mkv -filter_complex &quot;[1:v]hue=s=0[outv];overlay;aresample&quot; \
+       -map '[outv]' -an        out1.mp4 \
+                                out2.mkv \
+       -map '[outv]' -map 1:a:0 out3.mkv
+</pre></div>
+
+<p>上述命令会失败，因为标记为 <code class="code">[outv]</code> 的输出 pad 被映射了两次。
+所有输出文件都不会被处理。
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i A.avi -i B.mp4 -i C.mkv -filter_complex &quot;[1:v]hue=s=0[outv];overlay;aresample&quot; \
+       -an        out1.mp4 \
+                  out2.mkv \
+       -map 1:a:0 out3.mkv
+</pre></div>
+
+<p>上面这条命令同样会失败，因为 hue 滤镜的输出带有一个标签 <code class="code">[outv]</code>，
+却没有任何地方对它进行映射。
+</p>
+<p>该命令应修改如下，
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i A.avi -i B.mp4 -i C.mkv -filter_complex &quot;[1:v]hue=s=0,split=2[outv1][outv2];overlay;aresample&quot; \
+        -map '[outv1]' -an        out1.mp4 \
+                                  out2.mkv \
+        -map '[outv2]' -map 1:a:0 out3.mkv
+</pre></div>
+<p><samp class="file">B.mp4</samp> 的视频流被送入 hue 滤镜，其输出再由 split 滤镜复制一份，
+两个输出都带有标签。随后各取一份副本映射到第一个和第三个输出文件。
+</p>
+<p>overlay 滤镜需要两路视频输入，它会使用最先两条尚未被使用的视频流，
+也就是来自 <samp class="file">A.avi</samp> 和 <samp class="file">C.mkv</samp> 的流。overlay 的输出没有标签，
+因此无论是否设置了 <code class="code">-map</code> 选项，它都会被送往第一个输出文件 <samp class="file">out1.mp4</samp>。
+</p>
+<p>aresample 滤镜收到的是最先一条尚未使用的音频流，即 <samp class="file">A.avi</samp> 的那条流。由于该滤镜
+的输出同样没有标签，它也被映射到第一个输出文件。<code class="code">-an</code> 的存在
+只抑制音频流的自动或手动流选择，而不影响滤镜图送出的输出。
+这两条被映射的流将排在 <samp class="file">out1.mp4</samp> 中那条被映射的流之前。
+</p>
+<p>映射到 <code class="code">out2.mkv</code> 的视频流、音频流和字幕流完全由自动流选择决定。
+</p>
+<p><samp class="file">out3.mkv</samp> 由 hue 滤镜复制出的视频输出和 <samp class="file">B.mp4</samp> 的第一条音频流
+组成。
+<br>
+</p>
+
+<a name="Options"></a>
+<h2 class="chapter">5 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options" aria-hidden="true">TOC</a></span></h2>
+
+<p>所有数值选项，除非另有说明，都接受一个表示数字的字符串作为输入，
+该字符串后面可跟一个 SI 单位前缀，例如：&rsquo;K&rsquo;、&rsquo;M&rsquo; 或
+&rsquo;G&rsquo;。
+</p>
+<p>如果在 SI 单位前缀后面附加 &rsquo;i&rsquo;，整个前缀将被
+解释为二进制倍数的单位前缀，它们以 1024 的
+幂而不是 1000 的幂为基准。在 SI 单位前缀后面附加 &rsquo;B&rsquo;
+会把数值乘以 8。这样就允许使用例如：
+&rsquo;KB&rsquo;、&rsquo;MiB&rsquo;、&rsquo;G&rsquo; 和 &rsquo;B&rsquo; 作为数字后缀。
+</p>
+<p>不接受参数的选项是布尔选项，会把
+相应的值设为 true。在选项名前加上 &quot;no&quot; 即可把它们设为 false。
+例如使用 &quot;-nofoo&quot;
+会把名为 &quot;foo&quot; 的布尔选项设为 false。
+</p>
+<p>接受参数的选项支持一种特殊语法：命令行上给出的参数
+会被解释为一个文件路径，实际的参数值将从该
+文件中加载。要使用此功能，请在选项名前
+（前导短横线之后）紧跟一个正斜杠 &rsquo;/&rsquo;。例如
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -/filter:v filter.script OUTPUT
+</pre></div>
+<p>将从名为 <samp class="file">filter.script</samp> 的文件中加载滤镜图描述。
+</p>
+<a class="anchor" id="Stream-specifiers"></a><a name="Stream-specifiers-1"></a>
+<h3 class="section">5.1 流标识符<span class="pull-right"><a class="anchor hidden-xs" href="#Stream-specifiers" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Stream-specifiers" aria-hidden="true">TOC</a></span></h3>
+<p>有些选项是按每条流应用的，例如码率或编解码器。流标识符
+用于精确指定给定选项属于哪一条（些）流。
+</p>
+<p>流标识符是一个字符串，通常附加在选项名之后，
+并用冒号与选项名分隔。例如 <code class="code">-codec:a:1 ac3</code> 中包含
+流标识符 <code class="code">a:1</code>，它匹配第二条音频流。因此，它
+会为第二条音频流选择 ac3 编解码器。
+</p>
+<p>一个流标识符可以匹配多条流，从而让该选项应用到
+所有这些流。例如 <code class="code">-b:a 128k</code> 中的流标识符匹配所有音频
+流。
+</p>
+<p>空的流标识符匹配所有流。例如 <code class="code">-codec copy</code>
+或 <code class="code">-codec: copy</code> 会在不重新编码的情况下拷贝所有流。
+</p>
+<p>流标识符可能的形式有：
+</p><dl class="table">
+<dt><samp class="option"><var class="var">stream_index</var></samp></dt>
+<dd><p>匹配具有此索引的流。例如 <code class="code">-threads:1 4</code> 会把
+第二条流的线程数设为 4。如果 <var class="var">stream_index</var> 被用作
+额外的流标识符（见下文），那么它会从匹配的流中
+选择编号为 <var class="var">stream_index</var> 的流。流编号基于
+libavformat 检测到的流顺序，除非同时指定了流组
+说明符或节目 ID。在这种情况下，编号基于
+该组或节目中流的排列顺序。
+</p></dd>
+<dt><samp class="option"><var class="var">stream_type</var>[:<var class="var">additional_stream_specifier</var>]</samp></dt>
+<dd><p><var class="var">stream_type</var> 为以下之一：&rsquo;v&rsquo; 或 &rsquo;V&rsquo; 表示视频，&rsquo;a&rsquo; 表示音频，&rsquo;s&rsquo;
+表示字幕，&rsquo;d&rsquo; 表示数据，&rsquo;t&rsquo; 表示附件。&rsquo;v&rsquo; 匹配所有视频
+流，&rsquo;V&rsquo; 只匹配不是附加图片、视频缩略图
+或封面图的视频流。如果使用了 <var class="var">additional_stream_specifier</var>，那么
+它匹配既具有此类型、又匹配
+<var class="var">additional_stream_specifier</var> 的流。否则，它匹配指定类型的
+所有流。
+</p></dd>
+<dt><samp class="option">g:<var class="var">group_specifier</var>[:<var class="var">additional_stream_specifier</var>]</samp></dt>
+<dd><p>匹配位于说明符为 <var class="var">group_specifier</var> 的组中的流。
+如果使用了 <var class="var">additional_stream_specifier</var>，那么它匹配既
+属于该组、又匹配 <var class="var">additional_stream_specifier</var> 的流。
+<var class="var">group_specifier</var> 可以是以下之一：
+</p><dl class="table">
+<dt><samp class="option"><var class="var">group_index</var></samp></dt>
+<dd><p>匹配具有此组索引的流。
+</p></dd>
+<dt><samp class="option">#<var class="var">group_id</var> or i:<var class="var">group_id</var></samp></dt>
+<dd><p>匹配具有此组 id 的流。
+</p></dd>
+</dl>
+</dd>
+<dt><samp class="option">p:<var class="var">program_id</var>[:<var class="var">additional_stream_specifier</var>]</samp></dt>
+<dd><p>匹配 id 为 <var class="var">program_id</var> 的节目中的流。如果
+使用了 <var class="var">additional_stream_specifier</var>，那么它匹配既
+属于该节目、又匹配 <var class="var">additional_stream_specifier</var> 的流。
+</p>
+</dd>
+<dt><samp class="option">#<var class="var">stream_id</var> or i:<var class="var">stream_id</var></samp></dt>
+<dd><p>按流 id 匹配流（例如 MPEG-TS 容器中的 PID）。
+</p></dd>
+<dt><samp class="option">m:<var class="var">key</var>[:<var class="var">value</var>]</samp></dt>
+<dd><p>匹配元数据标签 <var class="var">key</var> 具有指定值的流。如果
+未给出 <var class="var">value</var>，则匹配包含给定标签且取任意
+值的流。<var class="var">key</var> 或 <var class="var">value</var> 中的冒号字符 &rsquo;:&rsquo; 需要
+用反斜杠转义。
+</p></dd>
+<dt><samp class="option">disp:<var class="var">dispositions</var>[:<var class="var">additional_stream_specifier</var>]</samp></dt>
+<dd><p>匹配具有给定处置（disposition）的流。<var class="var">dispositions</var> 是一个
+或多个处置的列表（如 <samp class="option">-dispositions</samp> 选项所输出的），
+以 &rsquo;+&rsquo; 连接。
+</p></dd>
+<dt><samp class="option">u</samp></dt>
+<dd><p>匹配具有可用配置的流，编解码器必须已定义，并且
+视频尺寸或音频采样率等必要信息必须存在。
+</p>
+<p>请注意，在 <code class="command">ffmpeg</code> 中，按元数据匹配只对
+输入文件正常工作。
+</p></dd>
+</dl>
+
+<a name="Generic-options"></a>
+<a name="Generic-options"></a>
+<a name="Generic-options"></a>
+<h3 class="section">5.2 通用选项<span class="pull-right"><a class="anchor hidden-xs" href="#Generic-options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Generic-options" aria-hidden="true">TOC</a></span></h3>
+
+<p>这些选项在所有 FFmpeg 工具中是共享的。
+</p>
+<dl class="table">
+<dt><samp class="option">-L</samp></dt>
+<dd><p>显示许可证。
+</p>
+</dd>
+<dt><samp class="option">-h, -?, -help, --help [<var class="var">arg</var>]</samp></dt>
+<dd><p>显示帮助。可以给出可选的 <var class="var">arg</var> 参数来查看
+特定项目的帮助。如果未指定 <var class="var">arg</var>，则只显示基本的
+工具选项。
+</p>
+<p><var class="var">arg</var> 可取的值有：
+</p><dl class="table">
+<dt><samp class="option">long</samp></dt>
+<dd><p>除基本工具选项之外，额外打印高级工具选项。
+</p>
+</dd>
+<dt><samp class="option">full</samp></dt>
+<dd><p>打印完整的选项列表，包括编码器、解码器、解复用器、复用器、
+滤镜等共享选项和私有选项。
+</p>
+</dd>
+<dt><samp class="option">decoder=<var class="var">decoder_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">decoder_name</var> 的解码器的详细信息。使用
+<samp class="option">-decoders</samp> 选项可获取所有解码器的列表。
+</p>
+</dd>
+<dt><samp class="option">encoder=<var class="var">encoder_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">encoder_name</var> 的编码器的详细信息。使用
+<samp class="option">-encoders</samp> 选项可获取所有编码器的列表。
+</p>
+</dd>
+<dt><samp class="option">demuxer=<var class="var">demuxer_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">demuxer_name</var> 的解复用器的详细信息。使用
+<samp class="option">-formats</samp> 选项可获取所有解复用器和复用器的列表。
+</p>
+</dd>
+<dt><samp class="option">muxer=<var class="var">muxer_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">muxer_name</var> 的复用器的详细信息。使用
+<samp class="option">-formats</samp> 选项可获取所有复用器和解复用器的列表。
+</p>
+</dd>
+<dt><samp class="option">filter=<var class="var">filter_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">filter_name</var> 的滤镜的详细信息。使用
+<samp class="option">-filters</samp> 选项可获取所有滤镜的列表。
+</p>
+</dd>
+<dt><samp class="option">bsf=<var class="var">bitstream_filter_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">bitstream_filter_name</var> 的比特流滤波器的详细信息。
+使用 <samp class="option">-bsfs</samp> 选项可获取所有比特流滤波器的列表。
+</p>
+</dd>
+<dt><samp class="option">protocol=<var class="var">protocol_name</var></samp></dt>
+<dd><p>打印名为 <var class="var">protocol_name</var> 的协议的详细信息。
+使用 <samp class="option">-protocols</samp> 选项可获取所有协议的列表。
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">-version</samp></dt>
+<dd><p>显示版本。
+</p>
+</dd>
+<dt><samp class="option">-buildconf</samp></dt>
+<dd><p>显示构建配置，每行一个选项。
+</p>
+</dd>
+<dt><samp class="option">-formats</samp></dt>
+<dd><p>显示可用的格式（包括设备）。
+</p>
+</dd>
+<dt><samp class="option">-demuxers</samp></dt>
+<dd><p>显示可用的解复用器。
+</p>
+</dd>
+<dt><samp class="option">-muxers</samp></dt>
+<dd><p>显示可用的复用器。
+</p>
+</dd>
+<dt><samp class="option">-devices</samp></dt>
+<dd><p>显示可用的设备。
+</p>
+</dd>
+<dt><samp class="option">-codecs</samp></dt>
+<dd><p>显示 libavcodec 已知的所有编解码器。
+</p>
+<p>注意，本文档通篇使用术语 &rsquo;codec&rsquo; 作为简称，
+指代更准确地说应称为媒体比特流格式的东西。
+</p>
+</dd>
+<dt><samp class="option">-decoders</samp></dt>
+<dd><p>显示可用的解码器。
+</p>
+</dd>
+<dt><samp class="option">-encoders</samp></dt>
+<dd><p>显示所有可用的编码器。
+</p>
+</dd>
+<dt><samp class="option">-bsfs</samp></dt>
+<dd><p>显示可用的比特流滤波器。
+</p>
+</dd>
+<dt><samp class="option">-protocols</samp></dt>
+<dd><p>显示可用的协议。
+</p>
+</dd>
+<dt><samp class="option">-filters</samp></dt>
+<dd><p>显示可用的 libavfilter 滤镜。
+</p>
+</dd>
+<dt><samp class="option">-pix_fmts</samp></dt>
+<dd><p>显示可用的像素格式。
+</p>
+</dd>
+<dt><samp class="option">-sample_fmts</samp></dt>
+<dd><p>显示可用的采样格式。
+</p>
+</dd>
+<dt><samp class="option">-layouts</samp></dt>
+<dd><p>显示声道名称和标准声道布局。
+</p>
+</dd>
+<dt><samp class="option">-dispositions</samp></dt>
+<dd><p>显示流的 disposition。
+</p>
+</dd>
+<dt><samp class="option">-colors</samp></dt>
+<dd><p>显示可识别的颜色名称。
+</p>
+</dd>
+<dt><samp class="option">-sources <var class="var">device</var>[,<var class="var">opt1</var>=<var class="var">val1</var>[,<var class="var">opt2</var>=<var class="var">val2</var>]...]</samp></dt>
+<dd><p>显示输入设备自动检测到的源。
+有些设备可能提供系统相关的源名称，无法自动检测。
+返回的列表不能假定总是完整的。
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -sources pulse,server=192.168.0.4
+</pre></div>
+
+</dd>
+<dt><samp class="option">-sinks <var class="var">device</var>[,<var class="var">opt1</var>=<var class="var">val1</var>[,<var class="var">opt2</var>=<var class="var">val2</var>]...]</samp></dt>
+<dd><p>显示输出设备自动检测到的接收端。
+有些设备可能提供系统相关的接收端名称，无法自动检测。
+返回的列表不能假定总是完整的。
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -sinks pulse,server=192.168.0.4
+</pre></div>
+
+</dd>
+<dt><samp class="option">-loglevel [<var class="var">flags</var>+]<var class="var">loglevel</var> | -v [<var class="var">flags</var>+]<var class="var">loglevel</var></samp></dt>
+<dd><p>设置库使用的日志级别和标志。
+</p>
+<p>可选的 <var class="var">flags</var> 前缀可由以下值组成：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">repeat</samp>&rsquo;</dt>
+<dd><p>表示重复的日志输出不应被压缩到第一行，
+并且将省略 &quot;Last message repeated n times&quot; 这一行。
+</p></dd>
+<dt>&lsquo;<samp class="samp">level</samp>&rsquo;</dt>
+<dd><p>表示日志输出应为每条消息行添加 <code class="code">[level]</code> 前缀。
+这可以作为日志着色的替代方案，例如
+在把日志转储到文件时。
+</p></dd>
+<dt>&lsquo;<samp class="samp">time</samp>&rsquo;</dt>
+<dd><p>表示日志行应添加时间信息前缀。
+</p></dd>
+<dt>&lsquo;<samp class="samp">datetime</samp>&rsquo;</dt>
+<dd><p>表示日志行应添加日期和时间信息前缀。
+</p></dd>
+</dl>
+<p>标志也可以单独使用，方法是在其前面加上 &rsquo;+&rsquo;/&rsquo;-&rsquo; 前缀来设置/重置单个
+标志，而不影响其他 <var class="var">flags</var> 或改变 <var class="var">loglevel</var>。当
+同时设置 <var class="var">flags</var> 和 <var class="var">loglevel</var> 时，预期在最后一个
+<var class="var">flags</var> 值与 <var class="var">loglevel</var> 之间使用 &rsquo;+&rsquo; 分隔符。
+</p>
+<p><var class="var">loglevel</var> 是一个字符串或数字，包含以下值之一：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">quiet, -8</samp>&rsquo;</dt>
+<dd><p>什么都不显示；保持静默。
+</p></dd>
+<dt>&lsquo;<samp class="samp">panic, 0</samp>&rsquo;</dt>
+<dd><p>只显示可能导致进程崩溃的致命错误，例如
+断言失败。目前它未用于任何用途。
+</p></dd>
+<dt>&lsquo;<samp class="samp">fatal, 8</samp>&rsquo;</dt>
+<dd><p>只显示致命错误。这些错误发生后进程绝对
+无法继续。
+</p></dd>
+<dt>&lsquo;<samp class="samp">error, 16</samp>&rsquo;</dt>
+<dd><p>显示所有错误，包括可以恢复的错误。
+</p></dd>
+<dt>&lsquo;<samp class="samp">warning, 24</samp>&rsquo;</dt>
+<dd><p>显示所有警告和错误。任何与可能不正确或
+意外的事件相关的消息都会显示。
+</p></dd>
+<dt>&lsquo;<samp class="samp">info, 32</samp>&rsquo;</dt>
+<dd><p>在处理过程中显示提示性消息。这是在
+警告和错误之外额外显示的消息。这是默认值。
+</p></dd>
+<dt>&lsquo;<samp class="samp">verbose, 40</samp>&rsquo;</dt>
+<dd><p>与 <code class="code">info</code> 相同，只是更详细。
+</p></dd>
+<dt>&lsquo;<samp class="samp">debug, 48</samp>&rsquo;</dt>
+<dd><p>显示所有内容，包括调试信息。
+</p></dd>
+<dt>&lsquo;<samp class="samp">trace, 56</samp>&rsquo;</dt>
+</dl>
+
+<p>例如，要启用重复日志输出、添加 <code class="code">level</code> 前缀，并将
+<var class="var">loglevel</var> 设为 <code class="code">verbose</code>：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -loglevel repeat+level+verbose -i input output
+</pre></div>
+<p>另一个例子，在启用重复日志输出的同时不影响
+<code class="code">level</code> 前缀标志或 <var class="var">loglevel</var> 的当前状态：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg [...] -loglevel +repeat
+</pre></div>
+
+<p>默认情况下，程序将日志记录到 stderr。如果终端支持
+着色，则会用颜色标记错误和警告。日志着色
+可以通过设置环境变量
+<code class="env">AV_LOG_FORCE_NOCOLOR</code> 来禁用，也可以通过设置
+环境变量 <code class="env">AV_LOG_FORCE_COLOR</code> 来强制启用。
+</p>
+</dd>
+<dt><samp class="option">-report</samp></dt>
+<dd><p>将完整的命令行和日志输出转储到当前目录下名为
+<code class="code"><var class="var">program</var>-<var class="var">YYYYMMDD</var>-<var class="var">HHMMSS</var>.log</code>
+的文件中。
+该文件对提交错误报告很有用。
+它还会隐含启用 <code class="code">-loglevel debug</code>。
+</p>
+<p>将环境变量 <code class="env">FFREPORT</code> 设为任意值具有
+相同的效果。如果该值是以 &rsquo;:&rsquo; 分隔的 key=value 序列，这些
+选项将影响报告；如果选项值
+包含特殊字符或选项分隔符 &rsquo;:&rsquo;，则必须对其转义（参见
+ffmpeg-utils 手册中的 &ldquo;Quoting and escaping&rdquo; 一节）。
+</p>
+<p>可识别以下选项：
+</p><dl class="table">
+<dt><samp class="option">file</samp></dt>
+<dd><p>设置用于报告的文件的名称；<code class="code">%p</code> 会展开为
+程序名，<code class="code">%t</code> 会展开为时间戳，<code class="code">%%</code> 会展开为
+普通的 <code class="code">%</code>
+</p></dd>
+<dt><samp class="option">level</samp></dt>
+<dd><p>使用数值设置日志详细程度级别（参见 <code class="code">-loglevel</code>）。
+</p></dd>
+</dl>
+
+<p>例如，要将报告输出到名为 <samp class="file">ffreport.log</samp> 的文件，
+并使用 <code class="code">32</code> 的日志级别（日志级别 <code class="code">info</code> 的别名）：
+</p>
+<div class="example">
+<pre class="example-preformatted">FFREPORT=file=ffreport.log:level=32 ffmpeg -i input output
+</pre></div>
+
+<p>解析环境变量时出现的错误不是致命的，也不会
+出现在报告中。
+</p>
+</dd>
+<dt><samp class="option">-hide_banner</samp></dt>
+<dd><p>禁止打印横幅。
+</p>
+<p>所有 FFmpeg 工具通常会显示版权声明、构建选项
+和库版本信息。可以使用此选项来抑制打印
+这些信息。
+</p>
+</dd>
+<dt><samp class="option">-cpuflags flags (<em class="emph">全局</em>)</samp></dt>
+<dd><p>允许设置和清除 CPU 标志。此选项旨在
+用于测试。除非你清楚自己在做什么，否则不要使用它。
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -cpuflags -sse+mmx ...
+ffmpeg -cpuflags mmx ...
+ffmpeg -cpuflags 0 ...
+</pre></div>
+<p>此选项可用的标志有：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">x86</samp>&rsquo;</dt>
+<dd><dl class="table">
+<dt>&lsquo;<samp class="samp">mmx</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">mmxext</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse2slow</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse3</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse3slow</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">ssse3</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">atom</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse4.1</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">sse4.2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">avx</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">avx2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">xop</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">fma3</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">fma4</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">3dnow</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">3dnowext</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">bmi1</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">bmi2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">cmov</samp>&rsquo;</dt>
+</dl>
+</dd>
+<dt>&lsquo;<samp class="samp">ARM</samp>&rsquo;</dt>
+<dd><dl class="table">
+<dt>&lsquo;<samp class="samp">armv5te</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">armv6</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">armv6t2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">vfp</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">vfpv3</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">neon</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">setend</samp>&rsquo;</dt>
+</dl>
+</dd>
+<dt>&lsquo;<samp class="samp">AArch64</samp>&rsquo;</dt>
+<dd><dl class="table">
+<dt>&lsquo;<samp class="samp">armv8</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">vfp</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">neon</samp>&rsquo;</dt>
+</dl>
+</dd>
+<dt>&lsquo;<samp class="samp">PowerPC</samp>&rsquo;</dt>
+<dd><dl class="table">
+<dt>&lsquo;<samp class="samp">altivec</samp>&rsquo;</dt>
+</dl>
+</dd>
+<dt>&lsquo;<samp class="samp">Specific Processors</samp>&rsquo;</dt>
+<dd><dl class="table">
+<dt>&lsquo;<samp class="samp">pentium2</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">pentium3</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">pentium4</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">k6</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">k62</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">athlon</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">athlonxp</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">k8</samp>&rsquo;</dt>
+</dl>
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">-cpucount <var class="var">count</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>覆盖 CPU 数量的检测。此选项旨在
+用于测试。除非你清楚自己在做什么，否则不要使用它。
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -cpucount 2
+</pre></div>
+
+</dd>
+<dt><samp class="option">-max_alloc <var class="var">bytes</var></samp></dt>
+<dd><p>设置 ffmpeg 一族 malloc 函数在堆上分配内存块的
+最大大小限制。使用此选项时要<strong class="strong">极其谨慎</strong>。如果
+不了解这样做的全部后果，请不要使用。
+默认值为 INT_MAX。
+</p></dd>
+</dl>
+
+<a name="AVOptions"></a>
+<h3 class="section">5.3 AVOptions<span class="pull-right"><a class="anchor hidden-xs" href="#AVOptions" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-AVOptions" aria-hidden="true">TOC</a></span></h3>
+
+<p>这些选项由 libavformat、libavdevice 和
+libavcodec 库直接提供。要查看可用的 AVOptions 列表，请使用
+<samp class="option">-help</samp> 选项。它们分为两类：
+</p><dl class="table">
+<dt><samp class="option">generic</samp></dt>
+<dd><p>这些选项可以为任何容器、编解码器或设备设置。通用选项
+对于容器/设备列在 AVFormatContext 选项下，对于编解码器则列在
+AVCodecContext 选项下。
+</p></dd>
+<dt><samp class="option">private</samp></dt>
+<dd><p>这些选项特定于给定的容器、设备或编解码器。私有
+选项列在它们对应的容器/设备/编解码器之下。
+</p></dd>
+</dl>
+
+<p>例如，要把 ID3v2.3 头部而非默认的 ID3v2.4 写入
+MP3 文件，请使用 MP3 复用器的 <samp class="option">id3v2_version</samp> 私有选项：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i input.flac -id3v2_version 3 out.mp3
+</pre></div>
+
+<p>所有编解码器 AVOption 都是按流设置的，因此需要为其附加
+流标识符：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i multichannel.mxf -map 0:v:0 -map 0:a:0 -map 0:a:0 -c:a:0 ac3 -b:a:0 640k -ac:a:1 2 -c:a:1 aac -b:2 128k out.mp4
+</pre></div>
+
+<p>在上面的示例中，一个多声道音频流被映射了两次用于输出。
+第一个实例使用编解码器 ac3 编码，码率为 640k。
+第二个实例被下混为 2 声道并使用编解码器 aac 编码。为其指定 128k 码率时使用的是
+输出流的绝对索引。
+</p>
+<p>注意：<samp class="option">-nooption</samp> 语法不能用于布尔型
+AVOption，请使用 <samp class="option">-option 0</samp>/<samp class="option">-option 1</samp>。
+</p>
+<p>注意：过去那种未写入文档的按流指定 AVOption 的方式——在选项名前面加上
+v/a/s——现已过时，并将在不久后
+被移除。
+</p>
+<a name="Main-options"></a>
+<h3 class="section">5.4 主要选项<span class="pull-right"><a class="anchor hidden-xs" href="#Main-options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Main-options" aria-hidden="true">TOC</a></span></h3>
+
+<dl class="table">
+<dt><samp class="option">-f <var class="var">fmt</var> (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>强制指定输入或输出文件格式。格式通常对输入
+文件自动检测，对输出文件则根据文件扩展名推断，因此在大多数情况下
+不需要此选项。
+</p>
+</dd>
+<dt><samp class="option">-i <var class="var">url</var> (<em class="emph">输入</em>)</samp></dt>
+<dd><p>输入文件的 url
+</p>
+</dd>
+<dt><samp class="option">-y (<em class="emph">全局</em>)</samp></dt>
+<dd><p>覆盖输出文件而不询问。
+</p>
+</dd>
+<dt><samp class="option">-n (<em class="emph">全局</em>)</samp></dt>
+<dd><p>不覆盖输出文件，并且如果指定的输出文件已存在则立即退出。
+</p>
+</dd>
+<dt><samp class="option">-stream_loop <var class="var">number</var> (<em class="emph">输入</em>)</samp></dt>
+<dd><p>设置输入流应循环的次数。循环 0 表示不循环，
+循环 -1 表示无限循环。
+</p>
+</dd>
+<dt><samp class="option">-recast_media (<em class="emph">全局</em>)</samp></dt>
+<dd><p>允许强制使用与解复用器检测到或指定的媒体类型不同的解码器。对于解码
+被复用为数据流的媒体数据很有用。
+</p>
+</dd>
+<dt><samp class="option">-c[:<var class="var">stream_specifier</var>] <var class="var">codec</var> (<em class="emph">输入/输出,每条流</em>)</samp></dt>
+<dt><samp class="option">-codec[:<var class="var">stream_specifier</var>] <var class="var">codec</var> (<em class="emph">输入/输出,每条流</em>)</samp></dt>
+<dd><p>为一条或多条 stream 选择编码器（在输出文件之前使用时）或解码器（在
+输入文件之前使用时）。<var class="var">codec</var> 是解码器/编码器的名称，
+或者是特殊值 <code class="code">copy</code>（仅用于输出），表示该 stream 不重新编码。
+</p>
+<p>例如
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -map 0 -c:v libx264 -c:a copy OUTPUT
+</pre></div>
+<p>会使用 libx264 编码所有视频流，并拷贝所有音频流。
+</p>
+<p>对于每条流，最后一条匹配的 <code class="code">c</code> 选项生效，因此
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -map 0 -c copy -c:v:1 libx264 -c:a:137 libvorbis OUTPUT
+</pre></div>
+<p>会拷贝所有流，但第二个视频流除外，它将以
+libx264 编码；第 138 个音频流也一样，它将以 libvorbis 编码。
+</p>
+</dd>
+<dt><samp class="option">-t <var class="var">duration</var> (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>当用作输入选项时（在 <code class="code">-i</code> 之前），限制从输入文件读取数据的
+<var class="var">duration</var>。
+</p>
+<p>当用作输出选项时（在输出 url 之前），在输出时长达到
+<var class="var">duration</var> 后停止写入输出。
+</p>
+<p><var class="var">duration</var> 必须是时间时长格式的说明，
+参见 <a data-manual="ffmpeg-utils" href="./ffmpeg-utils.html#time-duration-syntax">ffmpeg-utils(1) 手册中的时间时长一节</a>。
+</p>
+<p>-to 与 -t 互斥，且 -t 优先。
+</p>
+</dd>
+<dt><samp class="option">-to <var class="var">position</var> (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>在 <var class="var">position</var> 处停止写入输出或读取输入。
+<var class="var">position</var> 必须是时间时长格式的说明，
+参见 <a data-manual="ffmpeg-utils" href="./ffmpeg-utils.html#time-duration-syntax">ffmpeg-utils(1) 手册中的时间时长一节</a>。
+</p>
+<p>-to 与 -t 互斥，且 -t 优先。
+</p>
+</dd>
+<dt><samp class="option">-fs <var class="var">limit_size</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>设置文件大小限制，以字节为单位。超过该限制后不再写入更多字节块。
+输出文件的大小会略大于所请求的文件大小。
+</p>
+</dd>
+<dt><samp class="option">-ss <var class="var">position</var> (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>当用作输入选项时（在 <code class="code">-i</code> 之前），在该输入文件中定位到
+<var class="var">position</var>。请注意，在大多数格式中无法精确寻址，
+因此 <code class="command">ffmpeg</code> 会定位到 <var class="var">position</var> 之前最近的可寻址点。
+在转码且启用了 <samp class="option">-accurate_seek</samp>（默认值）时，
+寻址点与 <var class="var">position</var> 之间的这段额外片段将被解码并
+丢弃。在进行流复制或使用 <samp class="option">-noaccurate_seek</samp> 时，
+它会被保留。
+</p>
+<p>当用作输出选项时（在输出 url 之前），会解码但丢弃
+输入，直到时间戳到达 <var class="var">position</var>。
+</p>
+<p><var class="var">position</var> 必须是时间时长格式的说明，
+参见 <a data-manual="ffmpeg-utils" href="./ffmpeg-utils.html#time-duration-syntax">ffmpeg-utils(1) 手册中的时间时长一节</a>。
+</p>
+</dd>
+<dt><samp class="option">-sseof <var class="var">position</var> (<em class="emph">输入</em>)</samp></dt>
+<dd>
+<p>类似 <code class="code">-ss</code> 选项，但相对于 &quot;文件末尾&quot;。也就是说，负值
+表示文件中更靠前的位置，0 表示 EOF。
+</p>
+</dd>
+<dt><samp class="option">-isync <var class="var">input_index</var> (<em class="emph">输入</em>)</samp></dt>
+<dd><p>将某个输入指定为同步源。
+</p>
+<p>这会取目标输入与参考输入起始时间之间的差值，并用该差值
+偏移目标文件的时间戳。为获得预期结果，两个输入的源时间戳
+应来自同一时钟源。如果设置了 <code class="code">copyts</code>，
+则还必须设置 <code class="code">start_at_zero</code>。如果两个输入中任意一个没有起始时间戳，
+则不做同步调整。
+</p>
+<p>可接受的值是那些指向有效 ffmpeg 输入索引的值。如果同步参考
+就是目标索引本身或 <var class="var">-1</var>，则不对目标时间戳做调整。一个同步
+参考本身不可以再同步到任何其他输入。
+</p>
+<p>默认值为 <var class="var">-1</var>。
+</p>
+</dd>
+<dt><samp class="option">-itsoffset <var class="var">offset</var> (<em class="emph">输入</em>)</samp></dt>
+<dd><p>设置输入时间偏移。
+</p>
+<p><var class="var">offset</var> 必须是时间时长格式的说明，
+参见 <a data-manual="ffmpeg-utils" href="./ffmpeg-utils.html#time-duration-syntax">ffmpeg-utils(1) 手册中的时间时长一节</a>。
+</p>
+<p>该偏移会加到输入文件的时间戳上。指定
+正偏移意味着相应的流会延迟
+<var class="var">offset</var> 所指定的时长。
+</p>
+</dd>
+<dt><samp class="option">-itsscale <var class="var">scale</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>重新缩放输入时间戳。<var class="var">scale</var> 应为浮点数。
+</p>
+</dd>
+<dt><samp class="option">-timestamp <var class="var">date</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>设置容器中的录制时间戳。
+</p>
+<p><var class="var">date</var> 必须是日期格式的说明，
+参见 <a data-manual="ffmpeg-utils" href="./ffmpeg-utils.html#date-syntax">ffmpeg-utils(1) 手册中的日期一节</a>。
+</p>
+</dd>
+<dt><samp class="option">-metadata[:metadata_specifier] <var class="var">key</var>=<var class="var">value</var> (<em class="emph">输出,每项元数据</em>)</samp></dt>
+<dd><p>设置一个元数据键/值对。
+</p>
+<p>可以给出可选的 <var class="var">metadata_specifier</var>，以在
+stream、章节或节目上设置元数据。详情参见 <code class="code">-map_metadata</code>
+文档。
+</p>
+<p>此选项会覆盖通过 <code class="code">-map_metadata</code> 设置的元数据。也可以
+通过使用空值来删除元数据。
+</p>
+<p>例如，要在输出文件中设置标题：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.avi -metadata title=&quot;my title&quot; out.flv
+</pre></div>
+
+<p>要设置第一条音频流的语言：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -metadata:s:a:0 language=eng OUTPUT
+</pre></div>
+
+</dd>
+<dt><samp class="option">-keep_metadata[:<var class="var">metadata_specifier</var>] <var class="var">key</var> (<em class="emph">输出,每项元数据</em>)</samp></dt>
+<dd><p>在重新编码 stream 时，某些可能会过时的元数据键
+（例如 <code class="code">iTunSMPB</code> 或 <code class="code">encoded_by</code>）会被自动丢弃。
+此选项可防止某个特定的键被丢弃，从而保留其来自输入的
+原始值。
+</p>
+<p>若不带说明符，该键会在所有元数据上下文中保留（格式和
+stream）。使用 <code class="code">g</code> 可限制为格式（全局）元数据，或者使用 <code class="code">s</code> 并
+带上可选的 stream 说明符，以仅限制为匹配的 stream。
+</p>
+<p>例如，要在重新编码时仅在格式元数据中保留 <code class="code">iTunSMPB</code>：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mp3 -keep_metadata:g iTunSMPB out.mp3
+</pre></div>
+
+<p>要仅为视频 stream 保留 <code class="code">NUMBER_OF_BYTES</code>：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mkv -keep_metadata:s:v NUMBER_OF_BYTES out.mkv
+</pre></div>
+
+<p>有些键在元数据中是带后缀存储的（例如
+<code class="code">NUMBER_OF_BYTES-eng</code>）。指定不带后缀的族名（例如
+<code class="code">NUMBER_OF_BYTES</code>）会保留所有变体。若要只保留特定的某个变体，
+请显式指定完整键名：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mkv -keep_metadata:s:v NUMBER_OF_BYTES-eng out.mkv
+</pre></div>
+
+<p>有些键（例如 <code class="code">major_brand</code>、<code class="code">minor_version</code> 和
+<code class="code">compatible_brands</code>）无论是否重新编码都会被始终移除，因为它们
+描述的是源容器，在输出中没有意义。
+即使在流复制时，<code class="code">-keep_metadata</code> 也对这些键生效。
+</p>
+<p>仅与重新编码相关的键（例如编码器标签和 Matroska stream 统计信息）
+只在该 stream 被重新编码时才从该 stream 的元数据中移除，
+并且只有在至少有一条音频或视频 stream 被重新编码时才从格式元数据中移除。
+</p>
+<p>只有格式和 stream 元数据会被过滤。章节和节目元数据
+绝不会被此机制修改。
+</p>
+</dd>
+<dt><samp class="option">-disposition[:stream_specifier] <var class="var">value</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>设置某条 stream 的 disposition 标志。
+</p>
+<p>默认值：默认情况下，所有 disposition 标志都从输入 stream 拷贝，
+除非此选项所适用的输出 stream 由复杂滤镜图馈入
+—— 在这种情况下默认不设置任何 disposition 标志。
+</p>
+<p><var class="var">value</var> 是由 &rsquo;+&rsquo; 或 &rsquo;-&rsquo; 分隔的一系列 disposition 标志。以 &rsquo;+&rsquo;
+为前缀会添加给定的 disposition，&rsquo;-&rsquo; 则移除它。如果第一个标志也
+带有 &rsquo;+&rsquo; 或 &rsquo;-&rsquo; 前缀，则得到的 disposition 是默认值
+经 <var class="var">value</var> 更新后的结果。如果第一个标志不带前缀，则得到的
+disposition 就是 <var class="var">value</var>。也可以通过将其设置为 0
+来清除 disposition。
+</p>
+<p>如果没有为某个输出文件指定任何 <code class="code">-disposition</code> 选项，ffmpeg 会
+自动在每种类型的第一条 stream 上设置 &rsquo;default&rsquo; disposition 标志，
+前提是输出文件中该类型有多条 stream，且没有任何该类型的
+stream 已被标记为 default。
+</p>
+<p><code class="code">-dispositions</code> 选项会列出已知的 disposition 标志。
+</p>
+<p>例如，要把第二条音频流设为默认流：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mkv -c copy -disposition:a:1 default out.mkv
+</pre></div>
+
+<p>要把第二条字幕流设为默认流，并移除第一条字幕流的 default
+disposition：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mkv -c copy -disposition:s:0 0 -disposition:s:1 default out.mkv
+</pre></div>
+
+<p>要添加内嵌的封面/缩略图：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mp4 -i IMAGE -map 0 -map 1 -c copy -c:v:1 png -disposition:v:1 attached_pic out.mp4
+</pre></div>
+
+<p>要为第一条音频流添加 &rsquo;original&rsquo; 标志并移除 &rsquo;comment&rsquo; disposition 标志，
+同时不移除其他 disposition 标志：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mkv -c copy -disposition:a:0 +original-comment out.mkv
+</pre></div>
+
+<p>要为第一条音频流移除 &rsquo;original&rsquo; 标志并添加 &rsquo;comment&rsquo; disposition 标志，
+同时不移除其他 disposition 标志：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mkv -c copy -disposition:a:0 -original+comment out.mkv
+</pre></div>
+
+<p>要仅在第一条音频流上设置 &rsquo;original&rsquo; 和 &rsquo;comment&rsquo; disposition 标志
+（并移除该流的其他 disposition 标志）：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mkv -c copy -disposition:a:0 original+comment out.mkv
+</pre></div>
+
+<p>要移除第一条音频流的所有 disposition 标志：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mkv -c copy -disposition:a:0 0 out.mkv
+</pre></div>
+
+<p>并非所有复用器都支持内嵌缩略图，而支持的那些也只支持少数格式，
+例如 JPEG 或 PNG。
+</p>
+</dd>
+<dt><samp class="option">-program [title=<var class="var">title</var>:][program_num=<var class="var">program_num</var>:]st=<var class="var">stream</var>[:st=<var class="var">stream</var>...] (<em class="emph">输出</em>)</samp></dt>
+<dd>
+<p>使用指定的 <var class="var">title</var>、<var class="var">program_num</var> 创建一个节目，
+并把指定的 <var class="var">stream</var> 加入其中。
+</p>
+</dd>
+<dt><samp class="option">-stream_group [map=<var class="var">input_file_id</var>=<var class="var">stream_group</var>][type=<var class="var">type</var>:]st=<var class="var">stream</var>[:st=<var class="var">stream</var>][:stg=<var class="var">stream_group</var>][:id=<var class="var">stream_group_id</var>...] (<em class="emph">输出</em>)</samp></dt>
+<dd>
+<p>创建指定 <var class="var">type</var> 和 <var class="var">stream_group_id</var> 的流组，或者通过
+<var class="var">map</var> 映射一个输入组，并把指定的 <var class="var">stream</var> 和/或先前
+定义的 <var class="var">stream_group</var> 加入其中。
+</p>
+<p><var class="var">type</var> 可以是以下之一：
+</p><dl class="table">
+<dt><samp class="option">iamf_audio_element</samp></dt>
+<dd><p>把属于同一个 IAMF Audio Element 的 <var class="var">stream</var> 归为一组
+</p>
+<p>对于该组 <var class="var">type</var>，可以使用以下选项
+</p><dl class="table">
+<dt><samp class="option">audio_element_type</samp></dt>
+<dd><p>Audio Element 类型。支持以下取值：
+</p>
+<dl class="table">
+<dt><samp class="option">channel</samp></dt>
+<dd><p>可伸缩声道音频表示
+</p></dd>
+<dt><samp class="option">scene</samp></dt>
+<dd><p>Ambisonics 表示
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">demixing</samp></dt>
+<dd><p>用于重建可伸缩声道音频表示的去混信息。
+此选项必须通过 &rsquo;,&rsquo; 与其余部分分隔，并接受以下
+key=value 选项
+</p>
+<dl class="table">
+<dt><samp class="option">parameter_id</samp></dt>
+<dd><p>帧中的参数块可以引用的标识符
+</p></dd>
+<dt><samp class="option">dmixp_mode</samp></dt>
+<dd><p>去混参数的预定义组合
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">recon_gain</samp></dt>
+<dd><p>用于重建可伸缩声道音频表示的重建增益信息。
+此选项必须通过 &rsquo;,&rsquo; 与其余部分分隔，并接受以下
+key=value 选项
+</p>
+<dl class="table">
+<dt><samp class="option">parameter_id</samp></dt>
+<dd><p>帧中的参数块可以引用的标识符
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">layer</samp></dt>
+<dd><p>定义 Audio Element 中声道布局的层。
+此选项必须通过 &rsquo;,&rsquo; 与其余部分分隔。可以定义多个以 &rsquo;,&rsquo; 分隔的
+条目，且至少要设置一个。
+</p>
+<p>它接受以下以 &quot;:&quot; 分隔的 key=value 选项
+</p>
+<dl class="table">
+<dt><samp class="option">ch_layout</samp></dt>
+<dd><p>该层的声道布局
+</p></dd>
+<dt><samp class="option">flags</samp></dt>
+<dd><p>可以使用以下标志：
+</p>
+<dl class="table">
+<dt><samp class="option">recon_gain</samp></dt>
+<dd><p>是否在帧内参数块中把 recon_gain 是否出现作为元数据来标示
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">output_gain</samp></dt>
+<dt><samp class="option">output_gain_flags</samp></dt>
+<dd><p>output_gain 适用于哪些声道。可以使用以下标志：
+</p>
+<dl class="table">
+<dt><samp class="option">FL</samp></dt>
+<dt><samp class="option">FR</samp></dt>
+<dt><samp class="option">BL</samp></dt>
+<dt><samp class="option">BR</samp></dt>
+<dt><samp class="option">TFL</samp></dt>
+<dt><samp class="option">TFR</samp></dt>
+</dl>
+
+</dd>
+<dt><samp class="option">ambisonics_mode</samp></dt>
+<dd><p>Ambisonics 模式。如果 audio_element_type 设为 channel，则此项无效。
+</p>
+<p>支持以下取值：
+</p>
+<dl class="table">
+<dt><samp class="option">mono</samp></dt>
+<dd><p>每个 Ambisonics 声道在该组中都编码为独立的单声道流
+</p></dd>
+</dl>
+
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">default_w</samp></dt>
+<dd><p>默认权重值
+</p>
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">iamf_mix_presentation</samp></dt>
+<dd><p>把被同一个 IAMF Mix Presentation 引用的所有 IAMF Audio Element 的
+<var class="var">stream</var> 归为一组
+</p>
+<p>对于该组 <var class="var">type</var>，可以使用以下选项
+</p>
+<dl class="table">
+<dt><samp class="option">submix</samp></dt>
+<dd><p>Mix Presentation 内的一个子混音。
+此选项必须通过 &rsquo;,&rsquo; 与其余部分分隔。可以定义多个以 &rsquo;,&rsquo; 分隔的
+条目，且至少要设置一个。
+</p>
+<p>它接受以下以 &quot;:&quot; 分隔的 key=value 选项
+</p>
+<dl class="table">
+<dt><samp class="option">parameter_id</samp></dt>
+<dd><p>帧中的参数块可以引用的标识符，用于对混音后的音频信号
+做后处理，以生成用于播放的音频信号
+</p></dd>
+<dt><samp class="option">parameter_rate</samp></dt>
+<dd><p>引用该 <var class="var">parameter_id</var> 的帧内参数块中的采样率时长字段
+以它来表示
+</p></dd>
+<dt><samp class="option">default_mix_gain</samp></dt>
+<dd><p>对于给定帧，当没有共享同一 <var class="var">parameter_id</var> 的参数块时
+所应用的默认混音增益值
+</p>
+</dd>
+<dt><samp class="option">element</samp></dt>
+<dd><p>引用本 Mix Presentation 中用于生成最终播放输出音频信号的
+Audio Element。
+此选项必须通过 &rsquo;|&rsquo; 与其余部分分隔。可以定义多个以 &rsquo;|&rsquo; 分隔的
+条目，且至少要设置一个。
+</p>
+<p>它接受以下以 &quot;:&quot; 分隔的 key=value 选项：
+</p>
+<dl class="table">
+<dt><samp class="option">stg</samp></dt>
+<dd><p>该子混音所引用的 Audio Element 的 <var class="var">stream_group_id</var>
+</p></dd>
+<dt><samp class="option">parameter_id</samp></dt>
+<dd><p>帧中的参数块可以引用的标识符，用于在与处理后的其他 Audio
+Element 合并之前，对所引用并渲染出的 Audio Element 施加处理
+</p></dd>
+<dt><samp class="option">parameter_rate</samp></dt>
+<dd><p>引用该 <var class="var">parameter_id</var> 的帧内参数块中的采样率时长字段
+以它来表示
+</p></dd>
+<dt><samp class="option">default_mix_gain</samp></dt>
+<dd><p>对于给定帧，当没有共享同一 <var class="var">parameter_id</var> 的参数块时
+所应用的默认混音增益值
+</p></dd>
+<dt><samp class="option">annotations</samp></dt>
+<dd><p>描述子混音元素的 key=value 字符串，其中 &quot;key&quot; 是符合
+BCP-47 的字符串，用于指定 &quot;value&quot; 字符串的语言。&quot;key&quot; 必须与该
+混音的 <var class="var">annotations</var> 中的一致
+</p></dd>
+<dt><samp class="option">headphones_rendering_mode</samp></dt>
+<dd><p>指示基于声道的输入 Audio Element 在耳机上播放时是渲染到立体声扬声器，
+还是用双耳渲染器做空间化处理。
+如果所引用的 Audio Element 的 <var class="var">audio_element_type</var> 设为
+channel，则此项无效。
+</p>
+<p>支持以下取值：
+</p>
+<dl class="table">
+<dt><samp class="option">stereo</samp></dt>
+<dt><samp class="option">binaural</samp></dt>
+</dl>
+
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">layout</samp></dt>
+<dd><p>指定测量响度信息时所依据的该子混音的布局。
+此选项必须通过 &rsquo;|&rsquo; 与其余部分分隔。可以定义多个以 &rsquo;|&rsquo; 分隔的
+条目，且至少要设置一个。
+</p>
+<p>它接受以下以 &quot;:&quot; 分隔的 key=value 选项：
+</p>
+<dl class="table">
+<dt><samp class="option">layout_type</samp></dt>
+<dd>
+<dl class="table">
+<dt><samp class="option">loudspeakers</samp></dt>
+<dd><p>布局遵循 ITU-2051-3 的扬声器音响系统惯例。
+</p></dd>
+<dt><samp class="option">binaural</samp></dt>
+<dd><p>布局为双耳形式。
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">sound_system</samp></dt>
+<dd><p>匹配 ITU-2051-3 中 Sound System A 到 J 之一的声道布局，外加 7.1.2 和 3.1.2
+如果 <var class="var">layout_type</var> 设为 binaural，则此项无效。
+</p></dd>
+<dt><samp class="option">integrated_loudness</samp></dt>
+<dd><p>节目的整体响度信息，定义见 ITU-1770-4。
+</p></dd>
+<dt><samp class="option">digital_peak</samp></dt>
+<dd><p>音频信号的数字（采样）峰值，定义见 ITU-1770-4。
+</p></dd>
+<dt><samp class="option">true_peak</samp></dt>
+<dd><p>音频信号的真实峰值，定义见 ITU-1770-4。
+</p></dd>
+<dt><samp class="option">dialog_anchored_loudness</samp></dt>
+<dd><p>对白响度信息，定义见 ITU-1770-4。
+</p></dd>
+<dt><samp class="option">album_anchored_loudness</samp></dt>
+<dd><p>专辑响度信息，定义见 ITU-1770-4。
+</p></dd>
+</dl>
+
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">annotations</samp></dt>
+<dd><p>描述该混音的 key=value 字符串，其中 &quot;key&quot; 是符合 BCP-47
+的字符串，用于指定 &quot;value&quot; 字符串的语言。&quot;key&quot; 必须与
+所有子混音元素的 <var class="var">annotations</var> 中的一致
+</p></dd>
+</dl>
+
+</dd>
+</dl>
+
+<p>例如，要从若干个 WAV 输入文件创建一个可伸缩的 5.1 IAMF 文件
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i front.wav -i back.wav -i center.wav -i lfe.wav
+-map 0:0 -map 1:0 -map 2:0 -map 3:0 -c:a opus
+-stream_group type=iamf_audio_element:id=1:st=0:st=1:st=2:st=3,
+demixing=parameter_id=998,
+recon_gain=parameter_id=101,
+layer=ch_layout=stereo,
+layer=ch_layout=5.1(side),
+-stream_group type=iamf_mix_presentation:id=2:stg=0:annotations=en-us=Mix_Presentation,
+submix=parameter_id=100:parameter_rate=48000|element=stg=0:parameter_id=100:annotations=en-us=Scalable_Submix|layout=sound_system=stereo|layout=sound_system=5.1(side)
+-streamid 0:0 -streamid 1:1 -streamid 2:2 -streamid 3:3 output.iamf
+</pre></div>
+
+<p>要把带有四个流的输入 IAMF 文件中的两个流组（Audio Element 和 Mix Presentation）
+拷贝到 mp4 输出中
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i input.iamf -c:a copy -stream_group map=0=0:st=0:st=1:st=2:st=3 -stream_group map=0=1:stg=0
+-streamid 0:0 -streamid 1:1 -streamid 2:2 -streamid 3:3 output.mp4
+</pre></div>
+
+</dd>
+<dt><samp class="option">-reinit_opts[:<var class="var">stream_specifier</var>] pts=<var class="var">pts</var>|<var class="var">key</var>=<var class="var">value</var>[:force_reinit=1][:<var class="var">key</var>=<var class="var">value</var>,pts=<var class="var">pts</var>...] (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd>
+<p>创建一个以 &quot;,&quot; 分隔的选项组，用于在指定的输出 <var class="var">pts</var>
+处以 AV_TIME_BASE 为单位重新配置编码器。
+伪选项 <var class="var">force_reinit</var> 确保编码器被完全重新初始化，
+而不是仅仅重新配置。
+</p>
+</dd>
+<dt><samp class="option">-target <var class="var">type</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>指定目标文件类型（<code class="code">vcd</code>、<code class="code">svcd</code>、<code class="code">dvd</code>、<code class="code">dv</code>、
+<code class="code">dv50</code>）。<var class="var">type</var> 可以加上 <code class="code">pal-</code>、<code class="code">ntsc-</code> 或
+<code class="code">film-</code> 前缀，以使用相应的制式。随后所有格式选项
+（码率、编解码器、缓冲区大小）都会自动设置。你只需输入：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i myfile.avi -target vcd /tmp/vcd.mpg
+</pre></div>
+
+<p>不过，只要你知道这些选项不会与该标准冲突，也可以指定
+额外的选项，例如：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i myfile.avi -target vcd -bf 2 /tmp/vcd.mpg
+</pre></div>
+
+<p>为每个目标设置的参数如下。
+</p>
+<p><strong class="strong">VCD</strong>
+</p><div class="example">
+<pre class="example-preformatted"><var class="var">pal</var>:
+-f vcd -muxrate 1411200 -muxpreload 0.44 -packetsize 2324
+-s 352x288 -r 25
+-codec:v mpeg1video -g 15 -b:v 1150k -maxrate:v 1150k -minrate:v 1150k -bufsize:v 327680
+-ar 44100 -ac 2
+-codec:a mp2 -b:a 224k
+
+<var class="var">ntsc</var>:
+-f vcd -muxrate 1411200 -muxpreload 0.44 -packetsize 2324
+-s 352x240 -r 30000/1001
+-codec:v mpeg1video -g 18 -b:v 1150k -maxrate:v 1150k -minrate:v 1150k -bufsize:v 327680
+-ar 44100 -ac 2
+-codec:a mp2 -b:a 224k
+
+<var class="var">film</var>:
+-f vcd -muxrate 1411200 -muxpreload 0.44 -packetsize 2324
+-s 352x240 -r 24000/1001
+-codec:v mpeg1video -g 18 -b:v 1150k -maxrate:v 1150k -minrate:v 1150k -bufsize:v 327680
+-ar 44100 -ac 2
+-codec:a mp2 -b:a 224k
+</pre></div>
+
+<p><strong class="strong">SVCD</strong>
+</p><div class="example">
+<pre class="example-preformatted"><var class="var">pal</var>:
+-f svcd -packetsize 2324
+-s 480x576 -pix_fmt yuv420p -r 25
+-codec:v mpeg2video -g 15 -b:v 2040k -maxrate:v 2516k -minrate:v 0 -bufsize:v 1835008 -scan_offset 1
+-ar 44100
+-codec:a mp2 -b:a 224k
+
+<var class="var">ntsc</var>:
+-f svcd -packetsize 2324
+-s 480x480 -pix_fmt yuv420p -r 30000/1001
+-codec:v mpeg2video -g 18 -b:v 2040k -maxrate:v 2516k -minrate:v 0 -bufsize:v 1835008 -scan_offset 1
+-ar 44100
+-codec:a mp2 -b:a 224k
+
+<var class="var">film</var>:
+-f svcd -packetsize 2324
+-s 480x480 -pix_fmt yuv420p -r 24000/1001
+-codec:v mpeg2video -g 18 -b:v 2040k -maxrate:v 2516k -minrate:v 0 -bufsize:v 1835008 -scan_offset 1
+-ar 44100
+-codec:a mp2 -b:a 224k
+</pre></div>
+
+<p><strong class="strong">DVD</strong>
+</p><div class="example">
+<pre class="example-preformatted"><var class="var">pal</var>:
+-f dvd -muxrate 10080k -packetsize 2048
+-s 720x576 -pix_fmt yuv420p -r 25
+-codec:v mpeg2video -g 15 -b:v 6000k -maxrate:v 9000k -minrate:v 0 -bufsize:v 1835008
+-ar 48000
+-codec:a ac3 -b:a 448k
+
+<var class="var">ntsc</var>:
+-f dvd -muxrate 10080k -packetsize 2048
+-s 720x480 -pix_fmt yuv420p -r 30000/1001
+-codec:v mpeg2video -g 18 -b:v 6000k -maxrate:v 9000k -minrate:v 0 -bufsize:v 1835008
+-ar 48000
+-codec:a ac3 -b:a 448k
+
+<var class="var">film</var>:
+-f dvd -muxrate 10080k -packetsize 2048
+-s 720x480 -pix_fmt yuv420p -r 24000/1001
+-codec:v mpeg2video -g 18 -b:v 6000k -maxrate:v 9000k -minrate:v 0 -bufsize:v 1835008
+-ar 48000
+-codec:a ac3 -b:a 448k
+</pre></div>
+
+<p><strong class="strong">DV</strong>
+</p><div class="example">
+<pre class="example-preformatted"><var class="var">pal</var>:
+-f dv
+-s 720x576 -pix_fmt yuv420p -r 25
+-ar 48000 -ac 2
+
+<var class="var">ntsc</var>:
+-f dv
+-s 720x480 -pix_fmt yuv411p -r 30000/1001
+-ar 48000 -ac 2
+
+<var class="var">film</var>:
+-f dv
+-s 720x480 -pix_fmt yuv411p -r 24000/1001
+-ar 48000 -ac 2
+</pre></div>
+<p><code class="code">dv50</code> 目标与 <code class="code">dv</code> 目标相同，只是三种制式下设置的像素格式都是 <code class="code">yuv422p</code>。
+</p>
+<p>用户为上述任何参数设置的值都会覆盖目标预设值。在这种情况下，输出可能
+不符合目标标准。
+</p>
+<dt><samp class="option">-dn (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>作为输入选项时，阻止文件中的所有数据流被滤镜处理，
+或被自动选择或映射到任何输出。参见 <code class="code">-discard</code>
+选项可单独禁用各条流。
+</p>
+<p>作为输出选项时，禁用数据记录，即不自动选择或
+映射任何数据流。要完全手动控制，请参见 <code class="code">-map</code>
+选项。
+</p>
+</dd>
+<dt><samp class="option">-dframes <var class="var">number</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>设置要输出的数据帧数量。这是
+<code class="code">-frames:d</code> 的过时别名，你应该改用后者。
+</p>
+</dd>
+<dt><samp class="option">-frames[:<var class="var">stream_specifier</var>] <var class="var">framecount</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>在写入 <var class="var">framecount</var> 帧后停止写入该流。
+</p>
+</dd>
+<dt><samp class="option">-q[:<var class="var">stream_specifier</var>] <var class="var">q</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dt><samp class="option">-qscale[:<var class="var">stream_specifier</var>] <var class="var">q</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>使用固定的质量标度（VBR）。<var class="var">q</var>/<var class="var">qscale</var> 的含义
+取决于编解码器。
+如果在不带 <var class="var">stream_specifier</var> 的情况下使用 <var class="var">qscale</var>，则它只
+作用于视频流，这样做是为了保持与以往行为的兼容性，
+因为在不使用 stream_specifier 时，把同一个编解码器特定值用于两个不同的编解码器
+（即音频和视频）通常并不是本意。
+</p>
+<a class="anchor" id="filter_005foption"></a></dd>
+<dt><samp class="option">-filter[:<var class="var">stream_specifier</var>] <var class="var">filtergraph</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>创建由 <var class="var">filtergraph</var> 指定的滤镜图，并用它来
+过滤该流。
+</p>
+<p><var class="var">filtergraph</var> 是要施加于该流上的滤镜图的描述，
+它必须具有单个输入和单个输出，且都与该流的类型相同。
+在滤镜图中，输入关联到标签 <code class="code">in</code>，输出关联到标签 <code class="code">out</code>。关于滤镜图
+语法的更多信息，参见 ffmpeg-filters 手册。
+</p>
+<p>如果你想创建具有多个输入和/或多个输出的滤镜图，
+请参见 <a class="ref" href="#filter_005fcomplex_005foption">-filter_complex 选项</a>。
+</p>
+</dd>
+<dt><samp class="option">-reinit_filter[:<var class="var">stream_specifier</var>] <var class="var">integer</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>这个布尔选项决定当输入帧参数在流中途发生变化时，接收该流的滤镜图
+是否会被重新初始化。此选项默认启用，因为大多数视频滤镜和所有音频滤镜
+都无法处理输入帧属性的变化。
+重新初始化时，已有的滤镜状态会丢失，例如某些滤镜中可用的
+帧计数 <code class="code">n</code> 引用。重新初始化时缓冲的任何帧也会丢失。
+会触发重新初始化的属性变化包括：
+对于视频，是帧分辨率或像素格式；
+对于音频，是采样格式、采样率、声道数或声道布局。
+</p>
+</dd>
+<dt><samp class="option">-drop_changed[:<var class="var">stream_specifier</var>] <var class="var">integer</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>这个布尔选项决定当帧参数在流中途发生变化时，该帧是被丢弃，
+还是导致滤镜图重新初始化（后者会造成
+滤镜状态丢失）。通常用于避免直播输入中出现损坏但仍可解码的包。
+默认值为 false。
+</p>
+</dd>
+<dt><samp class="option">-filter_threads <var class="var">nb_threads</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>定义用于处理一条滤镜流水线的线程数。每条流水线
+都会创建一个线程池，其中有这么多线程可用于并行处理。
+默认值为可用 CPU 的数量。
+</p>
+</dd>
+<dt><samp class="option">-filter_buffered_frames <var class="var">nb_frames</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>定义滤镜图中允许缓冲的最大帧数。在
+正常情况下，滤镜图不应缓冲超过几帧，
+尤其是在向它送入帧、又从它读取帧的过程保持平衡时
+（这是 ffmpeg 中的预期行为）。尽管如此，此选项允许你
+限制滤镜图中所有链路上缓冲的帧总数。
+如果生成的帧更多，滤镜处理将中止并返回错误。
+默认值为 0，表示不限制。
+</p>
+</dd>
+<dt><samp class="option">-pre[:<var class="var">stream_specifier</var>] <var class="var">preset_name</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>为匹配的流指定预设。
+</p>
+</dd>
+<dt><samp class="option">-stats (<em class="emph">全局</em>)</samp></dt>
+<dd><p>以 &quot;info&quot; 级别的日志记录编码进度/统计信息（参见 <code class="code">-loglevel</code>）。
+它默认开启，要显式禁用它需要指定 <code class="code">-nostats</code>。
+</p>
+</dd>
+<dt><samp class="option">-stats_period <var class="var">time</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>设置编码进度/统计信息的更新周期。默认值为 0.5 秒。
+</p>
+</dd>
+<dt><samp class="option">-print_graphs (<em class="emph">全局</em>)</samp></dt>
+<dd><p>按 -print_graphs_format 设置的格式把执行图详情打印到 stderr。
+</p>
+</dd>
+<dt><samp class="option">-print_graphs_file <var class="var">filename</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>按 -print_graphs_format 设置的格式把执行图详情写入指定文件。
+</p>
+</dd>
+<dt><samp class="option">-print_graphs_format <var class="var">format</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>设置输出格式（可用格式有：default、compact、csv、flat、ini、json、xml、mermaid、mermaidhtml）
+默认格式为 json。
+</p>
+</dd>
+<dt><samp class="option">-progress <var class="var">url</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>把便于程序解析的进度信息发送到 <var class="var">url</var>。
+</p>
+<p>进度信息会定期写入，并在编码过程结束时写入一次。
+它由 &quot;<var class="var">key</var>=<var class="var">value</var>&quot; 行组成。<var class="var">key</var>
+只包含字母数字字符。一段进度信息中的最后一个键
+总是 &quot;progress&quot;，其值为 &quot;continue&quot; 或 &quot;end&quot;。
+</p>
+<p>更新周期通过 <code class="code">-stats_period</code> 设置。
+</p>
+<p>例如，把进度信息记录到 stdout：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -progress pipe:1 -i in.mkv out.mkv
+</pre></div>
+
+<a class="anchor" id="stdin-option"></a></dd>
+<dt><samp class="option">-stdin</samp></dt>
+<dd><p>启用在标准输入上的交互。除非标准输入被用作
+输入，否则默认开启。要显式禁用交互，需要指定
+<code class="code">-nostdin</code>。
+</p>
+<p>禁用标准输入上的交互很有用，例如当
+ffmpeg 位于后台进程组中时。用
+<code class="code">ffmpeg ... &lt; /dev/null</code> 大致也能得到同样的效果，但那需要
+一个 shell。
+</p>
+</dd>
+<dt><samp class="option">-debug_ts (<em class="emph">全局</em>)</samp></dt>
+<dd><p>打印时间戳/延迟信息。它默认关闭。此选项主要
+用于测试和调试，其输出
+格式可能随版本变化，因此不应
+被可移植脚本使用。
+</p>
+<p>另请参见 <code class="code">-fdebug ts</code> 选项。
+</p>
+</dd>
+<dt><samp class="option">-attach <var class="var">filename</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>向输出文件添加附件。有少数格式支持此功能，
+例如 Matroska 支持用于渲染字幕的字体。附件
+是以一种特殊类型的流来实现的，因此此选项会向文件中
+添加一条新流。之后就可以照常在这条流上使用
+按流选项。用此选项创建的附件流会被创建在所有其他流之后
+（即那些用 <code class="code">-map</code> 或自动映射创建的流）。
+</p>
+<p>请注意，对于 Matroska，你还必须设置 mimetype 元数据标签：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -attach DejaVuSans.ttf -metadata:s:2 mimetype=application/x-truetype-font out.mkv
+</pre></div>
+<p>（假设该附件流在输出文件中排第三）。
+</p>
+</dd>
+<dt><samp class="option">-dump_attachment[:<var class="var">stream_specifier</var>] <var class="var">filename</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>把匹配的附件流提取到名为 <var class="var">filename</var> 的文件中。如果
+<var class="var">filename</var> 为空，则使用 <code class="code">filename</code> 元数据标签的
+值。
+</p>
+<p>例如，要把第一个附件提取到名为 &rsquo;out.ttf&rsquo; 的文件中：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -dump_attachment:t:0 out.ttf -i INPUT
+</pre></div>
+<p>要把所有附件提取到由 <code class="code">filename</code> 标签确定的文件中：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -dump_attachment:t &quot;&quot; -i INPUT
+</pre></div>
+
+<p>技术说明 &ndash; 附件是以编解码器 extradata 实现的，因此此
+选项实际上可用于从任何流中提取 extradata，而不仅限于
+附件。
+</p></dd>
+</dl>
+<p><strong class="strong">VCD</strong>
+</p><div class="example">
+<pre class="example-preformatted"><var class="var">pal</var>:
+-f vcd -muxrate 1411200 -muxpreload 0.44 -packetsize 2324
+-s 352x288 -r 25
+-codec:v mpeg1video -g 15 -b:v 1150k -maxrate:v 1150k -minrate:v 1150k -bufsize:v 327680
+-ar 44100 -ac 2
+-codec:a mp2 -b:a 224k
+
+<var class="var">ntsc</var>:
+-f vcd -muxrate 1411200 -muxpreload 0.44 -packetsize 2324
+-s 352x240 -r 30000/1001
+-codec:v mpeg1video -g 18 -b:v 1150k -maxrate:v 1150k -minrate:v 1150k -bufsize:v 327680
+-ar 44100 -ac 2
+-codec:a mp2 -b:a 224k
+
+<var class="var">film</var>:
+-f vcd -muxrate 1411200 -muxpreload 0.44 -packetsize 2324
+-s 352x240 -r 24000/1001
+-codec:v mpeg1video -g 18 -b:v 1150k -maxrate:v 1150k -minrate:v 1150k -bufsize:v 327680
+-ar 44100 -ac 2
+-codec:a mp2 -b:a 224k
+</pre></div>
+
+<p><strong class="strong">SVCD</strong>
+</p><div class="example">
+<pre class="example-preformatted"><var class="var">pal</var>:
+-f svcd -packetsize 2324
+-s 480x576 -pix_fmt yuv420p -r 25
+-codec:v mpeg2video -g 15 -b:v 2040k -maxrate:v 2516k -minrate:v 0 -bufsize:v 1835008 -scan_offset 1
+-ar 44100
+-codec:a mp2 -b:a 224k
+
+<var class="var">ntsc</var>:
+-f svcd -packetsize 2324
+-s 480x480 -pix_fmt yuv420p -r 30000/1001
+-codec:v mpeg2video -g 18 -b:v 2040k -maxrate:v 2516k -minrate:v 0 -bufsize:v 1835008 -scan_offset 1
+-ar 44100
+-codec:a mp2 -b:a 224k
+
+<var class="var">film</var>:
+-f svcd -packetsize 2324
+-s 480x480 -pix_fmt yuv420p -r 24000/1001
+-codec:v mpeg2video -g 18 -b:v 2040k -maxrate:v 2516k -minrate:v 0 -bufsize:v 1835008 -scan_offset 1
+-ar 44100
+-codec:a mp2 -b:a 224k
+</pre></div>
+
+<p><strong class="strong">DVD</strong>
+</p><div class="example">
+<pre class="example-preformatted"><var class="var">pal</var>:
+-f dvd -muxrate 10080k -packetsize 2048
+-s 720x576 -pix_fmt yuv420p -r 25
+-codec:v mpeg2video -g 15 -b:v 6000k -maxrate:v 9000k -minrate:v 0 -bufsize:v 1835008
+-ar 48000
+-codec:a ac3 -b:a 448k
+
+<var class="var">ntsc</var>:
+-f dvd -muxrate 10080k -packetsize 2048
+-s 720x480 -pix_fmt yuv420p -r 30000/1001
+-codec:v mpeg2video -g 18 -b:v 6000k -maxrate:v 9000k -minrate:v 0 -bufsize:v 1835008
+-ar 48000
+-codec:a ac3 -b:a 448k
+
+<var class="var">film</var>:
+-f dvd -muxrate 10080k -packetsize 2048
+-s 720x480 -pix_fmt yuv420p -r 24000/1001
+-codec:v mpeg2video -g 18 -b:v 6000k -maxrate:v 9000k -minrate:v 0 -bufsize:v 1835008
+-ar 48000
+-codec:a ac3 -b:a 448k
+</pre></div>
+
+<p><strong class="strong">DV</strong>
+</p><div class="example">
+<pre class="example-preformatted"><var class="var">pal</var>:
+-f dv
+-s 720x576 -pix_fmt yuv420p -r 25
+-ar 48000 -ac 2
+
+<var class="var">ntsc</var>:
+-f dv
+-s 720x480 -pix_fmt yuv411p -r 30000/1001
+-ar 48000 -ac 2
+
+<var class="var">film</var>:
+-f dv
+-s 720x480 -pix_fmt yuv411p -r 24000/1001
+-ar 48000 -ac 2
+</pre></div>
+<p><code class="code">dv50</code> 目标与 <code class="code">dv</code> 目标相同，只是三种制式下设置的像素格式都是 <code class="code">yuv422p</code>。
+</p>
+<p>用户为上述任何参数设置的值都会覆盖目标预设值。在这种情况下，输出可能
+不符合目标标准。
+</p>
+</dd>
+<dt><samp class="option">-dn (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>作为输入选项时，阻止文件中的所有数据流被滤镜处理，
+或被自动选择或映射到任何输出。参见 <code class="code">-discard</code>
+选项可单独禁用各条流。
+</p>
+<p>作为输出选项时，禁用数据记录，即不自动选择或
+映射任何数据流。要完全手动控制，请参见 <code class="code">-map</code>
+选项。
+</p>
+</dd>
+<dt><samp class="option">-dframes <var class="var">number</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>设置要输出的数据帧数量。这是
+<code class="code">-frames:d</code> 的过时别名，你应该改用后者。
+</p>
+</dd>
+<dt><samp class="option">-frames[:<var class="var">stream_specifier</var>] <var class="var">framecount</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>在写入 <var class="var">framecount</var> 帧后停止写入该流。
+</p>
+</dd>
+<dt><samp class="option">-q[:<var class="var">stream_specifier</var>] <var class="var">q</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dt><samp class="option">-qscale[:<var class="var">stream_specifier</var>] <var class="var">q</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>使用固定的质量标度（VBR）。<var class="var">q</var>/<var class="var">qscale</var> 的含义
+取决于编解码器。
+如果在不带 <var class="var">stream_specifier</var> 的情况下使用 <var class="var">qscale</var>，则它只
+作用于视频流，这样做是为了保持与以往行为的兼容性，
+因为在不使用 stream_specifier 时，把同一个编解码器特定值用于两个不同的编解码器
+（即音频和视频）通常并不是本意。
+</p>
+<a class="anchor" id="filter_005foption"></a></dd>
+<dt><samp class="option">-filter[:<var class="var">stream_specifier</var>] <var class="var">filtergraph</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>创建由 <var class="var">filtergraph</var> 指定的滤镜图，并用它来
+过滤该流。
+</p>
+<p><var class="var">filtergraph</var> 是要施加于该流上的滤镜图的描述，
+它必须具有单个输入和单个输出，且都与该流的类型相同。
+在滤镜图中，输入关联到标签 <code class="code">in</code>，输出关联到标签 <code class="code">out</code>。关于滤镜图
+语法的更多信息，参见 ffmpeg-filters 手册。
+</p>
+<p>如果你想创建具有多个输入和/或多个输出的滤镜图，
+请参见 <a class="ref" href="#filter_005fcomplex_005foption">-filter_complex 选项</a>。
+</p>
+</dd>
+<dt><samp class="option">-reinit_filter[:<var class="var">stream_specifier</var>] <var class="var">integer</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>这个布尔选项决定当输入帧参数在流中途发生变化时，接收该流的滤镜图
+是否会被重新初始化。此选项默认启用，因为大多数视频滤镜和所有音频滤镜
+都无法处理输入帧属性的变化。
+重新初始化时，已有的滤镜状态会丢失，例如某些滤镜中可用的
+帧计数 <code class="code">n</code> 引用。重新初始化时缓冲的任何帧也会丢失。
+会触发重新初始化的属性变化包括：
+对于视频，是帧分辨率或像素格式；
+对于音频，是采样格式、采样率、声道数或声道布局。
+</p>
+</dd>
+<dt><samp class="option">-drop_changed[:<var class="var">stream_specifier</var>] <var class="var">integer</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>这个布尔选项决定当帧参数在流中途发生变化时，该帧是被丢弃，
+还是导致滤镜图重新初始化（后者会造成
+滤镜状态丢失）。通常用于避免直播输入中出现损坏但仍可解码的包。
+默认值为 false。
+</p>
+</dd>
+<dt><samp class="option">-filter_threads <var class="var">nb_threads</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>定义用于处理一条滤镜流水线的线程数。每条流水线
+都会创建一个线程池，其中有这么多线程可用于并行处理。
+默认值为可用 CPU 的数量。
+</p>
+</dd>
+<dt><samp class="option">-filter_buffered_frames <var class="var">nb_frames</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>定义滤镜图中允许缓冲的最大帧数。在
+正常情况下，滤镜图不应缓冲超过几帧，
+尤其是在向它送入帧、又从它读取帧的过程保持平衡时
+（这是 ffmpeg 中的预期行为）。尽管如此，此选项允许你
+限制滤镜图中所有链路上缓冲的帧总数。
+如果生成的帧更多，滤镜处理将中止并返回错误。
+默认值为 0，表示不限制。
+</p>
+</dd>
+<dt><samp class="option">-pre[:<var class="var">stream_specifier</var>] <var class="var">preset_name</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>为匹配的流指定预设。
+</p>
+</dd>
+<dt><samp class="option">-stats (<em class="emph">全局</em>)</samp></dt>
+<dd><p>以 &quot;info&quot; 级别的日志记录编码进度/统计信息（参见 <code class="code">-loglevel</code>）。
+它默认开启，要显式禁用它需要指定 <code class="code">-nostats</code>。
+</p>
+</dd>
+<dt><samp class="option">-stats_period <var class="var">time</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>设置编码进度/统计信息的更新周期。默认值为 0.5 秒。
+</p>
+</dd>
+<dt><samp class="option">-print_graphs (<em class="emph">全局</em>)</samp></dt>
+<dd><p>按 -print_graphs_format 设置的格式把执行图详情打印到 stderr。
+</p>
+</dd>
+<dt><samp class="option">-print_graphs_file <var class="var">filename</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>按 -print_graphs_format 设置的格式把执行图详情写入指定文件。
+</p>
+</dd>
+<dt><samp class="option">-print_graphs_format <var class="var">format</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>设置输出格式（可用格式有：default、compact、csv、flat、ini、json、xml、mermaid、mermaidhtml）
+默认格式为 json。
+</p>
+</dd>
+<dt><samp class="option">-progress <var class="var">url</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>把便于程序解析的进度信息发送到 <var class="var">url</var>。
+</p>
+<p>进度信息会定期写入，并在编码过程结束时写入一次。
+它由 &quot;<var class="var">key</var>=<var class="var">value</var>&quot; 行组成。<var class="var">key</var>
+只包含字母数字字符。一段进度信息中的最后一个键
+总是 &quot;progress&quot;，其值为 &quot;continue&quot; 或 &quot;end&quot;。
+</p>
+<p>更新周期通过 <code class="code">-stats_period</code> 设置。
+</p>
+<p>例如，把进度信息记录到 stdout：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -progress pipe:1 -i in.mkv out.mkv
+</pre></div>
+
+<a class="anchor" id="stdin-option"></a></dd>
+<dt><samp class="option">-stdin</samp></dt>
+<dd><p>启用在标准输入上的交互。除非标准输入被用作
+输入，否则默认开启。要显式禁用交互，需要指定
+<code class="code">-nostdin</code>。
+</p>
+<p>禁用标准输入上的交互很有用，例如当
+ffmpeg 位于后台进程组中时。用
+<code class="code">ffmpeg ... &lt; /dev/null</code> 大致也能得到同样的效果，但那需要
+一个 shell。
+</p>
+</dd>
+<dt><samp class="option">-debug_ts (<em class="emph">全局</em>)</samp></dt>
+<dd><p>打印时间戳/延迟信息。它默认关闭。此选项主要
+用于测试和调试，其输出
+格式可能随版本变化，因此不应
+被可移植脚本使用。
+</p>
+<p>另请参见 <code class="code">-fdebug ts</code> 选项。
+</p>
+</dd>
+<dt><samp class="option">-attach <var class="var">filename</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>向输出文件添加附件。有少数格式支持此功能，
+例如 Matroska 支持用于渲染字幕的字体。附件
+是以一种特殊类型的流来实现的，因此此选项会向文件中
+添加一条新流。之后就可以照常在这条流上使用
+按流选项。用此选项创建的附件流会被创建在所有其他流之后
+（即那些用 <code class="code">-map</code> 或自动映射创建的流）。
+</p>
+<p>请注意，对于 Matroska，你还必须设置 mimetype 元数据标签：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -attach DejaVuSans.ttf -metadata:s:2 mimetype=application/x-truetype-font out.mkv
+</pre></div>
+<p>（假设该附件流在输出文件中排第三）。
+</p>
+</dd>
+<dt><samp class="option">-dump_attachment[:<var class="var">stream_specifier</var>] <var class="var">filename</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>把匹配的附件流提取到名为 <var class="var">filename</var> 的文件中。如果
+<var class="var">filename</var> 为空，则使用 <code class="code">filename</code> 元数据标签的
+值。
+</p>
+<p>例如，要把第一个附件提取到名为 &rsquo;out.ttf&rsquo; 的文件中：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -dump_attachment:t:0 out.ttf -i INPUT
+</pre></div>
+<p>要把所有附件提取到由 <code class="code">filename</code> 标签确定的文件中：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -dump_attachment:t &quot;&quot; -i INPUT
+</pre></div>
+
+<p>技术说明 &ndash; 附件是以编解码器 extradata 实现的，因此此
+选项实际上可用于从任何流中提取 extradata，而不仅限于
+附件。
+</p></dd>
+
+<a name="Video-Options"></a>
+<h3 class="section">5.5 视频选项<span class="pull-right"><a class="anchor hidden-xs" href="#Video-Options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Video-Options" aria-hidden="true">TOC</a></span></h3>
+
+<dl class="table">
+<dt><samp class="option">-vframes <var class="var">number</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>设置要输出的视频帧数量。这是
+<code class="code">-frames:v</code> 的过时别名，你应该改用后者。
+</p></dd>
+<dt><samp class="option">-r[:<var class="var">stream_specifier</var>] <var class="var">fps</var> (<em class="emph">输入/输出,每条流</em>)</samp></dt>
+<dd><p>设置帧率（Hz 值、分数或缩写）。
+</p>
+<p>作为输入选项时，忽略文件中存储的任何时间戳，改为
+假定帧率恒为 <var class="var">fps</var> 来生成时间戳。
+这与某些输入格式（如 image2 或 v4l2）所使用的 <samp class="option">-framerate</samp> 选项
+并不相同（在较老版本的 FFmpeg 中它们曾经相同）。
+如有疑问，请使用 <samp class="option">-framerate</samp>，而不要用输入选项 <samp class="option">-r</samp>。
+</p>
+<p>作为输出选项时：
+</p><dl class="table">
+<dt><samp class="option">video encoding</samp></dt>
+<dd><p>在编码之前复制或丢弃帧，以达到恒定的输出
+帧率 <var class="var">fps</var>。
+</p>
+</dd>
+<dt><samp class="option">video streamcopy</samp></dt>
+<dd><p>向复用器表明 <var class="var">fps</var> 是该流的帧率。此时不会
+丢弃或复制任何数据。如果 <var class="var">fps</var>
+与由包时间戳确定的实际流帧率不一致，可能会产生无效文件。
+另请参见 <code class="code">setts</code> 比特流滤波器。
+</p>
+</dd>
+</dl>
+<a name="Advanced-Video-options"></a>
+<h3 class="section">5.6 高级视频选项<span class="pull-right"><a class="anchor hidden-xs" href="#Advanced-Video-options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Advanced-Video-options" aria-hidden="true">TOC</a></span></h3>
+
+
+</dd>
+<dt><samp class="option">-fpsmax[:<var class="var">stream_specifier</var>] <var class="var">fps</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>设置最大帧率（Hz 值、分数或缩写）。
+</p>
+<p>当输出帧率被自动设置且高于此值时，把输出帧率限制在该值以内。
+在处理批处理任务，或输入的帧率被错误检测为极高时很有用。
+它不能与 <code class="code">-r</code> 一起设置。在流复制期间它会被忽略。
+</p>
+</dd>
+<dt><samp class="option">-s[:<var class="var">stream_specifier</var>] <var class="var">size</var> (<em class="emph">输入/输出,每条流</em>)</samp></dt>
+<dd><p>设置帧尺寸。
+</p>
+<p>作为输入选项时，这是 <samp class="option">video_size</samp> 私有选项的快捷方式，
+某些解复用器会识别它，因为这些格式的帧尺寸要么未
+存储在文件中，要么是可配置的 &ndash; 例如裸视频或视频采集设备。
+</p>
+<p>作为输出选项时，它会把 <code class="code">scale</code> 视频滤镜插入到
+相应滤镜图的<em class="emph">末尾</em>。若想插到开头或其他位置，
+请直接使用 <code class="code">scale</code> 滤镜。
+</p>
+<p>格式为 &lsquo;<samp class="samp">wxh</samp>&rsquo;（默认值与源相同）。
+</p>
+</dd>
+<dt><samp class="option">-aspect[:<var class="var">stream_specifier</var>] <var class="var">aspect</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>设置由 <var class="var">aspect</var> 指定的视频显示宽高比。
+</p>
+<p><var class="var">aspect</var> 可以是浮点数形式的字符串，也可以是
+<var class="var">num</var>:<var class="var">den</var> 形式的字符串，其中 <var class="var">num</var> 和 <var class="var">den</var> 分别是
+宽高比的分子和分母。例如 &quot;4:3&quot;、
+&quot;16:9&quot;、&quot;1.3333&quot; 和 &quot;1.7777&quot; 都是合法的参数值。
+</p>
+<p>如果与 <samp class="option">-vcodec copy</samp> 一起使用，它会影响存储在容器层面的宽高比，
+但不会影响已编码帧中存储的宽高比（如果存在的话）。
+</p>
+</dd>
+<dt><samp class="option">-display_rotation[:<var class="var">stream_specifier</var>] <var class="var">rotation</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>设置视频旋转元数据。
+</p>
+<p><var class="var">rotation</var> 是一个十进制数，指定视频在显示之前
+应逆时针旋转的角度。
+</p>
+<p>此选项会覆盖文件中存储的旋转/显示变换元数据（如果有）。
+当视频被转码（而不是拷贝）且启用了 <code class="code">-autorotate</code> 时，
+视频会在滤镜处理阶段被旋转。否则，如果复用器支持，
+该元数据会被写入输出文件。
+</p>
+<p>如果给出了 <code class="code">-display_hflip</code> 和/或 <code class="code">-display_vflip</code> 选项，
+它们会在此选项指定的旋转之后应用。
+</p>
+</dd>
+<dt><samp class="option">-display_hflip[:<var class="var">stream_specifier</var>] (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>设置显示时图像是否应水平翻转。
+</p>
+<p>更多细节参见 <code class="code">-display_rotation</code> 选项。
+</p>
+</dd>
+<dt><samp class="option">-display_vflip[:<var class="var">stream_specifier</var>] (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>设置显示时图像是否应垂直翻转。
+</p>
+<p>更多细节参见 <code class="code">-display_rotation</code> 选项。
+</p>
+</dd>
+<dt><samp class="option">-mastering_display[:<var class="var">stream_specifier</var>] <var class="var">G(%u,%u)B(%u,%u)R(%u,%u)WP(%u,%u)L(%u,%u)</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>设置视频 mastering display 元数据。
+</p>
+<p><var class="var">G(%u,%u)B(%u,%u)R(%u,%u)WP(%u,%u)L(%u,%u)</var> 是一个字符串，指定
+GBR 各通道和白点（WP）的 X,Y 显示原色，单位为
+0.00002；以及最大-最小亮度（L）值，单位为每平方米
+0.0001 坎德拉。这些值是无符号整数，表示
+一个有理数的分子，其中 GBR 和 (WP) 隐含分母为 50000，
+(L) 隐含分母为 10000。
+</p>
+<p>此选项会覆盖文件中存储的 mastering display 元数据（如果有）。
+</p>
+</dd>
+<dt><samp class="option">-content_light[:<var class="var">stream_specifier</var>] <var class="var">%u,%u</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>设置视频内容光级元数据。
+</p>
+<p><var class="var">%u,%u</var> 是一个字符串，指定最大内容光级和最大图像
+平均光级。
+</p>
+<p>此选项会覆盖文件中存储的内容光级元数据（如果有）。
+</p>
+</dd>
+<dt><samp class="option">-vn (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>作为输入选项时，阻止文件中的所有视频流被滤镜处理，
+或被自动选择或映射到任何输出。参见 <code class="code">-discard</code>
+选项可单独禁用各条流。
+</p>
+<p>作为输出选项时，禁用视频记录，即不自动选择或
+映射任何视频流。要完全手动控制，请参见 <code class="code">-map</code>
+选项。
+</p>
+</dd>
+<dt><samp class="option">-vcodec <var class="var">codec</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>设置视频编解码器。这是 <code class="code">-codec:v</code> 的别名。
+</p>
+</dd>
+<dt><samp class="option">-pass[:<var class="var">stream_specifier</var>] <var class="var">n</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>选择遍数（1 或 2）。它用于进行两遍
+视频编码。第一遍会把视频的统计信息记录到一个
+日志文件中（另见 -passlogfile 选项），
+第二遍则使用该日志文件，以精确请求的码率
+生成视频。
+在第一遍时，你可以直接停用音频并把输出设为 null，
+Windows 和 Unix 的示例如下：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i foo.mov -c:v libxvid -pass 1 -an -f rawvideo -y NUL
+ffmpeg -i foo.mov -c:v libxvid -pass 1 -an -f rawvideo -y /dev/null
+</pre></div>
+
+</dd>
+<dt><samp class="option">-passlogfile[:<var class="var">stream_specifier</var>] <var class="var">prefix</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>把两遍编码的日志文件名前缀设为 <var class="var">prefix</var>，默认的文件名
+前缀是 &ldquo;ffmpeg2pass&rdquo;。完整的文件名将是
+<samp class="file">PREFIX-N.log</samp>，其中 N 是该输出流特有的
+编号
+</p>
+</dd>
+<dt><samp class="option">-vf <var class="var">filtergraph</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>创建由 <var class="var">filtergraph</var> 指定的滤镜图，并用它来
+过滤该流。
+</p>
+<p>这是 <code class="code">-filter:v</code> 的别名，参见 <a class="ref" href="#filter_005foption">-filter 选项</a>。
+</p>
+</dd>
+<dt><samp class="option">-autorotate</samp></dt>
+<dd><p>根据文件元数据自动旋转视频。默认启用，
+使用 <samp class="option">-noautorotate</samp> 可禁用。
+</p>
+</dd>
+<dt><samp class="option">-autoscale</samp></dt>
+<dd><p>根据第一帧的分辨率自动缩放视频。
+默认启用，使用 <samp class="option">-noautoscale</samp> 可禁用。当 autoscale
+被禁用时，滤镜图的所有输出帧可能不在同一分辨率上，
+并且可能不适合某些编码器/复用器。因此，除非你确实清楚自己在做什么，
+否则不建议禁用它。
+禁用 autoscale 的风险由你自己承担。
+</p></dd>
+</dl>
+</dd>
+<dt><samp class="option">-filter_hw_device <var class="var">name</var></samp></dt>
+<dd><p>把名为 <var class="var">name</var> 的硬件设备传递给任何滤镜图中的所有滤镜。
+这可用于设置 <code class="code">hwupload</code> 滤镜要上传到的设备，
+或 <code class="code">hwmap</code> 滤镜要映射到的设备。其他滤镜在需要硬件设备时
+也可以使用此参数。请注意，通常只有在输入还不是硬件帧时才需要这样做
+&ndash; 如果输入已经是硬件帧，滤镜会从它们所接收输入帧的上下文中
+推导出所需的设备。
+</p>
+<p>这是一项全局设置，因此所有滤镜都会收到同一个设备。
+</p>
+</dd>
+<dt><samp class="option">-hwaccel[:<var class="var">stream_specifier</var>] <var class="var">hwaccel</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>使用硬件加速来解码匹配的流。<var class="var">hwaccel</var> 的允许取值
+有：
+</p><dl class="table">
+<dt><samp class="option">none</samp></dt>
+<dd><p>不使用任何硬件加速（默认值）。
+</p>
+</dd>
+<dt><samp class="option">auto</samp></dt>
+<dd><p>自动选择硬件加速方式。
+</p>
+</dd>
+<dt><samp class="option">vdpau</samp></dt>
+<dd><p>使用 VDPAU（Video Decode and Presentation API for Unix）硬件加速。
+</p>
+</dd>
+<dt><samp class="option">dxva2</samp></dt>
+<dd><p>使用 DXVA2（DirectX Video Acceleration）硬件加速。
+</p>
+</dd>
+<dt><samp class="option">d3d11va</samp></dt>
+<dd><p>使用 D3D11VA（DirectX Video Acceleration）硬件加速。
+</p>
+</dd>
+<dt><samp class="option">vaapi</samp></dt>
+<dd><p>使用 VAAPI（Video Acceleration API）硬件加速。
+</p>
+</dd>
+<dt><samp class="option">qsv</samp></dt>
+<dd><p>使用 Intel QuickSync Video 加速进行视频转码。
+</p>
+<p>与大多数其他取值不同，此选项并不启用加速解码（只要选中 qsv 解码器，
+就会自动使用加速解码），而是启用加速转码，且不把帧拷贝到
+系统内存中。
+</p>
+<p>要使其生效，解码器和编码器都必须支持 QSV 加速，
+并且不能使用任何滤镜。
+</p>
+</dd>
+<dt><samp class="option">videotoolbox</samp></dt>
+<dd><p>使用 Video Toolbox 硬件加速。
+</p></dd>
+</dl>
+
+<p>如果所选的 hwaccel 不可用，或所选解码器不支持它，
+则此选项无效。
+</p>
+<p>请注意，大多数加速方式是为播放而设计的，在现代 CPU 上
+不会比软件解码更快。此外，<code class="command">ffmpeg</code>
+通常需要把解码后的帧从 GPU 内存拷贝到系统
+内存，这会导致进一步的性能损失。因此此选项主要
+用于测试。
+</p>
+</dd>
+<dt><samp class="option">-hwaccel_device[:<var class="var">stream_specifier</var>] <var class="var">hwaccel_device</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>选择用于硬件加速的设备。
+</p>
+<p>此选项只有在同时指定了 <samp class="option">-hwaccel</samp> 选项时才有意义。
+它既可以按名称引用由 <samp class="option">-init_hw_device</samp> 创建的现有设备，
+也可以新建一个设备，其效果等同于
+紧接在此之前调用
+&lsquo;<samp class="samp">-init_hw_device</samp>&rsquo; <var class="var">type</var>:<var class="var">hwaccel_device</var>。
+</p>
+</dd>
+<dt><samp class="option">-hwaccels</samp></dt>
+<dd><p>列出此 ffmpeg 构建中启用的所有硬件加速组件。
+实际运行时的可用性取决于硬件以及是否安装了
+合适的驱动。
+</p>
+</dd>
+<dt><samp class="option">-fix_sub_duration_heartbeat[:<var class="var">stream_specifier</var>]</samp></dt>
+<dd><p>把某个输出视频流指定为心跳流，据此在收到
+随机访问包时切分并输出当前仍在进行中的字幕。
+</p>
+<p>这会降低那些尚未收到结束包或后续字幕的字幕的延迟。
+其代价是，为了覆盖完整的时长，很可能会导致
+字幕事件重复，因此在字幕事件传递到输出的时机
+与延迟无关的使用场景中，不应使用此选项。
+</p>
+<p>要使此选项生效，需要为相关的输入字幕流设置
+<samp class="option">-fix_sub_duration</samp>，并且该输入字幕流必须
+直接映射到心跳流所在的那个输出。
+</p>
+</dd>
+
+<a name="Audio-Options"></a>
+<h3 class="section">5.7 音频选项<span class="pull-right"><a class="anchor hidden-xs" href="#Audio-Options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Audio-Options" aria-hidden="true">TOC</a></span></h3>
+
+<dl class="table">
+<dt><samp class="option">-aframes <var class="var">number</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>设置要输出的音频帧数量。这是
+<code class="code">-frames:a</code> 的过时别名，你应该改用后者。
+</p></dd>
+<dt><samp class="option">-ar[:<var class="var">stream_specifier</var>] <var class="var">freq</var> (<em class="emph">输入/输出,每条流</em>)</samp></dt>
+<dd><p>设置音频采样频率。对于输出流，默认设为
+相应输入流的频率。对于输入
+流，此选项只对音频采集设备和裸
+解复用器有意义，并会映射到相应的解复用器选项。
+</p></dd>
+<dt><samp class="option">-aq <var class="var">q</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>设置音频质量（取决于编解码器，VBR）。这是 -q:a 的别名。
+</p></dd>
+<dt><samp class="option">-ac[:<var class="var">stream_specifier</var>] <var class="var">channels</var> (<em class="emph">输入/输出,每条流</em>)</samp></dt>
+<dd><p>设置音频声道数。对于输出流，默认设为
+输入音频的声道数。对于输入流，
+此选项只对音频采集设备和裸解复用器有意义，
+并会映射到相应的解复用器选项。
+</p></dd>
+<dt><samp class="option">-an (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>作为输入选项时，阻止文件中的所有音频流被滤镜处理，
+或被自动选择或映射到任何输出。参见 <code class="code">-discard</code>
+选项可单独禁用各条流。
+</p>
+<p>作为输出选项时，禁用音频记录，即不自动选择或
+映射任何音频流。要完全手动控制，请参见 <code class="code">-map</code>
+选项。
+</p></dd>
+<dt><samp class="option">-acodec <var class="var">codec</var> (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>设置音频编解码器。这是 <code class="code">-codec:a</code> 的别名。
+</p></dd>
+<dt><samp class="option">-sample_fmt[:<var class="var">stream_specifier</var>] <var class="var">sample_fmt</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>设置音频采样格式。使用 <code class="code">-sample_fmts</code> 可获取
+受支持的采样格式列表。
+</p>
+</dd>
+<dt><samp class="option">-af <var class="var">filtergraph</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>创建由 <var class="var">filtergraph</var> 指定的滤镜图，并用它来
+过滤该流。
+</p>
+<p>这是 <code class="code">-filter:a</code> 的别名，参见 <a class="ref" href="#filter_005foption">-filter 选项</a>。
+</p></dd>
+</dl>
+
+<a name="Advanced-Audio-options"></a>
+<h3 class="section">5.8 高级音频选项<span class="pull-right"><a class="anchor hidden-xs" href="#Advanced-Audio-options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Advanced-Audio-options" aria-hidden="true">TOC</a></span></h3>
+
+<dl class="table">
+<dt><samp class="option">-atag <var class="var">fourcc/tag</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>强制指定音频标签/fourcc。这是 <code class="code">-tag:a</code> 的别名。
+</p></dd>
+<dt><samp class="option">-ch_layout[:<var class="var">stream_specifier</var>] <var class="var">layout</var> (<em class="emph">输入/输出,每条流</em>)</samp></dt>
+<dd><p><code class="code">-channel_layout</code> 的别名。
+</p></dd>
+<dt><samp class="option">-channel_layout[:<var class="var">stream_specifier</var>] <var class="var">layout</var> (<em class="emph">输入/输出,每条流</em>)</samp></dt>
+<dd><p>设置音频声道布局。对于输出流，默认设为
+输入的声道布局。对于输入流，它会覆盖输入的
+声道布局。并非所有解码器都遵循被覆盖的声道布局。此选项
+还会为音频采集设备和裸解复用器设置声道布局，
+并映射到相应的解复用器选项。
+</p></dd>
+<dt><samp class="option">-guess_layout_max <var class="var">channels</var> (<em class="emph">输入,每条流</em>)</samp></dt>
+<dd><p>如果某个输入声道布局未知，则仅当它
+至多对应指定的声道数时才尝试猜测。例如，2
+表示让 <code class="command">ffmpeg</code> 把 1 声道识别为单声道、把 2 声道识别为
+立体声，但不把 6 声道识别为 5.1。默认值总是尝试猜测。使用
+0 可禁用所有猜测。使用 <code class="code">-channel_layout</code> 选项
+显式指定输入布局也会禁用猜测。
+</p></dd>
+</dl>
+
+<a name="Subtitle-options"></a>
+<h3 class="section">5.9 字幕选项<span class="pull-right"><a class="anchor hidden-xs" href="#Subtitle-options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Subtitle-options" aria-hidden="true">TOC</a></span></h3>
+
+<dl class="table">
+<dt><samp class="option">-scodec <var class="var">codec</var> (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>设置字幕编解码器。这是 <code class="code">-codec:s</code> 的别名。
+</p></dd>
+<dt><samp class="option">-sn (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>作为输入选项时，阻止文件中的所有字幕流被滤镜处理，
+或被自动选择或映射到任何输出。参见 <code class="code">-discard</code>
+选项可单独禁用各条流。
+</p>
+<p>作为输出选项时，禁用字幕记录，即不自动选择或
+映射任何字幕流。要完全手动控制，请参见 <code class="code">-map</code>
+选项。
+</p></dd>
+</dl>
+
+<a name="Advanced-Subtitle-options"></a>
+<h3 class="section">5.10 高级字幕选项<span class="pull-right"><a class="anchor hidden-xs" href="#Advanced-Subtitle-options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Advanced-Subtitle-options" aria-hidden="true">TOC</a></span></h3>
+
+<dl class="table">
+<dt><samp class="option">-fix_sub_duration</samp></dt>
+<dd><p>修正字幕时长。对于每条字幕，等待同一条流中的下一个包，
+并调整第一条字幕的时长以避免重叠。对于某些字幕编解码器
+这是必需的，尤其是 DVB 字幕，因为原始包中的
+时长只是一个粗略估计，真正的结束是由一个空字幕帧
+标记的。在需要时未使用此选项，可能导致时长被夸大，
+或因时间戳非单调而导致复用失败。
+</p>
+<p>请注意，此选项会把所有数据的输出延迟到下一个
+字幕包被解码之后：它可能会大幅增加内存消耗和延迟。
+</p>
+</dd>
+<dt><samp class="option">-canvas_size <var class="var">size</var></samp></dt>
+<dd><p>设置用于渲染字幕的画布大小。
+</p>
+</dd>
+</dl>
+<h3 class="section">5.11 高级选项<span class="pull-right"><a class="anchor hidden-xs" href="#Advanced-options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Advanced-options" aria-hidden="true">TOC</a></span></h3>
+
+输入文件（用 <code class="code">-i</code> 指定），第二种形式从某个
+复杂滤镜图（用 <code class="code">-filter_complex</code> 指定）获取输出。
+<p>在第一种形式中，会为来自输入文件的每个 stream 创建一个输出
+stream，其索引为 <var class="var">input_file_id</var>。如果给出了 <var class="var">stream_specifier</var>，
+则只使用与该说明符匹配的那些 stream（关于 <var class="var">stream_specifier</var> 的语法，
+请参见 <a class="ref" href="#Stream-specifiers">Stream specifiers</a> 一节）。
+</p>
+<p>在 stream 标识符之前加一个 <code class="code">-</code> 字符会创建 &quot;负向&quot; 映射。
+它会禁用与已创建的映射相匹配的 stream。
+</p>
+<p>在 stream 说明符之后可以给出一个可选的 <var class="var">view_specifier</var>，
+对于多视角视频，它指定要使用的视图。视图说明符可以具有
+以下格式之一：
+</p><dl class="table">
+<dt><samp class="option">view:<var class="var">view_id</var></samp></dt>
+<dd><p>按其 ID 选择视图；<var class="var">view_id</var> 可以设为 &rsquo;all&rsquo;，以使用所有
+交错合并到一个 stream 中的视图；
+</p>
+</dd>
+<dt><samp class="option">vidx:<var class="var">view_idx</var></samp></dt>
+<dd><p>按其索引选择视图；即 0 是基础视图，1 是第一个非基础
+视图，依此类推。
+</p>
+</dd>
+<dt><samp class="option">vpos:<var class="var">position</var></samp></dt>
+<dd><p>按其显示位置选择视图；<var class="var">position</var> 可以是 <code class="code">left</code> 或
+<code class="code">right</code>
+</p></dd>
+</dl>
+<p>转码时的默认做法是只使用基础视图，即等同于
+<code class="code">vidx:0</code>。对于流复制，不支持视图说明符，所有视图
+总是全部被复制。
+</p>
+<p>在 stream 索引后面加上结尾的 <code class="code">?</code> 会使该映射成为
+可选的：如果该映射不匹配任何 stream，该映射将被忽略，而不是
+报错失败。注意，如果使用了无效的输入文件索引，该映射仍会失败；
+例如该映射引用了不存在的输入。
+</p>
+<p>另一种 <var class="var">[linklabel]</var> 形式会把复杂滤镜
+图（参见 <samp class="option">-filter_complex</samp> 选项）的输出映射到输出文件。
+<var class="var">linklabel</var> 必须与图中已定义的输出链接标签相对应。
+</p>
+<p>此选项可以指定多次，每指定一次都会向输出文件添加更多的
+stream。任何给定的输入 stream 也可以被映射任意多次，作为不同输出
+stream 的源，例如为了使用不同的编码
+选项和/或滤镜。这些 stream 在输出中创建的顺序
+与命令行中给出 <code class="code">-map</code> 选项的顺序相同。
+</p>
+<p>使用此选项会禁用此输出文件的默认映射。
+</p>
+<p>示例：
+</p>
+<dl class="table">
+<dt><em class="emph">映射所有内容</em></dt>
+<dd><p>把第一个输入文件中的所有 stream 都映射到输出
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -map 0 output
+</pre></div>
+
+</dd>
+<dt><em class="emph">选择特定的 stream</em></dt>
+<dd><p>如果第一个输入文件中有两个音频 stream，这两个 stream 由
+<var class="var">0:0</var> 和 <var class="var">0:1</var> 标识。你可以使用 <code class="code">-map</code> 来选择把哪些
+stream 放入输出文件。例如：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -map 0:1 out.wav
+</pre></div>
+<p>会把 <samp class="file">INPUT</samp> 中的第二个输入 stream 映射到 <samp class="file">out.wav</samp> 中的
+（唯一的）输出 stream。
+</p>
+</dd>
+<dt><em class="emph">创建多个 stream</em></dt>
+<dd><p>要选择输入文件 <samp class="file">a.mov</samp> 中索引为 2 的 stream（由标识符
+<var class="var">0:2</var> 指定），以及输入 <samp class="file">b.mov</samp> 中索引为 6 的 stream
+（由标识符 <var class="var">1:6</var> 指定），并把它们复制到输出文件
+<samp class="file">out.mov</samp>：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i a.mov -i b.mov -c copy -map 0:2 -map 1:6 out.mov
+</pre></div>
+
+</dd>
+<dt><em class="emph">创建多个 stream 2</em></dt>
+<dd><p>要从输入文件中选择所有视频以及第三个音频 stream：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -map 0:v -map 0:a:2 OUTPUT
+</pre></div>
+
+</dd>
+<dt><em class="emph">负向映射</em></dt>
+<dd><p>要映射除第二个音频之外的所有 stream，请使用负向映射
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -map 0 -map -0:a:1 OUTPUT
+</pre></div>
+
+</dd>
+<dt><em class="emph">可选映射</em></dt>
+<dd><p>要映射第一个输入中的视频和音频 stream，并借助结尾的
+<code class="code">?</code>，在第一个输入中不存在音频 stream 时忽略音频
+映射：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -map 0:v -map 0:a? OUTPUT
+</pre></div>
+
+</dd>
+<dt><em class="emph">按语言映射</em></dt>
+<dd><p>要挑选英语音频 stream：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -map 0:m:language:eng OUTPUT
+</pre></div>
+
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">-ignore_unknown</samp></dt>
+<dd><p>忽略类型未知的输入 stream，而不是在尝试复制
+此类 stream 时失败。
+</p>
+</dd>
+<dt><samp class="option">-copy_unknown</samp></dt>
+<dd><p>允许复制类型未知的输入 stream，而不是在尝试复制
+此类 stream 时失败。
+</p>
+</dd>
+<dt><samp class="option">-map_metadata[:<var class="var">metadata_spec_out</var>] <var class="var">infile</var>[:<var class="var">metadata_spec_in</var>] (<em class="emph">输出,每条元数据</em>)</samp></dt>
+<dd><p>从 <var class="var">infile</var> 设置下一个输出文件的元数据信息。注意，
+这些是文件索引（从零开始），而不是文件名。
+可选的 <var class="var">metadata_spec_in/out</var> 参数用于指定要复制哪些元数据。
+元数据说明符可以具有以下形式：
+</p><dl class="table">
+<dt><samp class="option"><var class="var">g</var></samp></dt>
+<dd><p>全局元数据，即适用于整个文件的元数据
+</p>
+</dd>
+<dt><samp class="option"><var class="var">s</var>[:<var class="var">stream_spec</var>]</samp></dt>
+<dd><p>每条流的元数据。<var class="var">stream_spec</var> 是 stream 说明符，如
+<a class="ref" href="#Stream-specifiers">Stream specifiers</a> 一章所述。在输入元数据说明符中，会从第一个
+匹配的 stream 复制。在输出元数据说明符中，会复制到所有匹配的
+stream。
+</p>
+</dd>
+<dt><samp class="option"><var class="var">c</var>:<var class="var">chapter_index</var></samp></dt>
+<dd><p>每个章节的元数据。<var class="var">chapter_index</var> 是从零开始的章节索引。
+</p>
+</dd>
+<dt><samp class="option"><var class="var">p</var>:<var class="var">program_index</var></samp></dt>
+<dd><p>每个节目的元数据。<var class="var">program_index</var> 是从零开始的节目索引。
+</p></dd>
+</dl>
+<p>如果省略了元数据说明符，则默认为全局。
+</p>
+<p>默认情况下，全局元数据从第一个输入文件复制，
+每条流和每个章节的元数据随 stream/章节一起复制。这些
+默认映射会因创建任何相关类型的映射而被禁用。可以使用负的
+文件索引来创建一个仅用于禁用自动复制的虚拟映射。
+</p>
+<p>例如，要把输入文件第一个 stream 的元数据复制到输出文件的全局
+元数据：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.ogg -map_metadata 0:s:0 out.mp3
+</pre></div>
+
+<p>要执行相反的操作，即把全局元数据复制到所有音频 stream：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i in.mkv -map_metadata:s:a 0:g out.mkv
+</pre></div>
+<p>注意，在这个例子中简单地写 <code class="code">0</code> 也可以，因为默认
+假定为全局元数据。
+</p>
+</dd>
+<dt><samp class="option">-map_chapters <var class="var">input_file_index</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>把索引为 <var class="var">input_file_index</var> 的输入文件中的章节复制到下一个
+输出文件。如果没有指定章节映射，则从第一个
+至少包含一个章节的输入文件复制章节。使用负的文件索引可以
+禁用任何章节复制。
+</p>
+</dd>
+<dt><samp class="option">-benchmark (<em class="emph">全局</em>)</samp></dt>
+<dd><p>在一次编码结束时显示基准测试信息。
+显示所用的实际时间、系统时间和用户时间以及最大内存消耗。
+最大内存消耗并非在所有系统上都受支持，
+如果不支持，它通常会显示为 0。
+</p></dd>
+<dt><samp class="option">-benchmark_all (<em class="emph">全局</em>)</samp></dt>
+<dd><p>在编码过程中显示基准测试信息。
+显示各个步骤（音频/视频编码/解码）中所用的实际时间、系统时间和用户时间。
+</p></dd>
+<dt><samp class="option">-timelimit <var class="var">duration</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>在 ffmpeg 以 CPU 用户时间持续运行 <var class="var">duration</var> 秒之后退出。
+</p></dd>
+<dt><samp class="option">-dump (<em class="emph">全局</em>)</samp></dt>
+<dd><p>把每个输入包转储到 stderr。
+</p></dd>
+<dt><samp class="option">-hex (<em class="emph">全局</em>)</samp></dt>
+<dd><p>转储包时，同时转储负载数据。
+</p></dd>
+<dt><samp class="option">-readrate <var class="var">speed</var> (<em class="emph">输入</em>)</samp></dt>
+<dd><p>限制输入读取速度。
+</p>
+<p>其值是一个浮点正数，表示在一秒真实时间内
+应摄入的媒体最大时长（以秒为单位）。
+默认值为零，表示不限制摄入速度。
+值 <code class="code">1</code> 表示实时速度，等同于 <code class="code">-re</code>。
+</p>
+<p>主要用于模拟采集设备或实时输入 stream（例如从文件读取时）。
+当输入是实际的采集设备或实时 stream 时，不应使用较小的值，因为
+这可能造成丢包。
+</p>
+<p>当输出包的流动速度很重要时（例如直播），它很有用。
+<dt><samp class="option">-re (<em class="emph">输入</em>)</samp></dt>
+<dd><p>
+以原始帧率读取输入。这等同于设置 <code class="code">-readrate 1</code>。
+</p></dd>
+<dt><samp class="option">-readrate_initial_burst <var class="var">seconds</var></samp></dt>
+<dd><p>
+设置初始的读取突发时长（单位为秒），超过该时长后 <samp class="option">-re/-readrate</samp>
+将会生效。
+</p></dd>
+<dt><samp class="option">-readrate_catchup <var class="var">speed</var> (<em class="emph">输入</em>)</samp></dt>
+<dd><p>
+如果输入或输出被阻塞，导致实际读取速度落后于
+所指定的 readrate，那么将启用此速率，直到输入赶上所指定的 readrate。
+该值不得低于主 readrate。
+</p>
+</dd>
+<dt><samp class="option">-fps_mode[:<var class="var">stream_specifier</var>] <var class="var">parameter</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>
+设置视频同步方法 / 帧率模式。
+</p>
+<dl class="table">
+<dt><samp class="option">passthrough</samp></dt>
+<dd><p>
+每个帧都连同其时间戳从解复用器传递到复用器。
+</p></dd>
+<dt><samp class="option">cfr</samp></dt>
+<dd><p>
+将通过复制和丢弃帧来精确达到所请求的
+恒定帧率。
+</p></dd>
+<dt><samp class="option">vfr</samp></dt>
+<dd><p>
+帧会连同其时间戳透传，或被丢弃，以避免
+出现两个帧具有相同时间戳的情况。
+</p></dd>
+<dt><samp class="option">auto</samp></dt>
+<dd><p>
+根据复用器的能力在 cfr 和 vfr 之间进行选择。这是
+默认方法。
+</p></dd>
+</dl>
+
+请注意，在此之后时间戳可能还会被复用器进一步修改。
+例如，在格式选项 <samp class="option">avoid_negative_ts</samp>
+被启用的情况下。
+使用 -map 可以指定时间戳应取自哪条流。你可以让视频或音频
+保持不变，并将剩下的流同步到这条
+未改动的流上。
+<p></p>
+</dd>
+<dt><samp class="option">-frame_drop_threshold <var class="var">parameter</var></samp></dt>
+<dd><p>
+丢帧阈值，用于指定视频帧在落后多少之后会被丢弃。
+以帧率单位表示，因此 1.0 即为一帧。默认值为 -1.1。
+一种可能的用途是在时间戳存在噪声时避免丢帧，
+或者是在时间戳精确的情况下提高丢帧的
+精度。
+</p>
+</dd>
+<dt><samp class="option">-apad <var class="var">parameters</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>
+为输出音频流填充。这等同于应用 <code class="code">-af apad</code>。
+参数是一个滤镜参数字符串，其构成方式与 <code class="code">apad</code> 滤镜相同。
+必须为该输出设置 <code class="code">-shortest</code>，此选项才会生效。
+</p>
+</dd>
+<dt><samp class="option">-copyts</samp></dt>
+<dd><p>
+不处理输入时间戳，而是原样保留其数值，不尝试对其进行规范化。
+尤其是，不会移除初始的起始时间
+偏移量。
+</p>
+请注意，取决于 <samp class="option">fps_mode</samp> 选项或复用器的特定处理方式
+（例如在格式选项 <samp class="option">avoid_negative_ts</samp>
+被启用的情况下），即使选择了此选项，输出时间戳也可能
+与输入时间戳不一致。
+<p></p>
+</dd>
+<dt><samp class="option">-start_at_zero</samp></dt>
+<dd><p>
+与 <samp class="option">copyts</samp> 一起使用时，平移输入时间戳使其从零开始。
+</p>
+这意味着使用例如 <code class="code">-ss 50</code> 会让输出时间戳从 50 秒开始，
+而无论输入文件是从什么时间戳开始的。
+<p></p>
+</dd>
+<dt><samp class="option">-copytb <var class="var">mode</var></samp></dt>
+<dd><p>
+指定进行流复制时如何设置编码器时基。<var class="var">mode</var> 是一个
+整数值，可以取以下值之一：
+</p>
+<dl class="table">
+<dt><samp class="option">1</samp></dt>
+<dd><p>
+使用解复用器的时基。
+</p>
+时基从对应的输入解复用器复制到输出编码器。
+在拷贝可变帧率的视频流时，有时需要这样做以避免
+时间戳非单调递增。
+<p></p>
+</dd>
+<dt><samp class="option">0</samp></dt>
+<dd><p>
+使用解码器的时基。
+</p>
+时基从对应的输入解码器复制到
+输出编码器。
+<p></p>
+</dd>
+<dt><samp class="option">-1</samp></dt>
+<dd><p>
+尝试自动做出选择，以便生成合理的输出。
+</p></dd>
+</dl>
+
+默认值为 -1。
+<p></p>
+</dd>
+<dt><samp class="option">-enc_time_base[:<var class="var">stream_specifier</var>] <var class="var">timebase</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>
+设置编码器时基。<var class="var">timebase</var> 可以取以下值之一：
+</p>
+<dl class="table">
+<dt><samp class="option">0</samp></dt>
+<dd><p>
+根据媒体类型分配默认值。
+</p>
+对于视频，使用 1/framerate；对于音频，使用 1/samplerate。
+<p></p>
+</dd>
+<dt><samp class="option">demux</samp></dt>
+<dd><p>
+使用解复用器的时基。
+</p>
+</dd>
+<dt><samp class="option">filter</samp></dt>
+<dd><p>
+使用滤镜图的时基。
+</p>
+</dd>
+<dt><samp class="option">a positive number</samp></dt>
+<dd><p>
+使用所提供的数值作为时基。
+</p>
+该字段可以提供为两个整数的比值（例如 1:24、1:48000），
+或者提供为十进制数（例如 0.04166、2.0833e-5）
+<p></p></dd>
+</dl>
+
+默认值为 0。
+<p></p>
+</dd>
+<dt><samp class="option">-bitexact (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>
+为（解）复用器和（解/编）码器启用 bitexact 模式
+</p></dd>
+<dt><samp class="option">-shortest (<em class="emph">输出</em>)</samp></dt>
+<dd><p>
+当最短的输出流结束时结束编码。
+</p>
+请注意，此选项可能需要缓冲帧，这会引入额外的
+延迟。该延迟的最大值可以通过
+<code class="code">-shortest_buf_duration</code> 选项来控制。
+<p></p>
+</dd>
+<dt><samp class="option">-shortest_buf_duration <var class="var">duration</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>
+当至少有一条流是 &quot;sparse&quot;（即帧之间存在大间隔——这通常
+是字幕的情况）时，<code class="code">-shortest</code> 选项可能需要
+缓冲大量数据。
+</p>
+此选项控制所缓冲帧的最大时长（以秒为单位）。
+较大的值可以让 <code class="code">-shortest</code> 选项产生更准确的结果，
+但会增加内存占用和延迟。
+<p></p>
+默认值为 10 秒。
+<p></p>
+</dd>
+<dt><samp class="option">-dts_delta_threshold <var class="var">threshold</var></samp></dt>
+<dd><p>
+时间戳不连续增量阈值，
+以秒的十进制数表示。
+</p>
+此选项启用的时间戳不连续校正仅适用于接受时间戳不连续的
+输入格式（即启用了 <code class="code">AVFMT_TS_DISCONT</code> 标志的格式），
+例如 MPEG-TS 和 HLS，并且在使用
+<code class="code">-copyts</code> 选项时会自动禁用
+（除非检测到回绕）。
+<p></p>
+如果检测到绝对值大于 <var class="var">threshold</var> 的时间戳
+不连续，ffmpeg 会通过将当前的 DTS 和 PTS
+减小/增大相应的增量值
+来消除该不连续。
+<p></p>
+默认值为 10。
+<p></p>
+</dd>
+<dt><samp class="option">-dts_error_threshold <var class="var">threshold</var></samp></dt>
+<dd><p>
+时间戳错误增量阈值，
+以秒的十进制数表示。
+</p>
+此选项启用的时间戳校正仅适用于不接受时间戳不连续的
+输入格式（即未启用
+<code class="code">AVFMT_TS_DISCONT</code> 标志的格式）。
+<p></p>
+如果检测到绝对值大于 <var class="var">threshold</var> 的时间戳
+不连续，ffmpeg 将丢弃
+PTS/DTS 时间戳值。
+<p></p>
+默认值为 <code class="code">3600*30</code>（30 小时），这是任意
+选取的，并且相当保守。
+<p></p>
+</dd>
+<dt><samp class="option">-muxdelay <var class="var">seconds</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>
+设置最大解复用-解码延迟。
+</p></dd>
+<dt><samp class="option">-muxpreload <var class="var">seconds</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>
+设置初始解复用-解码延迟。
+</p></dd>
+<dt><samp class="option">-streamid <var class="var">output-stream-index</var>:<var class="var">new-value</var> (<em class="emph">输出</em>)</samp></dt>
+<dd><p>
+为输出流分配新的 stream-id 值。此选项应在其所适用的
+输出文件名之前指定。
+在存在多个输出文件的情况下，可以为 streamid
+重新分配不同的值。
+</p>
+例如，要将输出 mpegts 文件的流 0 的 PID 设为 33、
+流 1 的 PID 设为 36：
+<p></p><div class="example">
+<pre class="example-preformatted">ffmpeg -i inurl -streamid 0:33 -streamid 1:36 out.ts
+</pre></div>
+
+</dd>
+<dt><samp class="option">-bsf[:<var class="var">stream_specifier</var>] <var class="var">bitstream_filters</var> (<em class="emph">输入/输出,每条流</em>)</samp></dt>
+<dd><p>
+对匹配的流应用比特流滤波器。这些滤镜会作用于从解复用器收到的
+每个包（当作为输入选项使用时），或者在包被发送到
+复用器之前作用（当作为输出选项使用时）。
+</p>
+<var class="var">bitstream_filters</var> 是以逗号分隔的比特流滤波器
+规格列表，每一项的形式为
+<p></p><div class="example">
+<pre class="example-preformatted"><var class="var">filter</var>[=<var class="var">optname0</var>=<var class="var">optval0</var>:<var class="var">optname1</var>=<var class="var">optval1</var>:...]
+</pre></div>
+凡是需要作为选项值一部分的 &rsquo;,=:&rsquo; 字符，都需要
+用反斜杠进行转义。
+<p></p>
+使用 <code class="code">-bsfs</code> 选项可获取比特流滤波器列表。
+<p></p>
+例如
+<p></p><div class="example">
+<pre class="example-preformatted">ffmpeg -bsf:v h264_mp4toannexb -i h264.mp4 -c:v copy -an out.h264
+</pre></div>
+将 <code class="code">h264_mp4toannexb</code> 比特流滤波器（它会把 MP4 封装的 H.264 流转为 Annex B）
+应用于<em class="emph">输入</em>视频流。
+<p></p>
+另一方面，
+<p></p><div class="example">
+<pre class="example-preformatted">ffmpeg -i file.mov -an -vn -bsf:s mov2textsub -c:s copy -f rawvideo sub.txt
+</pre></div>
+将 <code class="code">mov2textsub</code> 比特流滤波器（它从 MOV 字幕中提取文本）
+应用于<em class="emph">输出</em>字幕流。不过请注意，由于这两个示例都使用
+<code class="code">-c copy</code>，滤镜是在输入还是输出上应用几乎没有区别——
+如果发生转码，情况就会不同。
+<p></p>
+</dd>
+<dt><samp class="option">-tag[:<var class="var">stream_specifier</var>] <var class="var">codec_tag</var> (<em class="emph">输入/输出,每条流</em>)</samp></dt>
+<dd><p>
+为匹配的流强制指定 tag/fourcc。
+</p>
+</dd>
+<dt><samp class="option">-timecode <var class="var">hh</var>:<var class="var">mm</var>:<var class="var">ss</var>SEP<var class="var">ff</var></samp></dt>
+<dd><p>
+指定要写入的时间码。<var class="var">SEP</var> 对于非丢帧时间码为 &rsquo;:&rsquo;，
+对于丢帧时间码为 &rsquo;;&rsquo;（或 &rsquo;.&rsquo;）。
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i input.mpg -timecode 01:02:03.04 -r 30000/1001 -s ntsc output.mpg
+</pre></div>
+
+<a class="anchor" id="filter_005fcomplex_005foption"></a></dd>
+<dt><samp class="option">-filter_complex <var class="var">filtergraph</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>定义一个复杂滤镜图，即具有任意数量输入和/或
+输出的滤镜图。对于简单图 &ndash; 即那些具有一个输入和一个同类型
+输出的图 &ndash; 请参见 <samp class="option">-filter</samp> 选项。<var class="var">filtergraph</var> 是
+对滤镜图的描述，说明见 ffmpeg-filters 手册的
+&ldquo;Filtergraph syntax&rdquo; 一节。此选项可以多次指定 —— 每次使用
+都会创建一个新的复杂滤镜图。
+</p>
+<p>复杂滤镜图的输入可以来自不同的源类型，
+通过相应链路标签的格式加以区分：
+</p><ul class="itemize mark-bullet">
+<li>要连接一个输入流，请使用 <code class="code">[file_index:stream_specifier]</code>（即与
+<samp class="option">-map</samp> 相同的语法）。如果 <var class="var">stream_specifier</var> 匹配多个
+流，则使用第一个。对于多视图视频，流标识符
+后面可以跟视图说明符，其语法请参见 <samp class="option">-map</samp>
+选项的文档。
+
+</li><li>要连接回环解码器，请使用 [dec:<var class="var">dec_idx</var>]，其中 <var class="var">dec_idx</var> 是
+要连接到给定输入的回环解码器的索引。对于多视图
+视频，解码器索引后面可以跟视图说明符，其语法请参见
+<samp class="option">-map</samp> 选项的文档。
+
+</li><li>要连接来自另一个复杂滤镜图的输出，请使用它的链路标签。例如
+以下示例：
+
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i input.mkv \
+  -filter_complex '[0:v]scale=size=hd1080,split=outputs=2[for_enc][orig_scaled]' \
+  -c:v libx264 -map '[for_enc]' output.mkv \
+  -dec 0:0 \
+  -filter_complex '[dec:0][orig_scaled]hstack[stacked]' \
+  -map '[stacked]' -c:v ffv1 comparison.mkv
+</pre></div>
+
+<p>读取一个输入视频，并
+</p><ul class="itemize mark-bullet">
+<li>（第 2 行）使用一个具有一个输入和两个输出的复杂滤镜图，
+将视频缩放到 1920x1080，并把结果复制到两个
+输出；
+
+</li><li>（第 3 行）使用 <code class="code">libx264</code> 编码其中一路缩放后的输出，并将结果写入
+<samp class="file">output.mkv</samp>；
+
+</li><li>（第 4 行）使用回环解码器解码这个已编码的流；
+
+</li><li>（第 5 行）将回环解码器的输出（即
+经 <code class="code">libx264</code> 编码的视频）与缩放后的原始输入并排放在一起；
+
+</li><li>（第 6 行）合并后的视频随后被无损编码并写入
+<samp class="file">comparison.mkv</samp>。
+
+</li></ul>
+
+<p>请注意，这两个滤镜图无法合并为一个，因为那样
+转码流水线中就会出现环（滤镜图的输出送到
+编码，从那里再到解码，然后又回到同一个图），而这样的环
+是不允许的。
+</p>
+</li></ul>
+
+<p>未加标签的输入会被连接到匹配类型中第一个未使用的
+输入流。
+</p>
+<p>输出链路标签通过 <samp class="option">-map</samp> 来引用。未加标签的输出会被
+添加到第一个输出文件。
+</p>
+<p>请注意，使用此选项时可以只使用 lavfi 源，而不需要
+普通的输入文件。
+</p>
+<p>例如，要把图像叠加到视频上
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i video.mkv -i image.png -filter_complex '[0:v][1:v]overlay[out]' -map
+'[out]' out.mkv
+</pre></div>
+<p>这里 <code class="code">[0:v]</code> 指的是第一个输入文件中的第一个视频流，
+它被链接到 overlay 滤镜的第一个（主）输入。同样地，
+第二个输入中的第一个视频流被链接到 overlay 的第二个
+（叠加）输入。
+</p>
+<p>假设每个输入文件中只有一个视频流，我们可以省略输入
+标签，因此上面的写法等价于
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i video.mkv -i image.png -filter_complex 'overlay[out]' -map
+'[out]' out.mkv
+</pre></div>
+
+<p>此外，我们还可以省略输出标签，此时来自滤镜
+图的单个输出会被自动添加到输出文件，因此我们可以简单地写成
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i video.mkv -i image.png -filter_complex 'overlay' out.mkv
+</pre></div>
+
+<p>作为一个特例，你可以将位图字幕流用作输入：它
+会被转换为与文件中最大视频尺寸相同的视频，
+如果文件中没有视频则为 720x576。请注意，这是一个
+实验性的临时方案。一旦 libavfilter 对字幕有了
+适当的支持，它就会被移除。
+</p>
+<p>例如，要把字幕硬编码到以
+MPEG-TS 格式存储的 DVB-T 录像之上，并将字幕延迟 1 秒：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i input.ts -filter_complex \
+  '[#0x2ef] setpts=PTS+1/TB [sub] ; [#0x2d0] [sub] overlay' \
+  -sn -map '#0x2dc' output.mkv
+</pre></div>
+<p>（0x2d0、0x2dc 和 0x2ef 分别是视频、
+音频和字幕流的 MPEG-TS PID；用 0:0、0:3 和 0:7 也可以）
+</p>
+<p>要使用 lavfi 的 <code class="code">color</code> 源生成 5 秒纯红色视频：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -filter_complex 'color=c=red' -t 5 out.mkv
+</pre></div>
+
+</dd>
+<dt><samp class="option">-filter_complex_threads <var class="var">nb_threads</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>定义用于处理 filter_complex 图的线程数量。
+与 filter_threads 类似，但仅用于 <code class="code">-filter_complex</code> 图。
+默认值为可用 CPU 的数量。
+</p>
+</dd>
+<dt><samp class="option">-lavfi <var class="var">filtergraph</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>定义一个复杂滤镜图，即具有任意数量输入和/或
+输出的滤镜图。等价于 <samp class="option">-filter_complex</samp>。
+</p>
+</dd>
+<dt><samp class="option">-accurate_seek (<em class="emph">输入</em>)</samp></dt>
+<dd><p>此选项启用或禁用在使用
+<samp class="option">-ss</samp> 选项时对输入文件进行精确定位。它默认启用，因此转码
+时定位是精确的。使用 <samp class="option">-noaccurate_seek</samp> 可以禁用它，这在
+例如拷贝部分流并对其他流转码时可能有用。
+</p>
+</dd>
+<dt><samp class="option">-seek_timestamp (<em class="emph">输入</em>)</samp></dt>
+<dd><p>此选项启用或禁用在使用 <samp class="option">-ss</samp> 选项时按
+时间戳对输入文件进行定位。它默认禁用。如果启用，
+传给 <samp class="option">-ss</samp> 选项的参数会被视为实际的时间戳，而不会
+按文件的起始时间做偏移。这只对不
+从时间戳 0 开始的文件有影响，例如传输流。
+</p>
+</dd>
+<dt><samp class="option">-thread_queue_size <var class="var">size</var> (<em class="emph">输入/输出</em>)</samp></dt>
+<dd><p>对于输入，此选项设置从文件或设备读取时排队包的
+最大数量。对于低延迟／高速率的直播流，包
+如果未被及时读取就可能被丢弃；设置此值可以
+强制 ffmpeg 使用单独的输入线程，并在包到达时
+立即读取。默认情况下，ffmpeg 仅在指定了多个输入时才这样做。
+</p>
+<p>对于输出，此选项指定可以排队到每个复用线程的
+最大包数量。
+</p>
+</dd>
+<dt><samp class="option">-sdp_file <var class="var">file</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>将输出流的 sdp 信息打印到 <var class="var">file</var>。
+这允许在至少有一个输出不是 rtp 流时转储 sdp
+信息。（要求至少有一种输出格式为 rtp）。
+</p>
+</dd>
+<dt><samp class="option">-discard (<em class="emph">输入</em>)</samp></dt>
+<dd><p>允许丢弃特定的流或流中的帧。
+任何输入流都可以使用取值 <code class="code">all</code> 被完全丢弃，而
+对流中帧的选择性丢弃发生在解复用器
+处，并且并非所有解复用器都支持。
+</p>
+<dl class="table">
+<dt><samp class="option">none</samp></dt>
+<dd><p>不丢弃任何帧。
+</p>
+</dd>
+<dt><samp class="option">default</samp></dt>
+<dd><p>默认值，不丢弃任何帧。
+</p>
+</dd>
+<dt><samp class="option">noref</samp></dt>
+<dd><p>丢弃所有非参考帧。
+</p>
+</dd>
+<dt><samp class="option">bidir</samp></dt>
+<dd><p>丢弃所有双向帧。
+</p>
+</dd>
+<dt><samp class="option">nokey</samp></dt>
+<dd><p>丢弃除关键帧之外的所有帧。
+</p>
+</dd>
+<dt><samp class="option">all</samp></dt>
+<dd><p>丢弃所有帧。
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">-abort_on <var class="var">flags</var> (<em class="emph">全局</em>)</samp></dt>
+<dd><p>在各种条件下停止并中止。可用的标志如下：
+</p>
+<dl class="table">
+<dt><samp class="option">empty_output</samp></dt>
+<dd><p>没有包被传递给复用器，输出为空。
+</p></dd>
+<dt><samp class="option">empty_output_stream</samp></dt>
+<dd><p>某些输出流中没有包被传递给复用器。
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">-max_error_rate (<em class="emph">全局</em>)</samp></dt>
+<dd><p>设置所有输入中解码帧失败的比例阈值，一旦超过该阈值，
+ffmpeg 将返回退出码 69。超过此阈值不会终止
+处理。取值范围是 0 到 1 之间的浮点数。默认值为 2/3。
+</p>
+</dd>
+<dt><samp class="option">-xerror (<em class="emph">全局</em>)</samp></dt>
+<dd><p>出错时停止并退出
+</p>
+</dd>
+<dt><samp class="option">-max_muxing_queue_size <var class="var">packets</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>在转码音频和/或视频流时，ffmpeg 不会开始向输出写入，
+直到每条此类流都有一个包为止。在等待这一情况发生期间，其他流的包会被缓冲。
+此选项设置……的大小
+此缓冲区以包为单位的大小，针对匹配的输出流。
+</p>
+<p>此选项的默认值对大多数用途而言应该足够大，因此只有
+在你确定确实需要时才应调整此选项。
+</p>
+</dd>
+<dt><samp class="option">-muxing_queue_data_threshold <var class="var">bytes</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>这是一个最小阈值，在未达到该阈值之前，复用队列的大小不计入
+考虑范围。默认值为每条流 50 兆字节，并且基于
+传递给复用器的包的总大小。
+</p>
+</dd>
+<dt><samp class="option">-auto_conversion_filters (<em class="emph">全局</em>)</samp></dt>
+<dd><p>启用后会在所有滤镜图中自动插入格式转换滤镜，
+包括由 <samp class="option">-vf</samp>、<samp class="option">-af</samp>、
+<samp class="option">-filter_complex</samp> 和 <samp class="option">-lavfi</samp> 定义的滤镜图。如果滤镜格式协商
+需要转换，则滤镜的初始化将失败。
+仍然可以通过在滤镜图中插入相应的转换
+滤镜（scale、aresample）来完成转换。
+默认开启，若要显式禁用它，需要指定
+<code class="code">-noauto_conversion_filters</code>。
+</p>
+</dd>
+<dt><samp class="option">-bits_per_raw_sample[:<var class="var">stream_specifier</var>] <var class="var">value</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>声明给定输出流中每个原始采样的位数为
+<var class="var">value</var>。注意此选项设置的是提供给
+编码器/复用器的信息，它不会改变流以符合该值。设置
+与流属性不匹配的值可能导致编码失败
+或产生无效的输出文件。
+</p>
+<a class="anchor" id="stats_005fenc_005foptions"></a></dd>
+<dt><samp class="option">-stats_enc_pre[:<var class="var">stream_specifier</var>] <var class="var">path</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dt><samp class="option">-stats_enc_post[:<var class="var">stream_specifier</var>] <var class="var">path</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dt><samp class="option">-stats_mux_pre[:<var class="var">stream_specifier</var>] <var class="var">path</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>将匹配流的逐帧编码信息写入由
+<var class="var">path</var> 指定的文件中。
+</p>
+<p><samp class="option">-stats_enc_pre</samp> 在原始视频或音频帧被送去编码之前写入其信息，
+而 <samp class="option">-stats_enc_post</samp> 则写入
+从编码器接收到的已编码包的信息。
+<samp class="option">-stats_mux_pre</samp> 写入即将
+发送给复用器的包的信息。每个帧或包都会在指定的
+文件中产生一行。该行的格式由 <samp class="option">-stats_enc_pre_fmt</samp> /
+<samp class="option">-stats_enc_post_fmt</samp> / <samp class="option">-stats_mux_pre_fmt</samp> 控制。
+</p>
+<p>当多条流的统计数据写入同一个文件时，对应于不同流的
+各行会交错排列。这种交错的确切顺序
+未作规定，也不保证在程序的
+不同次调用之间保持稳定，即使使用相同的选项也是如此。
+</p>
+</dd>
+<dt><samp class="option">-stats_enc_pre_fmt[:<var class="var">stream_specifier</var>] <var class="var">format_spec</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dt><samp class="option">-stats_enc_post_fmt[:<var class="var">stream_specifier</var>] <var class="var">format_spec</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dt><samp class="option">-stats_mux_pre_fmt[:<var class="var">stream_specifier</var>] <var class="var">format_spec</var> (<em class="emph">输出,每条流</em>)</samp></dt>
+<dd><p>指定用 <samp class="option">-stats_enc_pre</samp> /
+<samp class="option">-stats_enc_post</samp> / <samp class="option">-stats_mux_pre</samp> 写入的行的格式。
+</p>
+<p><var class="var">format_spec</var> 是一个字符串，可以包含形如
+<var class="var">{fmt}</var> 的指令。<var class="var">format_spec</var> 使用反斜杠转义 &mdash; 分别用 \{、\} 和 \\
+将字面量 {、} 或 \ 写入输出。
+</p>
+<p>用 <var class="var">fmt</var> 给出的指令可以是以下之一：
+</p><dl class="table">
+<dt><samp class="option">fidx</samp></dt>
+<dd><p>输出文件的索引。
+</p>
+</dd>
+<dt><samp class="option">sidx</samp></dt>
+<dd><p>文件中输出流的索引。
+</p>
+</dd>
+<dt><samp class="option">n</samp></dt>
+<dd><p>帧编号。编码前：到目前为止发送给编码器的帧数。
+编码后：到目前为止从编码器接收到的包数。
+复用：到目前为止为此流提交给复用器的包数。
+</p>
+</dd>
+<dt><samp class="option">ni</samp></dt>
+<dd><p>输入帧编号。与此输出帧或包相对应的输入帧
+（即由解码器输出的帧）的索引。不可用时为 -1。
+</p>
+</dd>
+<dt><samp class="option">tb</samp></dt>
+<dd><p>此帧/包的时间戳所采用的时间基，表示为有理数
+<var class="var">num/den</var>。注意编码器和复用器可能使用不同的时间基。
+</p>
+</dd>
+<dt><samp class="option">tbi</samp></dt>
+<dd><p><var class="var">ptsi</var> 的时间基，表示为有理数 <var class="var">num/den</var>。当
+<var class="var">ptsi</var> 可用时可用，否则为 <var class="var">0/1</var>。
+</p>
+</dd>
+<dt><samp class="option">pts</samp></dt>
+<dd><p>帧或包的显示时间戳，为整数。应
+将其乘以时间基以计算显示时间。
+</p>
+</dd>
+<dt><samp class="option">ptsi</samp></dt>
+<dd><p>输入帧（参见 <var class="var">ni</var>）的显示时间戳，为整数。应
+将其乘以 <var class="var">tbi</var> 以计算显示时间。不可用时
+输出为 (2^63 - 1 = 9223372036854775807)。
+</p>
+</dd>
+<dt><samp class="option">t</samp></dt>
+<dd><p>帧或包的显示时间，为十进制数。等于
+<var class="var">pts</var> 乘以 <var class="var">tb</var>。
+</p>
+</dd>
+<dt><samp class="option">ti</samp></dt>
+<dd><p>输入帧（参见 <var class="var">ni</var>）的显示时间，为十进制数。等于
+<var class="var">ptsi</var> 乘以 <var class="var">tbi</var>。不可用时输出为 inf。
+</p>
+</dd>
+<dt><samp class="option">dts (<em class="emph">包</em>)</samp></dt>
+<dd><p>包的解码时间戳，为整数。应将其乘以
+时间基以计算显示时间。
+</p>
+</dd>
+<dt><samp class="option">dt (<em class="emph">包</em>)</samp></dt>
+<dd><p>帧或包的解码时间，为十进制数。等于
+<var class="var">dts</var> 乘以 <var class="var">tb</var>。
+</p>
+</dd>
+<dt><samp class="option">sn (<em class="emph">帧,音频</em>)</samp></dt>
+<dd><p>到目前为止发送给编码器的音频采样数。
+</p>
+</dd>
+<dt><samp class="option">samp (<em class="emph">帧,音频</em>)</samp></dt>
+<dd><p>帧中的音频采样数。
+</p>
+</dd>
+<dt><samp class="option">size (<em class="emph">包</em>)</samp></dt>
+<dd><p>已编码包的大小，以字节为单位。
+</p>
+</dd>
+<dt><samp class="option">br (<em class="emph">包</em>)</samp></dt>
+<dd><p>当前码率，以比特每秒为单位。
+</p>
+</dd>
+<dt><samp class="option">abr (<em class="emph">包</em>)</samp></dt>
+<dd><p>到目前为止整条流的平均码率，以比特每秒为单位；如果此时
+无法确定，则为 -1。
+</p>
+</dd>
+<dt><samp class="option">key (<em class="emph">包</em>)</samp></dt>
+<dd><p>如果包包含关键帧则为字符 &rsquo;K&rsquo;，否则为字符 &rsquo;N&rsquo;。
+</p></dd>
+</dl>
+
+<p>标记为 <em class="emph">包</em> 的指令只能与
+<samp class="option">-stats_enc_post_fmt</samp> 和 <samp class="option">-stats_mux_pre_fmt</samp> 一起使用。
+</p>
+<p>标记为 <em class="emph">帧</em> 的指令只能与
+<samp class="option">-stats_enc_pre_fmt</samp> 一起使用。
+</p>
+<p>标记为 <em class="emph">音频</em> 的指令只能用于音频流。
+</p>
+<p>默认格式字符串为：
+</p><dl class="table">
+<dt><samp class="option">pre-encoding</samp></dt>
+<dd><p>{fidx} {sidx} {n} {t}
+</p></dd>
+<dt><samp class="option">post-encoding</samp></dt>
+<dd><p>{fidx} {sidx} {n} {t}
+</p></dd>
+</dl>
+<p>将来可能会在默认格式
+字符串的末尾添加新项。依赖该格式保持完全不变的用户
+应手动指定该格式。
+</p>
+
+<a name="Preset-files"></a>
+<h3 class="section">5.12 预设文件<span class="pull-right"><a class="anchor hidden-xs" href="#Preset-files" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Preset-files" aria-hidden="true">TOC</a></span></h3>
+<p>预设文件包含一系列 <var class="var">option</var>=<var class="var">value</var> 键值对，
+每行一个，用于指定在命令行上书写起来会很
+不便的一系列选项。以井号（&rsquo;#&rsquo;）开头的行会被忽略，用于
+提供注释。示例可查看 FFmpeg 源码树中的
+<samp class="file">presets</samp> 目录。
+</p>
+<p>预设文件有两种类型：ffpreset 文件和 avpreset 文件。
+</p>
+<a name="ffpreset-files"></a>
+<h4 class="subsection">5.12.1 ffpreset 文件<span class="pull-right"><a class="anchor hidden-xs" href="#ffpreset-files" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-ffpreset-files" aria-hidden="true">TOC</a></span></h4>
+<p>ffpreset 文件通过 <code class="code">vpre</code>、<code class="code">apre</code>、
+<code class="code">spre</code> 和 <code class="code">fpre</code> 选项来指定。<code class="code">fpre</code> 选项接受
+预设文件的文件名而非预设名称作为输入，可用于
+任何类型的编解码器。对于 <code class="code">vpre</code>、<code class="code">apre</code> 和
+<code class="code">spre</code> 选项，预设文件中指定的选项会被
+应用到当前选中的、与预设选项同类型的编解码器上。
+</p>
+<p>传给 <code class="code">vpre</code>、<code class="code">apre</code> 和 <code class="code">spre</code>
+预设选项的参数，按以下规则确定要使用的
+预设文件：
+</p>
+<p>首先，ffmpeg 会在 <samp class="file">$FFMPEG_DATADIR</samp>（如果设置了）、
+<samp class="file">$HOME/.ffmpeg</samp>、配置时定义的 datadir（通常是
+<samp class="file">PREFIX/share/ffmpeg</samp>），以及 win32 下可执行文件旁的
+<samp class="file">ffpresets</samp> 文件夹中查找名为 <var class="var">arg</var>.ffpreset 的文件，
+按上述顺序进行。例如，如果参数是 <code class="code">libvpx-1080p</code>，它会
+查找文件 <samp class="file">libvpx-1080p.ffpreset</samp>。
+</p>
+<p>如果找不到这样的文件，ffmpeg 会在上述
+目录中查找名为 <var class="var">codec_name</var>-<var class="var">arg</var>.ffpreset 的文件，
+其中 <var class="var">codec_name</var> 是要应用该预设文件选项的编解码器的
+名称。例如，如果你用 <code class="code">-vcodec libvpx</code> 选择视频编解码器
+并使用 <code class="code">-vpre 1080p</code>，那么它会查找文件
+<samp class="file">libvpx-1080p.ffpreset</samp>。
+</p>
+<a name="avpreset-files"></a>
+<h4 class="subsection">5.12.2 avpreset 文件<span class="pull-right"><a class="anchor hidden-xs" href="#avpreset-files" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-avpreset-files" aria-hidden="true">TOC</a></span></h4>
+<p>avpreset 文件通过 <code class="code">pre</code> 选项来指定。它们的工作方式与
+ffpreset 文件类似，但只允许使用编码器特定的选项。因此，用于指定
+编码器的 <var class="var">option</var>=<var class="var">value</var> 键值对不能使用。
+</p>
+<p>当指定了 <code class="code">pre</code> 选项时，ffmpeg 会在 <samp class="file">$AVCONV_DATADIR</samp>（如果设置了）、
+<samp class="file">$HOME/.avconv</samp>，以及配置时定义的 datadir（通常是
+<samp class="file">PREFIX/share/ffmpeg</samp>）中查找后缀为 .avpreset 的文件，
+按上述顺序进行。
+</p>
+<p>首先，ffmpeg 会在上述目录中查找名为 <var class="var">codec_name</var>-<var class="var">arg</var>.avpreset 的文件，
+其中 <var class="var">codec_name</var> 是要应用该预设文件选项的编解码器的
+名称。例如，如果你用 <code class="code">-vcodec libvpx</code> 选择视频编解码器
+并使用 <code class="code">-pre 1080p</code>，那么它会查找文件
+<samp class="file">libvpx-1080p.avpreset</samp>。
+</p>
+<p>如果找不到这样的文件，ffmpeg 会在同样的目录中
+查找名为 <var class="var">arg</var>.avpreset 的文件。
+</p>
+<a class="anchor" id="vstats_005ffile_005fformat"></a><a name="vstats-file-format"></a>
+<h3 class="section">5.13 vstats 文件格式<span class="pull-right"><a class="anchor hidden-xs" href="#vstats-file-format" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-vstats-file-format" aria-hidden="true">TOC</a></span></h3>
+<p><code class="code">-vstats</code> 和 <code class="code">-vstats_file</code> 选项可以生成一个
+包含所生成视频输出统计信息的文件。
+</p>
+<p><code class="code">-vstats_version</code> 选项控制所生成文件的
+格式版本。
+</p>
+<p>版本 <code class="code">1</code> 的格式为：
+</p><div class="example">
+<pre class="example-preformatted">frame= <var class="var">FRAME</var> q= <var class="var">FRAME_QUALITY</var> PSNR= <var class="var">PSNR</var> f_size= <var class="var">FRAME_SIZE</var> s_size= <var class="var">STREAM_SIZE</var>kB time= <var class="var">TIMESTAMP</var> br= <var class="var">BITRATE</var>kbits/s avg_br= <var class="var">AVERAGE_BITRATE</var>kbits/s
+</pre></div>
+
+<p>版本 <code class="code">2</code> 的格式为：
+</p><div class="example">
+<pre class="example-preformatted">out= <var class="var">OUT_FILE_INDEX</var> st= <var class="var">OUT_FILE_STREAM_INDEX</var> frame= <var class="var">FRAME_NUMBER</var> q= <var class="var">FRAME_QUALITY</var>f PSNR= <var class="var">PSNR</var> f_size= <var class="var">FRAME_SIZE</var> s_size= <var class="var">STREAM_SIZE</var>kB time= <var class="var">TIMESTAMP</var> br= <var class="var">BITRATE</var>kbits/s avg_br= <var class="var">AVERAGE_BITRATE</var>kbits/s
+</pre></div>
+
+<p>各键对应的含义说明如下：
+</p><dl class="table">
+<dt><samp class="option">avg_br</samp></dt>
+<dd><p>平均码率，以 Kbits/s 为单位
+</p>
+</dd>
+<dt><samp class="option">br</samp></dt>
+<dd><p>码率，以 Kbits/s 为单位
+</p>
+</dd>
+<dt><samp class="option">frame</samp></dt>
+<dd><p>已编码帧的序号
+</p>
+</dd>
+<dt><samp class="option">out</samp></dt>
+<dd><p>输出文件索引
+</p>
+</dd>
+<dt><samp class="option">PSNR</samp></dt>
+<dd><p>峰值信噪比
+</p>
+</dd>
+<dt><samp class="option">q</samp></dt>
+<dd><p>该帧的质量
+</p>
+</dd>
+<dt><samp class="option">f_size</samp></dt>
+<dd><p>已编码包的大小，以字节数表示
+</p>
+</dd>
+<dt><samp class="option">s_size</samp></dt>
+<dd><p>流的大小，以 KiB 为单位
+</p>
+</dd>
+<dt><samp class="option">st</samp></dt>
+<dd><p>输出文件中的流索引
+</p>
+</dd>
+<dt><samp class="option">time</samp></dt>
+<dd><p>该包的时间
+</p>
+</dd>
+<dt><samp class="option">type</samp></dt>
+<dd><p>画面类型
+</p></dd>
+</dl>
+
+<p>另请参见 <a class="ref" href="#stats_005fenc_005foptions">-stats_enc 选项</a>，了解展示编码统计信息的
+另一种方式。
+</p>
+
+<a name="Examples-1"></a>
+<h2 class="chapter">6 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-1" aria-hidden="true">TOC</a></span></h2>
+
+<a name="Video-and-Audio-grabbing"></a>
+<h3 class="section">6.1 视频和音频采集<span class="pull-right"><a class="anchor hidden-xs" href="#Video-and-Audio-grabbing" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Video-and-Audio-grabbing" aria-hidden="true">TOC</a></span></h3>
+
+<p>如果指定了输入格式和设备，ffmpeg 就能直接采集视频
+和音频。
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f oss -i /dev/dsp -f video4linux2 -i /dev/video0 /tmp/out.mpg
+</pre></div>
+
+<p>或者改用 ALSA 音频源（单声道输入，声卡 id 为 1）而不是 OSS：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f alsa -ac 1 -i hw:1 -f video4linux2 -i /dev/video0 /tmp/out.mpg
+</pre></div>
+
+<p>请注意，在启动 ffmpeg 之前，你必须先用任意 TV 观看程序（例如
+Gerd Knorr 的 <a class="uref" href="http://linux.bytesex.org/xawtv/">xawtv</a>）激活正确的视频源和频道。你还
+必须用标准混音器正确设置音频录制电平。
+</p>
+<a name="X11-grabbing"></a>
+<h3 class="section">6.2 X11 采集<span class="pull-right"><a class="anchor hidden-xs" href="#X11-grabbing" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-X11-grabbing" aria-hidden="true">TOC</a></span></h3>
+
+<p>用 ffmpeg 采集 X11 显示画面的方式如下
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f x11grab -video_size cif -framerate 25 -i :0.0 /tmp/out.mpg
+</pre></div>
+
+<p>0.0 是你的 X11 服务器的 display.screen 编号，与
+DISPLAY 环境变量相同。
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f x11grab -video_size cif -framerate 25 -i :0.0+10,20 /tmp/out.mpg
+</pre></div>
+
+<p>0.0 是你的 X11 服务器的 display.screen 编号，与 DISPLAY 环境
+变量相同。10 是采集的 x 偏移，20 是 y 偏移。
+</p>
+<a name="Video-and-Audio-file-format-conversion"></a>
+<h3 class="section">6.3 视频和音频文件格式转换<span class="pull-right"><a class="anchor hidden-xs" href="#Video-and-Audio-file-format-conversion" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Video-and-Audio-file-format-conversion" aria-hidden="true">TOC</a></span></h3>
+
+<p>任何受支持的文件格式和协议都可以作为 ffmpeg 的输入：
+</p>
+<p>示例：
+</p><ul class="itemize mark-bullet">
+<li>你可以把 YUV 文件用作输入：
+
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i /tmp/test%d.Y /tmp/out.mpg
+</pre></div>
+
+<p>它会使用以下文件：
+</p><div class="example">
+<pre class="example-preformatted">/tmp/test0.Y, /tmp/test0.U, /tmp/test0.V,
+/tmp/test1.Y, /tmp/test1.U, /tmp/test1.V, etc...
+</pre></div>
+
+<p>Y 文件的分辨率是 U 和 V 文件的两倍。它们是
+不带文件头的裸文件。它们可以由所有像样的视频
+解码器生成。如果 ffmpeg 无法猜出图像尺寸，你必须用 <samp class="option">-s</samp> 选项
+指定它。
+</p>
+</li><li>你可以从裸 YUV420P 文件输入：
+
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i /tmp/test.yuv /tmp/out.avi
+</pre></div>
+
+<p>test.yuv 是一个包含裸 YUV 平面数据的文件。每一帧由
+Y 平面，以及垂直和水平分辨率都减半的 U、V 平面组成。
+</p>
+</li><li>你可以输出到裸 YUV420P 文件：
+
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i mydivx.avi hugefile.yuv
+</pre></div>
+
+</li><li>你可以设置多个输入文件和输出文件：
+
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i /tmp/a.wav -s 640x480 -i /tmp/a.yuv /tmp/a.mpg
+</pre></div>
+
+<p>把音频文件 a.wav 和裸 YUV 视频文件 a.yuv
+转换为 MPEG 文件 a.mpg。
+</p>
+</li><li>你也可以同时进行音频和视频转换：
+
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i /tmp/a.wav -ar 22050 /tmp/a.mp2
+</pre></div>
+
+<p>把 a.wav 转换为采样率 22050 Hz 的 MPEG 音频。
+</p>
+</li><li>你可以同时编码为多种格式，并定义从输入流到输出流的
+映射关系：
+
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i /tmp/a.wav -map 0:a -b:a 64k /tmp/a.mp2 -map 0:a -b:a 128k /tmp/b.mp2
+</pre></div>
+
+<p>把 a.wav 转换为 64 kbits 的 a.mp2 和 128 kbits 的 b.mp2。&rsquo;-map
+file:index&rsquo; 按照输出流的定义顺序，指定每条输出流
+使用哪个输入流。
+</p>
+</li><li>你可以转码已解密的 VOB：
+
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i snatch_1.vob -f avi -c:v mpeg4 -b:v 800k -g 300 -bf 2 -c:a libmp3lame -b:a 128k snatch.avi
+</pre></div>
+
+<p>这是一个典型的 DVD 抓取示例；输入是 VOB 文件，
+输出是带有 MPEG-4 视频和 MP3 音频的 AVI 文件。注意，在这个
+命令中我们使用了 B 帧，因此该 MPEG-4 流与 DivX5 兼容，且
+GOP 大小为 300，这意味着对于 29.97fps 的输入视频，每 10 秒有一个
+帧内帧。此外，音频流采用 MP3 编码，因此你需要
+通过向 configure 传递 <code class="code">--enable-libmp3lame</code> 来启用 LAME 支持。
+这种映射对 DVD 转码特别有用，
+可以获取所需的音频语言。
+</p>
+<p>注意：要查看受支持的输入格式，请使用 <code class="code">ffmpeg -demuxers</code>。
+</p>
+</li><li>你可以从视频中提取图像，或者用许多图像创建一个视频：
+
+<p>从视频中提取图像：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i foo.avi -r 1 -s WxH -f image2 foo-%03d.jpeg
+</pre></div>
+
+<p>这会从视频中每秒提取一帧视频帧，并把它们
+输出到名为 <samp class="file">foo-001.jpeg</samp>、<samp class="file">foo-002.jpeg</samp> 等
+文件中。图像会被缩放以适合新的 WxH 值。
+</p>
+<p>如果你只想提取有限数量的帧，可以把
+上面的命令与 <code class="code">-frames:v</code> 或 <code class="code">-t</code> 选项结合使用，
+或者与 -ss 结合使用以从某个时间点开始提取。
+</p>
+<p>用许多图像创建一个视频：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f image2 -framerate 12 -i foo-%03d.jpeg -s WxH foo.avi
+</pre></div>
+
+<p>语法 <code class="code">foo-%03d.jpeg</code> 表示使用一个由三位数字
+组成的、以零填充的十进制数来表示序列
+编号。这与 C 语言 printf 函数支持的语法相同，但
+只有接受普通整数的格式才适用。
+</p>
+<p>导入图像序列时，-i 也支持在内部展开
+类似 shell 的通配符模式（globbing），方法是选择
+image2 特有的 <code class="code">-pattern_type glob</code> 选项。
+</p>
+<p>例如，要用匹配通配符模式 <code class="code">foo-*.jpeg</code> 的文件名
+创建视频：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f image2 -pattern_type glob -framerate 12 -i 'foo-*.jpeg' -s WxH foo.avi
+</pre></div>
+
+</li><li>你可以在输出中放入多条同类型的流：
+
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i test1.avi -i test2.avi -map 1:1 -map 1:0 -map 0:1 -map 0:0 -c copy -y test12.nut
+</pre></div>
+
+<p>得到的输出文件 <samp class="file">test12.nut</samp> 会按相反顺序包含来自
+输入文件的前四条流。
+</p>
+</li><li>要强制输出 CBR 视频：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i myfile.avi -b 4000k -minrate 4000k -maxrate 4000k -bufsize 1835k out.m2v
+</pre></div>
+
+</li><li>lmin、lmax、mblmin 和 mblmax 这四个选项使用 &rsquo;lambda&rsquo; 单位，
+但你可以使用 QP2LAMBDA 常量轻松地从 &rsquo;q&rsquo; 单位转换过来：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i src.ext -lmax 21*QP2LAMBDA dst.ext
+</pre></div>
+
+</li></ul>
+
+
+<a name="See-Also"></a>
+<h2 class="chapter">7 参见<span class="pull-right"><a class="anchor hidden-xs" href="#See-Also" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-See-Also" aria-hidden="true">TOC</a></span></h2>
+
+<p><a class="url" href="ffmpeg-all.html">ffmpeg-all</a>、
+<a class="url" href="ffplay.html">ffplay</a>、<a class="url" href="ffprobe.html">ffprobe</a>、
+<a class="url" href="ffmpeg-utils.html">ffmpeg-utils</a>、
+<a class="url" href="ffmpeg-scaler.html">ffmpeg-scaler</a>、
+<a class="url" href="ffmpeg-resampler.html">ffmpeg-resampler</a>、
+<a class="url" href="ffmpeg-codecs.html">ffmpeg-codecs</a>、
+<a class="url" href="ffmpeg-bitstream-filters.html">ffmpeg-bitstream-filters</a>、
+<a class="url" href="ffmpeg-formats.html">ffmpeg-formats</a>、
+<a class="url" href="ffmpeg-devices.html">ffmpeg-devices</a>、
+<a class="url" href="ffmpeg-protocols.html">ffmpeg-protocols</a>、
+<a class="url" href="ffmpeg-filters.html">ffmpeg-filters</a>
+</p>
+
+<a name="Authors"></a>
+<h2 class="chapter">8 作者<span class="pull-right"><a class="anchor hidden-xs" href="#Authors" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Authors" aria-hidden="true">TOC</a></span></h2>
+
+<p>FFmpeg 开发者。
+</p>
+<p>关于作者身份的详细信息，请参见该项目的 Git 历史
+（https://git.ffmpeg.org/ffmpeg），例如在 FFmpeg 源码目录中
+输入命令 <code class="command">git log</code>，或者浏览
+在线仓库 <a class="url" href="https://git.ffmpeg.org/ffmpeg">https://git.ffmpeg.org/ffmpeg</a>。
+</p>
+<p>各具体组件的维护者列在源码树中的
+<samp class="file">MAINTAINERS</samp> 文件里。
+</p>
+
+      <p style="font-size: small;">
+        本文档由 <a class="uref" href="https://www.gnu.org/software/texinfo/"><em class="emph">makeinfo</em></a> 生成。
+      </p>
+</p>
+    </div>
+  </body>
+</html>

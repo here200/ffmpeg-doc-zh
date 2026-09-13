@@ -1,0 +1,2400 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+  <head>
+    <meta charset="utf-8">
+    <title>
+      FFmpeg Devices 文档
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+      FFmpeg Devices 文档
+      </h1>
+
+
+<a name="SEC_Top"></a>
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">目录</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Description" href="#Description">1 描述</a></li>
+  <li><a id="toc-Device-Options" href="#Device-Options">2 设备选项</a></li>
+  <li><a id="toc-Input-Devices" href="#Input-Devices">3 输入设备</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-alsa" href="#alsa">3.1 alsa</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options" href="#Options">3.1.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-android_005fcamera" href="#android_005fcamera">3.2 android_camera</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-1" href="#Options-1">3.2.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-avfoundation" href="#avfoundation">3.3 avfoundation</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-2" href="#Options-2">3.3.1 选项</a></li>
+      <li><a id="toc-Examples" href="#Examples">3.3.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-decklink" href="#decklink">3.4 decklink</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-3" href="#Options-3">3.4.1 选项</a></li>
+      <li><a id="toc-Examples-1" href="#Examples-1">3.4.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-dshow" href="#dshow">3.5 dshow</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-4" href="#Options-4">3.5.1 选项</a></li>
+      <li><a id="toc-Examples-2" href="#Examples-2">3.5.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-fbdev" href="#fbdev">3.6 fbdev</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-5" href="#Options-5">3.6.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-gdigrab" href="#gdigrab">3.7 gdigrab</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-6" href="#Options-6">3.7.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-iec61883" href="#iec61883">3.8 iec61883</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-7" href="#Options-7">3.8.1 选项</a></li>
+      <li><a id="toc-Examples-3" href="#Examples-3">3.8.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-jack" href="#jack">3.9 jack</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-8" href="#Options-8">3.9.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-kmsgrab" href="#kmsgrab">3.10 kmsgrab</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-9" href="#Options-9">3.10.1 选项</a></li>
+      <li><a id="toc-Examples-4" href="#Examples-4">3.10.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-lavfi" href="#lavfi">3.11 lavfi</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-10" href="#Options-10">3.11.1 选项</a></li>
+      <li><a id="toc-Examples-5" href="#Examples-5">3.11.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-libcdio" href="#libcdio">3.12 libcdio</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-11" href="#Options-11">3.12.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-libdc1394" href="#libdc1394">3.13 libdc1394</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-12" href="#Options-12">3.13.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-openal" href="#openal">3.14 openal</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-13" href="#Options-13">3.14.1 选项</a></li>
+      <li><a id="toc-Examples-6" href="#Examples-6">3.14.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-oss" href="#oss">3.15 oss</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-14" href="#Options-14">3.15.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-pulse" href="#pulse">3.16 pulse</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-15" href="#Options-15">3.16.1 选项</a></li>
+      <li><a id="toc-Examples-7" href="#Examples-7">3.16.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-sndio" href="#sndio">3.17 sndio</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-16" href="#Options-16">3.17.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-video4linux2_002c-v4l2" href="#video4linux2_002c-v4l2">3.18 video4linux2, v4l2</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-17" href="#Options-17">3.18.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-vfwcap" href="#vfwcap">3.19 vfwcap</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-18" href="#Options-18">3.19.1 选项</a></li>
+    </ul></li>
+    <li><a id="toc-x11grab" href="#x11grab">3.20 x11grab</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-19" href="#Options-19">3.20.1 选项</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a id="toc-Output-Devices" href="#Output-Devices">4 输出设备</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-alsa-1" href="#alsa-1">4.1 alsa</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Examples-8" href="#Examples-8">4.1.1 示例</a></li>
+    </ul></li>
+    <li><a id="toc-AudioToolbox" href="#AudioToolbox">4.2 AudioToolbox</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-20" href="#Options-20">4.2.1 选项</a></li>
+      <li><a id="toc-Examples-9" href="#Examples-9">4.2.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-caca" href="#caca">4.3 caca</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-21" href="#Options-21">4.3.1 选项</a></li>
+      <li><a id="toc-Examples-10" href="#Examples-10">4.3.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-decklink-1" href="#decklink-1">4.4 decklink</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-22" href="#Options-22">4.4.1 选项</a></li>
+      <li><a id="toc-Examples-11" href="#Examples-11">4.4.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-fbdev-1" href="#fbdev-1">4.5 fbdev</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-23" href="#Options-23">4.5.1 选项</a></li>
+      <li><a id="toc-Examples-12" href="#Examples-12">4.5.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-oss-1" href="#oss-1">4.6 oss</a></li>
+    <li><a id="toc-pulse-1" href="#pulse-1">4.7 pulse</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-24" href="#Options-24">4.7.1 选项</a></li>
+      <li><a id="toc-Examples-13" href="#Examples-13">4.7.2 示例</a></li>
+    </ul></li>
+    <li><a id="toc-sndio-1" href="#sndio-1">4.8 sndio</a></li>
+    <li><a id="toc-v4l2" href="#v4l2">4.9 v4l2</a></li>
+    <li><a id="toc-xv" href="#xv">4.10 xv</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Options-25" href="#Options-25">4.10.1 选项</a></li>
+      <li><a id="toc-Examples-14" href="#Examples-14">4.10.2 示例</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a id="toc-See-Also" href="#See-Also">5 参见</a></li>
+  <li><a id="toc-Authors" href="#Authors">6 作者</a></li>
+</ul>
+</div>
+</div>
+
+<a name="Description"></a>
+<h2 class="chapter">1 描述<span class="pull-right"><a class="anchor hidden-xs" href="#Description" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Description" aria-hidden="true">TOC</a></span></h2>
+
+<p>本文档介绍 libavdevice 库所提供的输入设备与
+输出设备。
+</p>
+
+<a name="Device-Options"></a>
+<h2 class="chapter">2 设备选项<span class="pull-right"><a class="anchor hidden-xs" href="#Device-Options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Device-Options" aria-hidden="true">TOC</a></span></h2>
+
+<p>libavdevice 库提供与
+libavformat 相同的接口。也就是说，输入设备被视为解复用器，而
+输出设备被视为复用器；其接口和通用设备
+选项与 libavformat 提供的一致（参见 ffmpeg-formats
+手册）。
+</p>
+<p>此外，每个输入或输出设备还可以支持所谓的私有
+选项，这些选项是该组件特有的。
+</p>
+<p>选项可以通过在 FFmpeg 工具中指定 -<var class="var">option</var> <var class="var">value</var> 来
+设置，也可以在设备的
+<code class="code">AVFormatContext</code> 选项中显式设置该值，或使用 <samp class="file">libavutil/opt.h</samp> API
+进行编程调用。
+</p>
+
+<a name="Input-Devices"></a>
+<h2 class="chapter">3 输入设备<span class="pull-right"><a class="anchor hidden-xs" href="#Input-Devices" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Input-Devices" aria-hidden="true">TOC</a></span></h2>
+
+<p>输入设备是 FFmpeg 中经过配置的组件，用于访问
+来自连接到系统的多媒体设备的数据。
+</p>
+<p>配置 FFmpeg 构建时，所有支持的输入设备
+默认都会启用。你可以使用配置
+选项 &quot;&ndash;list-indevs&quot; 列出所有可用的输入设备。
+</p>
+<p>你可以使用配置选项
+&quot;&ndash;disable-indevs&quot; 禁用所有输入设备，并使用选项
+&quot;&ndash;enable-indev=<var class="var">INDEV</var>&quot; 有选择地启用某个输入设备，或使用选项 &quot;&ndash;disable-indev=<var class="var">INDEV</var>&quot;
+禁用某个特定的输入设备。
+</p>
+<p>ff* 工具的 &quot;-devices&quot; 选项会显示
+支持的输入设备列表。
+</p>
+<p>下面介绍当前可用的输入设备。
+</p>
+<a name="alsa"></a>
+<h3 class="section">3.1 alsa<span class="pull-right"><a class="anchor hidden-xs" href="#alsa" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-alsa" aria-hidden="true">TOC</a></span></h3>
+
+<p>ALSA（Advanced Linux Sound Architecture）输入设备。
+</p>
+<p>要在配置期间启用此输入设备，你需要在系统上
+安装 libasound。
+</p>
+<p>此设备允许从 ALSA 设备进行采集。要采集的
+设备名称必须是 ALSA 声卡标识符。
+</p>
+<p>ALSA 标识符的语法为：
+</p><div class="example">
+<pre class="example-preformatted">hw:<var class="var">CARD</var>[,<var class="var">DEV</var>[,<var class="var">SUBDEV</var>]]
+</pre></div>
+
+<p>其中 <var class="var">DEV</var> 和 <var class="var">SUBDEV</var> 部分是可选的。
+</p>
+<p>这三个参数（按顺序为：<var class="var">CARD</var>,<var class="var">DEV</var>,<var class="var">SUBDEV</var>）
+分别指定声卡编号或标识符、设备编号和子设备编号
+（-1 表示任意）。
+</p>
+<p>要查看系统当前识别到的声卡列表，请检查
+文件 <samp class="file">/proc/asound/cards</samp> 和 <samp class="file">/proc/asound/devices</samp>。
+</p>
+<p>例如，要使用 <code class="command">ffmpeg</code> 从声卡 id 为 0 的 ALSA 设备
+进行采集，可以运行以下命令：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f alsa -i hw:0 alsaout.wav
+</pre></div>
+
+<p>更多信息请参见：
+<a class="url" href="http://www.alsa-project.org/alsa-doc/alsa-lib/pcm.html">http://www.alsa-project.org/alsa-doc/alsa-lib/pcm.html</a>
+</p>
+<a name="Options"></a>
+<h4 class="subsection">3.1.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">sample_rate</samp></dt>
+<dd><p>设置采样率，单位为 Hz。默认为 48000。
+</p>
+</dd>
+<dt><samp class="option">ch_layout</samp></dt>
+<dd><p>设置声道布局。未设置时，布局默认为立体声，或默认为设备
+支持的最小声道数，并尽最大努力从 ALSA
+声道映射中填充。
+</p>
+</dd>
+</dl>
+
+<a name="android_005fcamera"></a>
+<h3 class="section">3.2 android_camera<span class="pull-right"><a class="anchor hidden-xs" href="#android_005fcamera" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-android_005fcamera" aria-hidden="true">TOC</a></span></h3>
+
+<p>Android 摄像头输入设备。
+</p>
+<p>此输入设备使用 Android Camera2 NDK API，该 API
+在 API 级别 24 及以上的设备上可用。android_camera
+的可用性会在配置期间自动检测。
+</p>
+<p>此设备允许从 Android 设备上的所有摄像头采集，
+这些摄像头已集成到 Camera2 NDK API 中。
+</p>
+<p>可用的摄像头会在内部枚举，可通过
+<var class="var">camera_index</var> 参数进行选择。输入文件字符串
+会被丢弃。
+</p>
+<p>通常后置摄像头的索引为 0，而前置
+摄像头的索引为 1。
+</p>
+<a name="Options-1"></a>
+<h4 class="subsection">3.2.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-1" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">video_size</samp></dt>
+<dd><p>设置视频尺寸，以字符串形式给出，例如 640x480 或 hd720。
+如果请求的视频尺寸不可用，则回退到 Android 报告的
+第一个可用配置，或使用默认值。
+</p>
+</dd>
+<dt><samp class="option">framerate</samp></dt>
+<dd><p>设置视频帧率。
+如果请求的帧率不可用，则回退到 Android 报告的
+第一个可用配置，或使用默认值（-1）。
+</p>
+</dd>
+<dt><samp class="option">camera_index</samp></dt>
+<dd><p>设置要使用的摄像头索引。默认为 0。
+</p>
+</dd>
+<dt><samp class="option">input_queue_size</samp></dt>
+<dd><p>设置要缓冲的最大帧数。默认为 5。
+</p>
+</dd>
+</dl>
+
+<a name="avfoundation"></a>
+<h3 class="section">3.3 avfoundation<span class="pull-right"><a class="anchor hidden-xs" href="#avfoundation" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-avfoundation" aria-hidden="true">TOC</a></span></h3>
+
+<p>AVFoundation 输入设备。
+</p>
+<p>AVFoundation 是 Apple 目前推荐的框架，用于在 OSX &gt;= 10.7 以及 iOS 上进行流采集。
+</p>
+<p>输入文件名必须按以下语法给出：
+</p><div class="example">
+<pre class="example-preformatted">-i &quot;[[VIDEO]:[AUDIO]]&quot;
+</pre></div>
+<p>第一项选择视频输入，后一项则选择音频输入。
+流必须通过设备列表中显示的设备名称或设备索引来指定。
+另外，也可以使用以下选项按索引选择视频和/或音频输入设备
+<samp class="option">
+    -video_device_index &lt;INDEX&gt;
+</samp>
+和/或
+<samp class="option">
+    -audio_device_index &lt;INDEX&gt;
+</samp>
+，其会覆盖
+输入文件名中给出的任何设备名称或索引。
+</p>
+<p>可以使用 <samp class="option">-list_devices true</samp> 枚举所有可用设备，它会列出
+所有设备名称及对应的索引。
+</p>
+<p>有两个设备名称别名：
+</p><dl class="table">
+<dt><code class="code">default</code></dt>
+<dd><p>选择相应类型的 AVFoundation 默认设备。
+</p>
+</dd>
+<dt><code class="code">none</code></dt>
+<dd><p>不录制相应的媒体类型。
+这等同于指定空的设备名称或索引。
+</p>
+</dd>
+</dl>
+
+<a name="Options-2"></a>
+<h4 class="subsection">3.3.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-2" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-2" aria-hidden="true">TOC</a></span></h4>
+
+<p>AVFoundation 支持以下选项：
+</p>
+<dl class="table">
+<dt><samp class="option">-list_devices &lt;TRUE|FALSE&gt;</samp></dt>
+<dd><p>若设为 true，则会给出所有可用输入设备的列表，显示其
+索引、名称、唯一 ID 和 USB 序列号（如果可用）。
+</p>
+</dd>
+<dt><samp class="option">-video_device_index &lt;INDEX&gt;</samp></dt>
+<dd><p>通过索引指定视频设备。会覆盖输入文件名中给出的任何内容。
+</p>
+</dd>
+<dt><samp class="option">-audio_device_index &lt;INDEX&gt;</samp></dt>
+<dd><p>通过索引指定音频设备。会覆盖输入文件名中给出的任何内容。
+</p>
+</dd>
+<dt><samp class="option">-video_device_id &lt;ID&gt;</samp></dt>
+<dd><p>通过带前缀的标识符指定视频设备，如
+<samp class="option">-list_devices</samp> 所示：<code class="code">uid:&lt;UID&gt;</code> 按 AVFoundation 唯一 ID 选择，
+<code class="code">serial:&lt;SERIAL&gt;</code> 按 USB 序列号选择。UVC 设备的唯一 ID
+在重新启动后可能不稳定。只有 UVC 设备会提供序列号。
+会覆盖输入文件名中给出的任何内容。
+</p>
+</dd>
+<dt><samp class="option">-audio_device_id &lt;ID&gt;</samp></dt>
+<dd><p>通过带前缀的标识符指定音频设备。参见
+<samp class="option">-video_device_id</samp>；对于音频，序列号仅在
+符合类规范的 USB 设备上可用。
+</p>
+</dd>
+<dt><samp class="option">-pixel_format &lt;FORMAT&gt;</samp></dt>
+<dd><p>请求视频设备使用特定的像素格式。
+如果指定的格式不受支持，则会给出可用格式列表，
+并改用该列表中的第一个。可用的像素格式有：
+<code class="code">monob, rgb555be, rgb555le, rgb565be, rgb565le, rgb24, bgr24, 0rgb, bgr0, 0bgr, rgb0,
+ bgr48be, uyvy422, yuva444p, yuva444p16le, yuv444p, yuv422p16, yuv422p10, yuv444p10,
+ yuv420p, nv12, yuyv422, gray</code>
+</p>
+</dd>
+<dt><samp class="option">-framerate</samp></dt>
+<dd><p>设置采集帧率。默认为 <code class="code">ntsc</code>，对应
+帧率 <code class="code">30000/1001</code>。
+</p>
+</dd>
+<dt><samp class="option">-video_size</samp></dt>
+<dd><p>设置视频帧尺寸。
+</p>
+</dd>
+<dt><samp class="option">-capture_cursor</samp></dt>
+<dd><p>采集鼠标指针。默认为 0。
+</p>
+</dd>
+<dt><samp class="option">-capture_mouse_clicks</samp></dt>
+<dd><p>采集屏幕上的鼠标点击。默认为 0。
+</p>
+</dd>
+<dt><samp class="option">-capture_raw_data</samp></dt>
+<dd><p>采集原始设备数据。默认为 0。
+使用此选项可能会导致接收到传递给 AVFoundation 框架的底层数据。例如，对于向该框架发送原始 DV 数据的复用设备（如基于磁带的摄录一体机），将此选项设为 false 只会得到按指定像素格式采集的已提取视频帧。将此选项设为 true 则会原样接收原始 DV 流。
+</p></dd>
+</dl>
+
+<a name="Examples"></a>
+<h4 class="subsection">3.3.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>打印 AVFoundation 支持的设备列表并退出：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f avfoundation -list_devices true -i &quot;&quot;
+</pre></div>
+
+</li><li>从视频设备 0 录制视频、从音频设备 0 录制音频，写入 out.avi：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f avfoundation -i &quot;0:0&quot; out.avi
+</pre></div>
+
+</li><li>从视频设备 2 录制视频、从音频设备 1 录制音频，写入 out.avi：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f avfoundation -video_device_index 2 -i &quot;:1&quot; out.avi
+</pre></div>
+
+</li><li>使用像素格式 bgr0 从系统默认视频设备录制视频，且不录制任何音频，写入 out.avi：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f avfoundation -pixel_format bgr0 -i &quot;default:none&quot; out.avi
+</pre></div>
+
+</li><li>从合适的输入设备录制原始 DV 数据，并将输出写入 out.dv：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f avfoundation -capture_raw_data true -i &quot;zr100:none&quot; out.dv
+</pre></div>
+
+
+</li></ul>
+
+<a name="decklink"></a>
+<h3 class="section">3.4 decklink<span class="pull-right"><a class="anchor hidden-xs" href="#decklink" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-decklink" aria-hidden="true">TOC</a></span></h3>
+
+<p>decklink 输入设备为 Blackmagic
+DeckLink 设备提供采集能力。
+</p>
+<p>要启用此输入设备，你需要 Blackmagic DeckLink SDK，并
+需要使用适当的 <code class="code">--extra-cflags</code>
+和 <code class="code">--extra-ldflags</code> 进行配置。
+在 Windows 上，你需要通过 <code class="command">widl</code> 运行 IDL 文件。
+</p>
+<p>DeckLink 对它所支持的格式非常挑剔。输入的
+像素格式可通过 <samp class="option">raw_format</samp> 设置。
+帧率和视频尺寸必须针对你的设备用
+<code class="command">-list_formats 1</code> 来确定。音频采样率始终为 48 kHz，
+声道数可以是 2、8 或 16。请注意，所有音频声道都被打包在单条
+音轨中。
+</p>
+<a name="Options-3"></a>
+<h4 class="subsection">3.4.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-3" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-3" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">list_devices</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则打印设备列表并退出。
+默认为 <samp class="option">false</samp>。此选项已弃用，请使用
+ffmpeg 的 <code class="code">-sources</code> 选项来列出可用的输入设备。
+</p>
+</dd>
+<dt><samp class="option">list_formats</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则打印受支持的格式列表并退出。
+默认为 <samp class="option">false</samp>。
+</p>
+</dd>
+<dt><samp class="option">format_code &lt;FourCC&gt;</samp></dt>
+<dd><p>这将把输入视频格式设置为 FourCC 所指定的格式。要查看
+你的设备所支持的值，请使用 <samp class="option">list_formats</samp>。
+请注意，有一个 FourCC <samp class="option">'pal '</samp> 也可以
+写作 <samp class="option">pal</samp>（3 个字母）。
+默认行为是自动检测输入视频格式，
+前提是硬件支持此功能。
+</p>
+</dd>
+<dt><samp class="option">raw_format</samp></dt>
+<dd><p>设置所采集视频的像素格式。
+可用值有：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">auto</samp>&rsquo;</dt>
+<dd>
+<p>这是默认值，表示如果使用格式
+自动检测则为 8 位 YUV 422 或 8 位 ARGB，否则为 8 位 YUV 422。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">uyvy422</samp>&rsquo;</dt>
+<dd>
+<p>8 位 YUV 422。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">yuv422p10</samp>&rsquo;</dt>
+<dd>
+<p>10 位 YUV 422。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">argb</samp>&rsquo;</dt>
+<dd>
+<p>8 位 RGB。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">bgra</samp>&rsquo;</dt>
+<dd>
+<p>8 位 RGB。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">rgb10</samp>&rsquo;</dt>
+<dd>
+<p>10 位 RGB。
+</p>
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">teletext_lines</samp></dt>
+<dd><p>若设为非零值，则会从
+垂直辅助数据中额外采集一路图文电视流。SD PAL（576i）和 HD（1080i 或 1080p）
+信号源均受支持。对于 HD 信号源，会解码 OP47 数据包。
+</p>
+<p>此选项是所采集 SD PAL VBI 行的位掩码，具体为第 6
+到 22 行，以及第 318 到 335 行。第 6 行是掩码中的最低有效位。所选
+但不含图文电视信息的行将被忽略。你可以使用
+特殊的 <samp class="option">all</samp> 常量来选择所有可能的行，或使用
+<samp class="option">standard</samp> 跳过第 6、318 和 319 行，这些行并非与
+所有接收机兼容。
+</p>
+<p>对于 SD 信号源，ffmpeg 需要使用 <code class="code">--enable-libzvbi</code> 编译。对于
+HD 信号源，在较旧（4K 之前）的 DeckLink 卡型号上必须以 10
+位模式采集。
+</p>
+</dd>
+<dt><samp class="option">channels</samp></dt>
+<dd><p>定义要采集的音频声道数。必须为 &lsquo;<samp class="samp">2</samp>&rsquo;、&lsquo;<samp class="samp">8</samp>&rsquo; 或 &lsquo;<samp class="samp">16</samp>&rsquo;。
+默认为 &lsquo;<samp class="samp">2</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">duplex_mode</samp></dt>
+<dd><p>设置 decklink 设备的双工/配置文件模式。必须为 &lsquo;<samp class="samp">unset</samp>&rsquo;、&lsquo;<samp class="samp">half</samp>&rsquo;、&lsquo;<samp class="samp">full</samp>&rsquo;、
+&lsquo;<samp class="samp">one_sub_device_full</samp>&rsquo;、&lsquo;<samp class="samp">one_sub_device_half</samp>&rsquo;、&lsquo;<samp class="samp">two_sub_device_full</samp>&rsquo;、
+&lsquo;<samp class="samp">four_sub_device_half</samp>&rsquo;
+默认为 &lsquo;<samp class="samp">unset</samp>&rsquo;。
+</p>
+<p>注意：DeckLink SDK 11.0 已将 duplex 属性替换为 profile 属性。
+对于 DeckLink Duo 2 和 DeckLink Quad 2，任意 2
+个使用相同连接器的子设备共享一个配置文件。对于 DeckLink 8K Pro，一个配置文件
+由全部 4 个子设备共享。因此 DeckLink 8K Pro 支持四个配置文件。
+</p>
+<p>DeckLink 8K Pro（使用 DeckLink SDK &gt;= 11.0）的有效配置文件模式：
+&lsquo;<samp class="samp">one_sub_device_full</samp>&rsquo;、&lsquo;<samp class="samp">one_sub_device_half</samp>&rsquo;、&lsquo;<samp class="samp">two_sub_device_full</samp>&rsquo;、
+&lsquo;<samp class="samp">four_sub_device_half</samp>&rsquo;
+</p>
+<p>DeckLink Quad 2 和 DeckLink Duo 2 的有效配置文件模式：
+&lsquo;<samp class="samp">half</samp>&rsquo;、&lsquo;<samp class="samp">full</samp>&rsquo;
+</p>
+</dd>
+<dt><samp class="option">timecode_format</samp></dt>
+<dd><p>要包含在帧和视频流元数据中的时间码类型。必须为
+&lsquo;<samp class="samp">none</samp>&rsquo;、&lsquo;<samp class="samp">rp188vitc</samp>&rsquo;、&lsquo;<samp class="samp">rp188vitc2</samp>&rsquo;、&lsquo;<samp class="samp">rp188ltc</samp>&rsquo;、
+&lsquo;<samp class="samp">rp188hfr</samp>&rsquo;、&lsquo;<samp class="samp">rp188any</samp>&rsquo;、&lsquo;<samp class="samp">vitc</samp>&rsquo;、&lsquo;<samp class="samp">vitc2</samp>&rsquo; 或 &lsquo;<samp class="samp">serial</samp>&rsquo;。
+默认为 &lsquo;<samp class="samp">none</samp>&rsquo;（不包含）。
+</p>
+<p>为了正确支持 50/60 fps 时间码，所查询的
+&lsquo;<samp class="samp">rp188any</samp>&rsquo; 时间码类型的顺序对于 &gt;30 fps
+的内容为 HFR、VITC1、VITC2 和 LTC。请注意，这与
+DeckLink API 使用的顺序略有不同，后者为 HFR、VITC1、LTC、VITC2。
+</p>
+</dd>
+<dt><samp class="option">video_input</samp></dt>
+<dd><p>设置视频输入源。必须为 &lsquo;<samp class="samp">unset</samp>&rsquo;、&lsquo;<samp class="samp">sdi</samp>&rsquo;、&lsquo;<samp class="samp">hdmi</samp>&rsquo;、
+&lsquo;<samp class="samp">optical_sdi</samp>&rsquo;、&lsquo;<samp class="samp">component</samp>&rsquo;、&lsquo;<samp class="samp">composite</samp>&rsquo; 或 &lsquo;<samp class="samp">s_video</samp>&rsquo;。
+默认为 &lsquo;<samp class="samp">unset</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">audio_input</samp></dt>
+<dd><p>设置音频输入源。必须为 &lsquo;<samp class="samp">unset</samp>&rsquo;、&lsquo;<samp class="samp">embedded</samp>&rsquo;、
+&lsquo;<samp class="samp">aes_ebu</samp>&rsquo;、&lsquo;<samp class="samp">analog</samp>&rsquo;、&lsquo;<samp class="samp">analog_xlr</samp>&rsquo;、&lsquo;<samp class="samp">analog_rca</samp>&rsquo; 或
+&lsquo;<samp class="samp">microphone</samp>&rsquo;。默认为 &lsquo;<samp class="samp">unset</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">video_pts</samp></dt>
+<dd><p>设置视频数据包时间戳来源。必须为 &lsquo;<samp class="samp">video</samp>&rsquo;、&lsquo;<samp class="samp">audio</samp>&rsquo;、
+&lsquo;<samp class="samp">reference</samp>&rsquo;、&lsquo;<samp class="samp">wallclock</samp>&rsquo; 或 &lsquo;<samp class="samp">abs_wallclock</samp>&rsquo;。
+默认为 &lsquo;<samp class="samp">video</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">audio_pts</samp></dt>
+<dd><p>设置音频数据包时间戳来源。必须为 &lsquo;<samp class="samp">video</samp>&rsquo;、&lsquo;<samp class="samp">audio</samp>&rsquo;、
+&lsquo;<samp class="samp">reference</samp>&rsquo;、&lsquo;<samp class="samp">wallclock</samp>&rsquo; 或 &lsquo;<samp class="samp">abs_wallclock</samp>&rsquo;。
+默认为 &lsquo;<samp class="samp">audio</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">draw_bars</samp></dt>
+<dd><p>若设为 &lsquo;<samp class="samp">true</samp>&rsquo;，则在信号丢失时绘制彩条。
+默认为 &lsquo;<samp class="samp">true</samp>&rsquo;。
+此选项已弃用，请使用 <code class="code">signal_loss_action</code> 选项。
+</p>
+</dd>
+<dt><samp class="option">signal_loss_action</samp></dt>
+<dd><p>设置信号丢失时要采取的操作。接受
+以下值之一：
+</p>
+<dl class="table">
+<dt><samp class="option">1, none</samp></dt>
+<dd><p>信号丢失时不执行任何操作。这通常会导致黑帧。
+</p></dd>
+<dt><samp class="option">2, bars</samp></dt>
+<dd><p>信号丢失时绘制彩条。仅支持 8 位输入信号。
+</p></dd>
+<dt><samp class="option">3, repeat</samp></dt>
+<dd><p>信号丢失时重复最后一帧视频帧。
+</p></dd>
+</dl>
+
+<p>默认为 &lsquo;<samp class="samp">bars</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">queue_size</samp></dt>
+<dd><p>设置输入缓冲区的最大字节数。如果缓冲达到此值，
+后续到达的帧将被丢弃。
+默认为 &lsquo;<samp class="samp">1073741824</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">audio_depth</samp></dt>
+<dd><p>设置音频采样位深。必须为 &lsquo;<samp class="samp">16</samp>&rsquo; 或 &lsquo;<samp class="samp">32</samp>&rsquo;。
+默认为 &lsquo;<samp class="samp">16</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">decklink_copyts</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则时间戳按原样转发，不扣除
+初始偏移量。
+默认为 <samp class="option">false</samp>。
+</p>
+</dd>
+<dt><samp class="option">timestamp_align</samp></dt>
+<dd><p>采集开始时间对齐，单位为秒。若设为非零值，输入帧将被
+丢弃，直到系统时间戳与配置的值对齐。
+最多可容忍一帧时长的对齐差异。
+这对于在 N 个不同
+硬件设备（部署用于 &rsquo;N-way&rsquo; 冗余）之间保持输入同步很有用。不同硬件设备的系统时间
+应通过 NTP 或 PTP 等协议同步，
+然后再使用此选项。
+请注意，此方法并非万无一失。在某些边界情况下，输入
+同步可能因操作系统中的线程调度抖动而不会发生。
+同步偏差可能为 1 帧，或在更少见的情况下为
+<samp class="option">timestamp_align</samp> 秒。
+默认为 &lsquo;<samp class="samp">0</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">wait_for_tc (<em class="emph">bool</em>)</samp></dt>
+<dd><p>丢弃帧，直到收到带时间码的帧。有时串行时间码
+不会随首个输入帧一起收到。如果发生这种情况，所存储的流
+时间码将不准确。如果此选项设为 <samp class="option">true</samp>，则会丢弃输入帧，
+直到收到带时间码的帧为止。
+必须指定 <var class="var">timecode_format</var> 选项。
+默认为 <samp class="option">false</samp>。
+</p>
+</dd>
+<dt><samp class="option">enable_klv(<em class="emph">bool</em>)</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则从 VANC 中提取 KLV 数据并输出 KLV 数据包。
+KLV VANC 数据包根据 MID 和 PSC 字段进行合并，并聚合
+成一个 KLV 数据包。
+默认为 <samp class="option">false</samp>。
+</p>
+</dd>
+</dl>
+
+<a name="Examples-1"></a>
+<h4 class="subsection">3.4.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-1" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>列出输入设备：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -sources decklink
+</pre></div>
+
+</li><li>列出支持的格式：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f decklink -list_formats 1 -i 'Intensity Pro'
+</pre></div>
+
+</li><li>以 1080i50 采集视频片段：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -format_code Hi50 -f decklink -i 'Intensity Pro' -c:a copy -c:v copy output.avi
+</pre></div>
+
+</li><li>以 1080i50 10 位采集视频片段：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -raw_format yuv422p10 -format_code Hi50 -f decklink -i 'UltraStudio Mini Recorder' -c:a copy -c:v copy output.avi
+</pre></div>
+
+</li><li>以 1080i50 采集带 16 个音频声道的视频片段：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -channels 16 -format_code Hi50 -f decklink -i 'UltraStudio Mini Recorder' -c:a copy -c:v copy output.avi
+</pre></div>
+
+</li></ul>
+
+<a name="dshow"></a>
+<h3 class="section">3.5 dshow<span class="pull-right"><a class="anchor hidden-xs" href="#dshow" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-dshow" aria-hidden="true">TOC</a></span></h3>
+
+<p>Windows DirectShow 输入设备。
+</p>
+<p>当 FFmpeg 使用 mingw-w64 项目构建时，DirectShow 支持会被启用。
+目前仅支持音频和视频设备。
+</p>
+<p>多个设备可以作为独立的输入打开，但它们也可以
+在同一个输入上打开，这应当能改善它们之间的同步性。
+</p>
+<p>输入名称应采用以下格式：
+</p>
+<div class="example">
+<pre class="example-preformatted"><var class="var">TYPE</var>=<var class="var">NAME</var>[:<var class="var">TYPE</var>=<var class="var">NAME</var>]
+</pre></div>
+
+<p>其中 <var class="var">TYPE</var> 可以是 <var class="var">audio</var> 或 <var class="var">video</var>，
+而 <var class="var">NAME</var> 是设备的名称或替代名称。
+</p>
+<a name="Options-4"></a>
+<h4 class="subsection">3.5.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-4" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-4" aria-hidden="true">TOC</a></span></h4>
+
+<p>如果未指定任何选项，则使用设备的默认值。
+如果设备不支持所请求的选项，它将
+打开失败。
+</p>
+<dl class="table">
+<dt><samp class="option">video_size</samp></dt>
+<dd><p>设置采集视频的视频尺寸。
+</p>
+</dd>
+<dt><samp class="option">framerate</samp></dt>
+<dd><p>设置采集视频的帧率。
+</p>
+</dd>
+<dt><samp class="option">sample_rate</samp></dt>
+<dd><p>设置所采集音频的采样率（单位为 Hz）。
+</p>
+</dd>
+<dt><samp class="option">sample_size</samp></dt>
+<dd><p>设置所采集音频的样本大小（单位为位）。
+</p>
+</dd>
+<dt><samp class="option">channels</samp></dt>
+<dd><p>设置所采集音频的声道数。
+</p>
+</dd>
+<dt><samp class="option">list_devices</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则打印设备列表并退出。
+</p>
+</dd>
+<dt><samp class="option">list_options</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则打印所选设备的选项列表
+并退出。
+</p>
+</dd>
+<dt><samp class="option">video_device_number</samp></dt>
+<dd><p>为同名设备设置视频设备编号（从 0 开始，
+默认为 0）。
+</p>
+</dd>
+<dt><samp class="option">audio_device_number</samp></dt>
+<dd><p>为同名设备设置音频设备编号（从 0 开始，
+默认为 0）。
+</p>
+</dd>
+<dt><samp class="option">pixel_format</samp></dt>
+<dd><p>选择供 DirectShow 使用的像素格式。仅当
+未设置视频编解码器或将其设为 rawvideo 时才能设置此项。
+</p>
+</dd>
+<dt><samp class="option">audio_buffer_size</samp></dt>
+<dd><p>以毫秒为单位设置音频设备缓冲区大小（取决于设备，它会直接影响
+延迟）。
+默认使用音频设备的
+默认缓冲区大小（通常是 500ms 的某个倍数）。
+将此值设得过低会降低性能。
+另请参见
+<a class="url" href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd377582(v=vs.85).aspx">http://msdn.microsoft.com/en-us/library/windows/desktop/dd377582(v=vs.85).aspx</a>
+</p>
+</dd>
+<dt><samp class="option">video_pin_name</samp></dt>
+<dd><p>按名称或替代名称选择要使用的视频采集引脚。
+</p>
+</dd>
+<dt><samp class="option">audio_pin_name</samp></dt>
+<dd><p>按名称或替代名称选择要使用的音频采集引脚。
+</p>
+</dd>
+<dt><samp class="option">crossbar_video_input_pin_number</samp></dt>
+<dd><p>为 crossbar 设备选择视频输入引脚编号。它将
+路由到 crossbar 设备的 Video Decoder 输出引脚。
+注意，更改此值会影响后续调用
+（设置新的默认值），直到系统重启为止。
+</p>
+</dd>
+<dt><samp class="option">crossbar_audio_input_pin_number</samp></dt>
+<dd><p>为 crossbar 设备选择音频输入引脚编号。它将
+路由到 crossbar 设备的 Audio Decoder 输出引脚。
+注意，更改此值会影响后续调用
+（设置新的默认值），直到系统重启为止。
+</p>
+</dd>
+<dt><samp class="option">show_video_device_dialog</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则在开始采集前向最终用户弹出一个显示
+对话框，允许其手动更改视频滤镜属性
+和配置。
+注意，对于 crossbar 设备，有时可能需要在此对话框中调整数值，
+以便在 PAL（25 fps）和 NTSC（29.97）输入帧率、尺寸、隔行扫描等之间切换。更改这些值可以
+启用不同的扫描率/帧率，并避免
+底部出现绿条、扫描线闪烁等问题。
+注意，对于某些设备，更改这些属性也会影响后续
+调用（设置新的默认值），直到系统重启为止。
+</p>
+</dd>
+<dt><samp class="option">show_audio_device_dialog</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则在开始采集前向最终用户弹出一个显示对话框，
+允许其手动更改音频滤镜属性和配置。
+</p>
+</dd>
+<dt><samp class="option">show_video_crossbar_connection_dialog</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则在开始采集前，当它打开视频设备时，
+向最终用户弹出显示
+对话框，允许其手动
+修改 crossbar 引脚路由。
+</p>
+</dd>
+<dt><samp class="option">show_audio_crossbar_connection_dialog</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则在开始采集前，当它打开音频设备时，
+向最终用户弹出显示
+对话框，允许其手动
+修改 crossbar 引脚路由。
+</p>
+</dd>
+<dt><samp class="option">show_analog_tv_tuner_dialog</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则在开始采集前向最终用户弹出显示
+对话框，允许其手动
+修改电视频道和频率。
+</p>
+</dd>
+<dt><samp class="option">show_analog_tv_tuner_audio_dialog</samp></dt>
+<dd><p>若设为 <samp class="option">true</samp>，则在开始采集前向最终用户弹出显示
+对话框，允许其手动
+修改电视音频（例如单声道与立体声、语言 A、B 或 C）。
+</p>
+</dd>
+<dt><samp class="option">audio_device_load</samp></dt>
+<dd><p>从文件加载音频采集滤镜设备，而不是按名称搜索
+它。如果
+该滤镜支持将其属性序列化到文件，则也可以加载额外的参数。
+要使用此选项，必须指定一个音频采集源，但它
+可以是任何东西，甚至可以是假的。
+</p>
+</dd>
+<dt><samp class="option">audio_device_save</samp></dt>
+<dd><p>将当前使用的音频采集滤镜设备及其
+参数（如果滤镜支持）保存到文件。
+如果存在同名文件，它将被覆盖。
+</p>
+</dd>
+<dt><samp class="option">video_device_load</samp></dt>
+<dd><p>从文件加载视频采集滤镜设备，而不是按名称搜索
+它。如果
+该滤镜支持将其属性序列化到文件，则也可以加载额外的参数。
+要使用此选项，必须指定一个视频采集源，但它
+可以是任何东西，甚至可以是假的。
+</p>
+</dd>
+<dt><samp class="option">video_device_save</samp></dt>
+<dd><p>将当前使用的视频采集滤镜设备及其
+参数（如果滤镜支持）保存到文件。
+如果存在同名文件，它将被覆盖。
+</p>
+</dd>
+<dt><samp class="option">use_video_device_timestamps</samp></dt>
+<dd><p>若设为 <samp class="option">false</samp>，视频帧的时间戳将
+取自墙上时钟，而不是采集设备提供的
+时间戳。这样可以规避那些
+提供不可靠时间戳的设备。
+</p>
+</dd>
+</dl>
+
+<a name="Examples-2"></a>
+<h4 class="subsection">3.5.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-2" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-2" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>打印 DirectShow 支持的设备列表并退出：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -list_devices true -f dshow -i dummy
+</pre></div>
+
+</li><li>打开视频设备 <var class="var">Camera</var>：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f dshow -i video=&quot;Camera&quot;
+</pre></div>
+
+</li><li>打开名称为 <var class="var">Camera</var> 的第二个视频设备：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f dshow -video_device_number 1 -i video=&quot;Camera&quot;
+</pre></div>
+
+</li><li>打开视频设备 <var class="var">Camera</var> 和音频设备 <var class="var">Microphone</var>：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f dshow -i video=&quot;Camera&quot;:audio=&quot;Microphone&quot;
+</pre></div>
+
+</li><li>打印所选设备中受支持的选项列表并退出：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -list_options true -f dshow -i video=&quot;Camera&quot;
+</pre></div>
+
+</li><li>指定要按名称或替代名称采集的引脚名称，并指定替代设备名称：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f dshow -audio_pin_name &quot;Audio Out&quot; -video_pin_name 2 -i video=video=&quot;@device_pnp_\\?\pci#ven_1a0a&amp;dev_6200&amp;subsys_62021461&amp;rev_01#4&amp;e2c7dd6&amp;0&amp;00e1#{65e8773d-8f56-11d0-a3b9-00a0c9223196}\{ca465100-deb0-4d59-818f-8c477184adf6}&quot;:audio=&quot;Microphone&quot;
+</pre></div>
+
+</li><li>配置 crossbar 设备，指定 crossbar 引脚，并允许用户在启动时调整视频采集属性：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f dshow -show_video_device_dialog true -crossbar_video_input_pin_number 0
+     -crossbar_audio_input_pin_number 3 -i video=&quot;AVerMedia BDA Analog Capture&quot;:audio=&quot;AVerMedia BDA Analog Capture&quot;
+</pre></div>
+
+</li></ul>
+
+<a name="fbdev"></a>
+<h3 class="section">3.6 fbdev<span class="pull-right"><a class="anchor hidden-xs" href="#fbdev" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-fbdev" aria-hidden="true">TOC</a></span></h3>
+
+<p>Linux 帧缓冲输入设备。
+</p>
+<p>Linux 帧缓冲是一种与图形硬件无关的抽象
+层，用于在计算机显示器（通常是
+控制台）上显示图形。它通过文件设备节点访问，通常为
+<samp class="file">/dev/fb0</samp>。
+</p>
+<p>要获取更详细的信息，请阅读 Linux 源码树中附带的文件
+Documentation/fb/framebuffer.txt。
+</p>
+<p>另请参见 <a class="url" href="http://linux-fbdev.sourceforge.net/">http://linux-fbdev.sourceforge.net/</a> 和 fbset(1)。
+</p>
+<p>要使用
+<code class="command">ffmpeg</code> 从帧缓冲设备 <samp class="file">/dev/fb0</samp> 录制：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f fbdev -framerate 10 -i /dev/fb0 out.avi
+</pre></div>
+
+<p>可以用以下命令截取单张屏幕截图：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f fbdev -framerate 1 -i /dev/fb0 -frames:v 1 screenshot.jpeg
+</pre></div>
+
+<a name="Options-5"></a>
+<h4 class="subsection">3.6.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-5" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-5" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">framerate</samp></dt>
+<dd><p>设置帧率。默认为 25。
+</p>
+</dd>
+</dl>
+
+<a name="gdigrab"></a>
+<h3 class="section">3.7 gdigrab<span class="pull-right"><a class="anchor hidden-xs" href="#gdigrab" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-gdigrab" aria-hidden="true">TOC</a></span></h3>
+
+<p>基于 Win32 GDI 的屏幕采集设备。
+</p>
+<p>该设备允许你在 Windows 上采集显示器的一个区域。
+</p>
+<p>输入文件名的可用元素包括：
+</p><div class="example">
+<pre class="example-preformatted">desktop
+</pre></div>
+<p>或
+</p><div class="example">
+<pre class="example-preformatted">title=<var class="var">window_title</var>
+</pre></div>
+<p>或
+</p><div class="example">
+<pre class="example-preformatted">hwnd=<var class="var">window_hwnd</var>
+</pre></div>
+
+<p>第一个选项将采集整个桌面，或桌面的
+固定区域。第二个和第三个选项则采集单个
+窗口的内容，无论该窗口在屏幕上的位置如何。
+</p>
+<p>例如，要使用 <code class="command">ffmpeg</code> 采集整个桌面：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f gdigrab -framerate 6 -i desktop out.mpg
+</pre></div>
+
+<p>采集位于位置 <code class="code">10,20</code> 的 640x480 区域：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f gdigrab -framerate 6 -offset_x 10 -offset_y 20 -video_size vga -i desktop out.mpg
+</pre></div>
+
+<p>采集名为 &quot;Calculator&quot; 的窗口的内容
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f gdigrab -framerate 6 -i title=Calculator out.mpg
+</pre></div>
+
+<a name="Options-6"></a>
+<h4 class="subsection">3.7.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-6" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-6" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">draw_mouse</samp></dt>
+<dd><p>指定是否绘制鼠标指针。使用值 <code class="code">0</code>
+表示不绘制指针。默认值为 <code class="code">1</code>。
+</p>
+</dd>
+<dt><samp class="option">framerate</samp></dt>
+<dd><p>设置采集帧率。默认值为 <code class="code">ntsc</code>，
+对应于帧率 <code class="code">30000/1001</code>。
+</p>
+</dd>
+<dt><samp class="option">show_region</samp></dt>
+<dd><p>在屏幕上显示采集区域。
+</p>
+<p>如果 <var class="var">show_region</var> 被指定为 <code class="code">1</code>，则采集
+区域会在屏幕上标示出来。使用该选项，在只采集屏幕的
+一部分时，很容易看出正在采集的是什么。
+</p>
+<p>注意，<var class="var">show_region</var> 与采集单个窗口的
+内容不兼容。
+</p>
+<p>例如：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f gdigrab -show_region 1 -framerate 6 -video_size cif -offset_x 10 -offset_y 20 -i desktop out.mpg
+</pre></div>
+
+</dd>
+<dt><samp class="option">video_size</samp></dt>
+<dd><p>设置视频帧大小。默认情况下，如果选择 <samp class="file">desktop</samp> 则采集全屏，如果选择 <samp class="file">title=<var class="var">window_title</var></samp> 则采集整个窗口大小。
+</p>
+</dd>
+<dt><samp class="option">offset_x</samp></dt>
+<dd><p>在使用 <var class="var">video_size</var> 采集区域时，设置距屏幕或桌面左边缘的距离。
+</p>
+<p>注意，在 Windows 上偏移量是从主显示器的左上角开始计算的。如果有一个显示器位于主显示器左侧，则需要使用负的 <var class="var">offset_x</var> 值才能把区域移到该显示器上。
+</p>
+</dd>
+<dt><samp class="option">offset_y</samp></dt>
+<dd><p>在使用 <var class="var">video_size</var> 采集区域时，设置距屏幕或桌面上边缘的距离。
+</p>
+<p>注意，在 Windows 上偏移量是从主显示器的左上角开始计算的。如果有一个显示器位于主显示器上方，则需要使用负的 <var class="var">offset_y</var> 值才能把区域移到该显示器上。
+</p>
+</dd>
+</dl>
+
+<a name="iec61883"></a>
+<h3 class="section">3.8 iec61883<span class="pull-right"><a class="anchor hidden-xs" href="#iec61883" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-iec61883" aria-hidden="true">TOC</a></span></h3>
+
+<p>使用 libiec61883 的 FireWire DV/HDV 输入设备。
+</p>
+<p>要启用该输入设备，系统上需要安装 libiec61883、libraw1394
+和 libavc1394。使用配置选项
+<code class="code">--enable-libiec61883</code> 进行编译以启用该设备。
+</p>
+<p>iec61883 采集设备支持从通过 IEEE1394（FireWire）连接的视频设备采集，
+它使用 libiec61883 和新的 Linux FireWire 协议栈（juju）。这是
+Linux 内核 2.6.37 及更高版本中默认的 DV/HDV 输入方法，
+因为旧的 FireWire 协议栈已被移除。
+</p>
+<p>指定要用作输入文件的 FireWire 端口，或使用 &quot;auto&quot;
+以选择第一个已连接的端口。
+</p>
+<a name="Options-7"></a>
+<h4 class="subsection">3.8.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-7" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-7" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">dvtype</samp></dt>
+<dd><p>覆盖对 DV/HDV 的自动检测。只有自动
+检测不起作用，或应禁止使用其它设备类型时才
+应使用。把 DV 设备当作 HDV（或反之）将无法
+工作，并导致未定义的行为。
+支持取值 <samp class="option">auto</samp>、<samp class="option">dv</samp> 和 <samp class="option">hdv</samp>。
+</p>
+</dd>
+<dt><samp class="option">dvbuffer</samp></dt>
+<dd><p>设置输入数据的最大缓冲区大小，以帧为单位。对于 DV，
+这是一个精确值。对于 HDV，它不是帧精确的，因为
+HDV 没有固定的帧大小。
+</p>
+</dd>
+<dt><samp class="option">dvguid</samp></dt>
+<dd><p>通过指定 GUID 来选择采集设备。采集将只
+从指定的设备进行，如果找不到具有给定 GUID 的
+设备则失败。当同时连接了多个设备时，这
+对于选择输入很有用。
+查看 /sys/bus/firewire/devices 可以找出各个 GUID。
+</p>
+</dd>
+</dl>
+
+<a name="Examples-3"></a>
+<h4 class="subsection">3.8.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-3" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-3" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>采集并显示 FireWire DV/HDV 设备的输入。
+<div class="example">
+<pre class="example-preformatted">ffplay -f iec61883 -i auto
+</pre></div>
+
+</li><li>采集并录制 FireWire DV/HDV 设备的输入，
+如果源是 HDV，则使用 100000 个数据包的缓冲区。
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f iec61883 -i auto -dvbuffer 100000 out.mpg
+</pre></div>
+
+</li></ul>
+
+<a name="jack"></a>
+<h3 class="section">3.9 jack<span class="pull-right"><a class="anchor hidden-xs" href="#jack" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-jack" aria-hidden="true">TOC</a></span></h3>
+
+<p>JACK 输入设备。
+</p>
+<p>要在配置时启用该输入设备，系统上需要安装
+libjack。
+</p>
+<p>一个 JACK 输入设备会创建一个或多个 JACK 可写客户端，每个
+音频声道一个，名称为 <var class="var">client_name</var>:input_<var class="var">N</var>，其中
+<var class="var">client_name</var> 是应用程序提供的名称，<var class="var">N</var>
+是标识声道的编号。
+每个可写客户端都会把获取到的数据发送给 FFmpeg 输入
+设备。
+</p>
+<p>创建了一个或多个 JACK 可读客户端后，需要
+把它们连接到一个或多个 JACK 可写客户端。
+</p>
+<p>要连接或断开 JACK 客户端，可以使用 <code class="command">jack_connect</code>
+和 <code class="command">jack_disconnect</code> 程序，也可以通过图形界面来完成，
+例如使用 <code class="command">qjackctl</code>。
+</p>
+<p>要列出 JACK 客户端及其属性，可以调用命令
+<code class="command">jack_lsp</code>。
+</p>
+<p>下面是一个示例，展示如何用
+<code class="command">ffmpeg</code> 采集一个 JACK 可读客户端。
+</p><div class="example">
+<pre class="example-preformatted"># Create a JACK writable client with name &quot;ffmpeg&quot;.
+$ ffmpeg -f jack -i ffmpeg -y out.wav
+
+# Start the sample jack_metro readable client.
+$ jack_metro -b 120 -d 0.2 -f 4000
+
+# List the current JACK clients.
+$ jack_lsp -c
+system:capture_1
+system:capture_2
+system:playback_1
+system:playback_2
+ffmpeg:input_1
+metro:120_bpm
+
+# Connect metro to the ffmpeg writable client.
+$ jack_connect metro:120_bpm ffmpeg:input_1
+</pre></div>
+
+<p>更多信息请参阅：
+<a class="url" href="http://jackaudio.org/">http://jackaudio.org/</a>
+</p>
+<a name="Options-8"></a>
+<h4 class="subsection">3.9.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-8" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-8" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">channels</samp></dt>
+<dd><p>设置声道数。默认值为 2。
+</p>
+</dd>
+</dl>
+
+<a name="kmsgrab"></a>
+<h3 class="section">3.10 kmsgrab<span class="pull-right"><a class="anchor hidden-xs" href="#kmsgrab" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-kmsgrab" aria-hidden="true">TOC</a></span></h3>
+
+<p>KMS 视频输入设备。
+</p>
+<p>把与指定 CRTC 或平面关联的 KMS 扫描输出帧缓冲采集为
+一个 DRM 对象，该对象可以传递给其它硬件功能。
+</p>
+<p>运行需要 DRM master 或 CAP_SYS_ADMIN 权限。
+</p>
+<p>如果您不明白这一大堆是什么意思，那您大概不需要它。请转而
+查看 <samp class="option">x11grab</samp>。
+</p>
+<a name="Options-9"></a>
+<h4 class="subsection">3.10.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-9" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-9" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">device</samp></dt>
+<dd><p>要在其上采集的 DRM 设备。默认为 <samp class="option">/dev/dri/card0</samp>。
+</p>
+</dd>
+<dt><samp class="option">format</samp></dt>
+<dd><p>帧缓冲的像素格式。如果运行的是 Linux 5.7
+或更高版本，它可以被自动检测，但在更早的版本中需要手动提供。默认为 <samp class="option">bgr0</samp>，
+这是 Linux 控制台和 Xorg X 服务器最常用的格式。
+</p>
+</dd>
+<dt><samp class="option">format_modifier</samp></dt>
+<dd><p>在输出帧上标记的格式修饰符。要正确导入到某些
+API 中时这是必需的。如果运行的是 Linux 5.7 或更高版本，它可以被自动检测，
+但在更早的版本中需要时必须显式提供。可能的取值
+参见 libdrm 文档。
+</p>
+</dd>
+<dt><samp class="option">crtc_id</samp></dt>
+<dd><p>用于定义采集源的 KMS CRTC ID。将使用给定 CRTC 上的
+第一个活动平面。
+</p>
+</dd>
+<dt><samp class="option">plane_id</samp></dt>
+<dd><p>用于定义采集源的 KMS 平面 ID。如果
+<samp class="option">crtc_id</samp> 和 <samp class="option">plane_id</samp> 都未指定，则默认为找到的第一个活动平面。
+</p>
+</dd>
+<dt><samp class="option">framerate</samp></dt>
+<dd><p>采集帧率。它不与任何翻页或帧缓冲
+变化同步——它只定义对帧缓冲进行采样的间隔。以
+高于帧缓冲更新速率的速率采样，会产生内容相同的
+独立帧。默认为 <code class="code">30</code>。
+</p>
+</dd>
+</dl>
+
+<a name="Examples-4"></a>
+<h4 class="subsection">3.10.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-4" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-4" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>从第一个活动平面采集，把结果下载为普通帧并编码。
+只有当帧缓冲既是线性的又可映射时这才有效——否则
+结果可能是错乱的，或者下载失败。
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f kmsgrab -i - -vf 'hwdownload,format=bgr0' output.mp4
+</pre></div>
+
+</li><li>以 60fps 从 CRTC ID 42 采集，把结果映射到 VAAPI，转换为 NV12 并编码为 H.264。
+<div class="example">
+<pre class="example-preformatted">ffmpeg -crtc_id 42 -framerate 60 -f kmsgrab -i - -vf 'hwmap=derive_device=vaapi,scale_vaapi=w=1920:h=1080:format=nv12' -c:v h264_vaapi output.mp4
+</pre></div>
+
+</li><li>要只采集平面的一部分，可以对输出进行裁剪——这可以用来采集
+单个窗口，只要它具有已知的绝对位置和大小。例如，要
+采集并编码 1920x1080 平面的中间四分之一：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f kmsgrab -i - -vf 'hwmap=derive_device=vaapi,crop=960:540:480:270,scale_vaapi=960:540:nv12' -c:v h264_vaapi output.mp4
+</pre></div>
+
+</li></ul>
+
+<a name="lavfi"></a>
+<h3 class="section">3.11 lavfi<span class="pull-right"><a class="anchor hidden-xs" href="#lavfi" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-lavfi" aria-hidden="true">TOC</a></span></h3>
+
+<p>Libavfilter 输入虚拟设备。
+</p>
+<p>该输入设备从 libavfilter 滤镜图的
+打开输出端口读取数据。
+</p>
+<p>对于滤镜图的每一个打开的输出，该输入设备都会创建一个
+对应的流，并映射到所生成的输出。
+滤镜图通过选项 <samp class="option">graph</samp> 指定。
+</p>
+<a name="Options-10"></a>
+<h4 class="subsection">3.11.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-10" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-10" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">graph</samp></dt>
+<dd><p>指定要用作输入的滤镜图。每个视频打开的输出都必须
+用形如 &quot;out<var class="var">N</var>&quot; 的唯一字符串标记，其中 <var class="var">N</var> 是
+一个从 0 开始的编号，对应该设备生成的
+映射输入流。
+第一个未标记的输出会自动被赋予 &quot;out0&quot;
+标签，但其它所有输出都需要显式指定。
+</p>
+<p>可以在输出标签后附加后缀 &quot;+subcc&quot;，以创建一个额外的
+流，其中携带附加到该输出的闭路字幕数据包
+（实验性；目前仅适用于 EIA-608 / CEA-708）。
+subcc 流在所有普通流之后创建，顺序与
+对应的流一致。
+例如，如果有 &quot;out19+subcc&quot;、&quot;out7+subcc&quot; 以及直到 &quot;out42&quot; 的各流，则
+流 #43 是流 #7 的 subcc，流 #44 是流 #19 的 subcc。
+</p>
+<p>如果未指定，则默认为为输入
+设备指定的文件名。
+</p>
+</dd>
+<dt><samp class="option">graph_file</samp></dt>
+<dd><p>设置要读取并发送到其它滤镜的滤镜图文件名。
+滤镜图的语法与
+选项 <var class="var">graph</var> 所指定的语法相同。
+</p>
+</dd>
+<dt><samp class="option">dumpgraph</samp></dt>
+<dd><p>把滤镜图转储到 stderr。
+</p>
+</dd>
+</dl>
+
+<a name="Examples-5"></a>
+<h4 class="subsection">3.11.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-5" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-5" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>创建一个彩色视频流，并用 <code class="command">ffplay</code> 播放：
+<div class="example">
+<pre class="example-preformatted">ffplay -f lavfi -graph &quot;color=c=pink [out0]&quot; dummy
+</pre></div>
+
+</li><li>与上一个示例相同，但使用文件名来指定滤镜图
+描述，并省略 &quot;out0&quot; 标签：
+<div class="example">
+<pre class="example-preformatted">ffplay -f lavfi color=c=pink
+</pre></div>
+
+</li><li>创建三个不同的视频测试滤镜源并播放它们：
+<div class="example">
+<pre class="example-preformatted">ffplay -f lavfi -graph &quot;testsrc [out0]; testsrc,hflip [out1]; testsrc,negate [out2]&quot; test3
+</pre></div>
+
+</li><li>使用 amovie 源从文件中读取音频流，并用
+<code class="command">ffplay</code> 播放：
+<div class="example">
+<pre class="example-preformatted">ffplay -f lavfi &quot;amovie=test.wav&quot;
+</pre></div>
+
+</li><li>读取一个音频流和一个视频流，并用
+<code class="command">ffplay</code> 播放：
+<div class="example">
+<pre class="example-preformatted">ffplay -f lavfi &quot;movie=test.avi[out0];amovie=test.wav[out1]&quot;
+</pre></div>
+
+</li><li>把解码后的帧转储为图像，并把闭路字幕转储为 RCWT 备份：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f lavfi -i &quot;movie=test.ts[out0+subcc]&quot; -map v frame%08d.png -map s -c copy -f rcwt subcc.bin
+</pre></div>
+
+</li></ul>
+
+<a name="libcdio"></a>
+<h3 class="section">3.12 libcdio<span class="pull-right"><a class="anchor hidden-xs" href="#libcdio" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-libcdio" aria-hidden="true">TOC</a></span></h3>
+
+<p>基于 libcdio 的 Audio-CD 输入设备。
+</p>
+<p>要在配置时启用该输入设备，系统上需要安装 libcdio。
+它需要配置选项
+<code class="code">--enable-libcdio</code>。
+</p>
+<p>该设备允许从 Audio-CD 播放和采集。
+</p>
+<p>例如，要用 <code class="command">ffmpeg</code> 复制 <samp class="file">/dev/sr0</samp> 中的整张 Audio-CD，
+可以运行命令：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f libcdio -i /dev/sr0 cd.wav
+</pre></div>
+
+<a name="Options-11"></a>
+<h4 class="subsection">3.12.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-11" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-11" aria-hidden="true">TOC</a></span></h4>
+<dl class="table">
+<dt><samp class="option">speed</samp></dt>
+<dd><p>设置驱动器读取速度。默认值为 0。
+</p>
+<p>速度以 CD-ROM 速度单位指定。速度通过
+libcdio 的 <code class="code">cdio_cddap_speed_set</code> 函数设置。在许多 CD-ROM
+驱动器上，指定过大的值会导致使用最快的
+速度。
+</p>
+</dd>
+<dt><samp class="option">paranoia_mode</samp></dt>
+<dd><p>设置 paranoia 恢复模式标志。它接受以下值之一：
+</p>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">disable</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">verify</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">overlap</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">neverskip</samp>&rsquo;</dt>
+<dt>&lsquo;<samp class="samp">full</samp>&rsquo;</dt>
+</dl>
+
+<p>默认值为 &lsquo;<samp class="samp">disable</samp>&rsquo;。
+</p>
+<p>有关可用恢复模式的更多信息，请查阅
+paranoia 项目文档。
+</p></dd>
+</dl>
+
+<a name="libdc1394"></a>
+<h3 class="section">3.13 libdc1394<span class="pull-right"><a class="anchor hidden-xs" href="#libdc1394" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-libdc1394" aria-hidden="true">TOC</a></span></h3>
+
+<p>IIDC1394 输入设备，基于 libdc1394 和 libraw1394。
+</p>
+<p>需要配置选项 <code class="code">--enable-libdc1394</code>。
+</p>
+<a name="Options-12"></a>
+<h4 class="subsection">3.13.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-12" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-12" aria-hidden="true">TOC</a></span></h4>
+<dl class="table">
+<dt><samp class="option">framerate</samp></dt>
+<dd><p>设置帧率。默认为 <code class="code">ntsc</code>，对应帧率
+<code class="code">30000/1001</code>。
+</p>
+</dd>
+<dt><samp class="option">pixel_format</samp></dt>
+<dd><p>选择像素格式。默认为 <code class="code">uyvy422</code>。
+</p>
+</dd>
+<dt><samp class="option">video_size</samp></dt>
+<dd><p>设置视频尺寸，以字符串形式给出，例如 <code class="code">640x480</code> 或 <code class="code">hd720</code>。
+默认为 <code class="code">qvga</code>。
+</p></dd>
+</dl>
+
+<a name="openal"></a>
+<h3 class="section">3.14 openal<span class="pull-right"><a class="anchor hidden-xs" href="#openal" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-openal" aria-hidden="true">TOC</a></span></h3>
+
+<p>OpenAL 输入设备在所有具备可用的 OpenAL 1.1
+实现的系统上提供音频采集。
+</p>
+<p>要在配置时启用此输入设备，需要系统中安装 OpenAL
+头文件和库，并需要使用
+<code class="code">--enable-openal</code> 配置 FFmpeg。
+</p>
+<p>OpenAL 头文件和库应当由你的 OpenAL 实现提供，
+或作为额外的下载（SDK）提供。取决于你的
+安装方式，你可能需要通过
+<code class="code">--extra-cflags</code> 和 <code class="code">--extra-ldflags</code> 指定额外标志，以便构建
+系统能够定位 OpenAL 头文件和库。
+</p>
+<p>以下是 OpenAL 实现的一份不完整列表：
+</p>
+<dl class="table">
+<dt><strong class="strong">Creative</strong></dt>
+<dd><p>官方 Windows 实现，在受支持的设备上提供硬件加速，
+并提供软件回退。
+参见 <a class="url" href="http://openal.org/">http://openal.org/</a>。
+</p></dd>
+<dt><strong class="strong">OpenAL Soft</strong></dt>
+<dd><p>可移植的开源（LGPL）软件实现。包含
+Windows、Linux、
+Solaris 和 BSD 操作系统上最常见声音 API 的后端。
+参见 <a class="url" href="http://kcat.strangesoft.net/openal.html">http://kcat.strangesoft.net/openal.html</a>。
+</p></dd>
+<dt><strong class="strong">Apple</strong></dt>
+<dd><p>OpenAL 是 Core Audio 的一部分，Core Audio 是官方的 Mac OS X 音频接口。
+参见 <a class="url" href="http://developer.apple.com/technologies/mac/audio-and-video.html">http://developer.apple.com/technologies/mac/audio-and-video.html</a>
+</p></dd>
+</dl>
+
+<p>此设备允许从由 OpenAL 处理的音频输入设备
+进行采集。
+</p>
+<p>你需要在提供的文件名中指定要采集的设备的名称。
+如果提供空字符串，设备将
+自动选择默认设备。你可以使用选项
+<var class="var">list_devices</var> 获取受支持设备的列表。
+</p>
+<a name="Options-13"></a>
+<h4 class="subsection">3.14.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-13" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-13" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">channels</samp></dt>
+<dd><p>设置采集音频的声道数。目前仅支持值
+<samp class="option">1</samp>（单声道）和 <samp class="option">2</samp>（立体声）。
+默认为 <samp class="option">2</samp>。
+</p>
+</dd>
+<dt><samp class="option">sample_size</samp></dt>
+<dd><p>设置采集音频的采样大小（单位为位）。目前仅支持值
+<samp class="option">8</samp> 和 <samp class="option">16</samp>。默认为
+<samp class="option">16</samp>。
+</p>
+</dd>
+<dt><samp class="option">sample_rate</samp></dt>
+<dd><p>设置采集音频的采样率（单位为 Hz）。
+默认为 <samp class="option">44.1k</samp>。
+</p>
+</dd>
+<dt><samp class="option">list_devices</samp></dt>
+<dd><p>如果设置为 <samp class="option">true</samp>，则打印设备列表并退出。
+默认为 <samp class="option">false</samp>。
+</p>
+</dd>
+</dl>
+
+<a name="Examples-6"></a>
+<h4 class="subsection">3.14.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-6" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-6" aria-hidden="true">TOC</a></span></h4>
+
+<p>打印 OpenAL 支持的设备列表并退出：
+</p><div class="example">
+<pre class="example-preformatted">$ ffmpeg -list_devices true -f openal -i dummy out.ogg
+</pre></div>
+
+<p>从 OpenAL 设备 <samp class="file">DR-BT101 via PulseAudio</samp> 采集：
+</p><div class="example">
+<pre class="example-preformatted">$ ffmpeg -f openal -i 'DR-BT101 via PulseAudio' out.ogg
+</pre></div>
+
+<p>从默认设备采集（注意文件名为空字符串 &rdquo;）：
+</p><div class="example">
+<pre class="example-preformatted">$ ffmpeg -f openal -i '' out.ogg
+</pre></div>
+
+<p>同时从两个设备采集，写入两个不同的文件，
+即在同一条 <code class="command">ffmpeg</code> 命令中：
+</p><div class="example">
+<pre class="example-preformatted">$ ffmpeg -f openal -i 'DR-BT101 via PulseAudio' out1.ogg -f openal -i 'ALSA Default' out2.ogg
+</pre></div>
+<p>注意：并非所有 OpenAL 实现都支持多个同时采集——
+如果上述方法无效，请尝试最新的 OpenAL Soft。
+</p>
+<a name="oss"></a>
+<h3 class="section">3.15 oss<span class="pull-right"><a class="anchor hidden-xs" href="#oss" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-oss" aria-hidden="true">TOC</a></span></h3>
+
+<p>Open Sound System 输入设备。
+</p>
+<p>提供给输入设备的文件名是表示 OSS 输入设备的设备节点，
+通常设置为
+<samp class="file">/dev/dsp</samp>。
+</p>
+<p>例如，要使用 <code class="command">ffmpeg</code> 从 <samp class="file">/dev/dsp</samp> 采集，请使用
+以下命令：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f oss -i /dev/dsp /tmp/oss.wav
+</pre></div>
+
+<p>有关 OSS 的更多信息，请参见：
+<a class="url" href="http://manuals.opensound.com/usersguide/dsp.html">http://manuals.opensound.com/usersguide/dsp.html</a>
+</p>
+<a name="Options-14"></a>
+<h4 class="subsection">3.15.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-14" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-14" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">sample_rate</samp></dt>
+<dd><p>设置采样率，单位为 Hz。默认为 48000。
+</p>
+</dd>
+<dt><samp class="option">channels</samp></dt>
+<dd><p>设置声道数。默认为 2。
+</p>
+</dd>
+</dl>
+
+<a name="pulse"></a>
+<h3 class="section">3.16 pulse<span class="pull-right"><a class="anchor hidden-xs" href="#pulse" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-pulse" aria-hidden="true">TOC</a></span></h3>
+
+<p>PulseAudio 输入设备。
+</p>
+<p>要启用此输出设备，需要使用 <code class="code">--enable-libpulse</code> 配置 FFmpeg。
+</p>
+<p>提供给输入设备的文件名是源设备或
+字符串 &quot;default&quot;
+</p>
+<p>要列出 PulseAudio 源设备及其属性，可以调用
+命令 <code class="command">pactl list sources</code>。
+</p>
+<p>有关 PulseAudio 的更多信息可在 <a class="url" href="http://www.pulseaudio.org">http://www.pulseaudio.org</a> 上找到。
+</p>
+<a name="Options-15"></a>
+<h4 class="subsection">3.16.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-15" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-15" aria-hidden="true">TOC</a></span></h4>
+<dl class="table">
+<dt><samp class="option">server</samp></dt>
+<dd><p>连接到由 IP 地址指定的特定 PulseAudio 服务器。
+未提供时使用默认服务器。
+</p>
+</dd>
+<dt><samp class="option">name</samp></dt>
+<dd><p>指定 PulseAudio 在显示活动客户端时使用的应用名称，
+默认为 <code class="code">LIBAVFORMAT_IDENT</code> 字符串。
+</p>
+</dd>
+<dt><samp class="option">stream_name</samp></dt>
+<dd><p>指定 PulseAudio 在显示活动流时使用的流名称，
+默认为 &quot;record&quot;。
+</p>
+</dd>
+<dt><samp class="option">sample_rate</samp></dt>
+<dd><p>指定采样率，单位为 Hz，默认使用 48kHz。
+</p>
+</dd>
+<dt><samp class="option">channels</samp></dt>
+<dd><p>指定使用的声道数，默认设置为 2（立体声）。
+</p>
+</dd>
+<dt><samp class="option">frame_size</samp></dt>
+<dd><p>此选项不产生任何效果，已被弃用。
+</p>
+</dd>
+<dt><samp class="option">fragment_size</samp></dt>
+<dd><p>指定 PulseAudio 中最小缓冲片段的大小（单位为字节），它
+会影响音频延迟。默认设置为 50 ms 的数据量。
+</p>
+</dd>
+<dt><samp class="option">wallclock</samp></dt>
+<dd><p>使用当前时间设置初始 PTS。默认为 1。
+</p>
+</dd>
+</dl>
+
+<a name="Examples-7"></a>
+<h4 class="subsection">3.16.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-7" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-7" aria-hidden="true">TOC</a></span></h4>
+<p>从默认设备录制流：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f pulse -i default /tmp/pulse.wav
+</pre></div>
+
+<a name="sndio"></a>
+<h3 class="section">3.17 sndio<span class="pull-right"><a class="anchor hidden-xs" href="#sndio" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-sndio" aria-hidden="true">TOC</a></span></h3>
+
+<p>sndio 输入设备。
+</p>
+<p>要在配置时启用此输入设备，需要系统中安装
+libsndio。
+</p>
+<p>提供给输入设备的文件名是表示 sndio 输入设备的
+设备节点，通常设置为
+<samp class="file">/dev/audio0</samp>。
+</p>
+<p>例如，要使用 <code class="command">ffmpeg</code> 从 <samp class="file">/dev/audio0</samp> 采集，请使用
+以下命令：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f sndio -i /dev/audio0 /tmp/oss.wav
+</pre></div>
+
+<a name="Options-16"></a>
+<h4 class="subsection">3.17.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-16" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-16" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">sample_rate</samp></dt>
+<dd><p>设置采样率，单位为 Hz。默认为 48000。
+</p>
+</dd>
+<dt><samp class="option">channels</samp></dt>
+<dd><p>设置声道数。默认为 2。
+</p>
+</dd>
+</dl>
+
+<a name="video4linux2_002c-v4l2"></a>
+<h3 class="section">3.18 video4linux2, v4l2<span class="pull-right"><a class="anchor hidden-xs" href="#video4linux2_002c-v4l2" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-video4linux2_002c-v4l2" aria-hidden="true">TOC</a></span></h3>
+
+<p>Video4Linux2 输入视频设备。
+</p>
+<p>&quot;v4l2&quot; 可作为 &quot;video4linux2&quot; 的别名使用。
+</p>
+<p>如果 FFmpeg 以 v4l-utils 支持构建（通过使用
+<code class="code">--enable-libv4l2</code> 配置选项），则可以配合
+<code class="code">-use_libv4l2</code> 输入设备选项使用它。
+</p>
+<p>要采集的设备的名称是一个文件设备节点，通常 Linux
+系统会在设备（例如 USB 摄像头）插入系统时
+自动创建此类节点，其名称形式为
+<samp class="file">/dev/video<var class="var">N</var></samp>，其中 <var class="var">N</var> 是与
+该设备关联的数字。
+</p>
+<p>Video4Linux2 设备通常支持有限的一组
+<var class="var">width</var>x<var class="var">height</var> 尺寸和帧率。对于 Video4Linux2 设备，你可以使用
+<code class="command">-list_formats all</code> 查看支持哪些。
+某些设备（如电视卡）支持一种或多种制式。可以使用
+<code class="command">-list_standards all</code> 列出所有支持的制式。
+</p>
+<p>时间戳的时基为 1 微秒。取决于内核
+版本和配置，时间戳可能源自实时
+时钟（起点为 Unix 纪元）或单调时钟（起点通常为
+启动时间，不受 NTP 或手动修改时钟的影响）。
+可以使用 <samp class="option">-timestamps abs</samp> 或 <samp class="option">-ts abs</samp> 选项强制
+转换为实时时钟。
+</p>
+<p>video4linux2 设备配合 <code class="command">ffmpeg</code>
+和 <code class="command">ffplay</code> 的一些用法示例：
+</p><ul class="itemize mark-bullet">
+<li>列出 video4linux2 设备支持的格式：
+<div class="example">
+<pre class="example-preformatted">ffplay -f video4linux2 -list_formats all /dev/video0
+</pre></div>
+
+</li><li>采集并显示 video4linux2 设备的输入：
+<div class="example">
+<pre class="example-preformatted">ffplay -f video4linux2 -framerate 30 -video_size hd720 /dev/video0
+</pre></div>
+
+</li><li>采集并录制 video4linux2 设备的输入，保持
+帧率和尺寸为先前设置的值：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f video4linux2 -input_format mjpeg -i /dev/video0 out.mpeg
+</pre></div>
+</li></ul>
+
+<p>有关 Video4Linux 的更多信息，请查看 <a class="url" href="http://linuxtv.org/">http://linuxtv.org/</a>。
+</p>
+<a name="Options-17"></a>
+<h4 class="subsection">3.18.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-17" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-17" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">standard</samp></dt>
+<dd><p>设置制式。必须是受支持制式的名称。要获取
+受支持制式的列表，请使用 <samp class="option">list_standards</samp>
+选项。
+</p>
+</dd>
+<dt><samp class="option">channel</samp></dt>
+<dd><p>设置输入通道编号。默认为 -1，表示使用
+先前选择的通道。
+</p>
+</dd>
+<dt><samp class="option">video_size</samp></dt>
+<dd><p>设置视频帧尺寸。参数必须是形如
+<var class="var">WIDTH</var>x<var class="var">HEIGHT</var> 的字符串或有效的尺寸缩写。
+</p>
+</dd>
+<dt><samp class="option">pixel_format</samp></dt>
+<dd><p>选择像素格式（仅对原始视频输入有效）。
+</p>
+</dd>
+<dt><samp class="option">input_format</samp></dt>
+<dd><p>设置首选像素格式（用于原始视频）或编解码器名称。当存在多种可用格式时，该选项可用于选择输入格式。
+</p>
+</dd>
+<dt><samp class="option">framerate</samp></dt>
+<dd><p>设置首选视频帧率。
+</p>
+</dd>
+<dt><samp class="option">list_formats</samp></dt>
+<dd><p>列出可用格式（受支持的像素格式、编解码器和帧尺寸）并退出。
+</p>
+<p>可用值为：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">all</samp>&rsquo;</dt>
+<dd><p>显示所有可用（压缩和非压缩）格式。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">raw</samp>&rsquo;</dt>
+<dd><p>仅显示原始视频（非压缩）格式。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">compressed</samp>&rsquo;</dt>
+<dd><p>仅显示压缩格式。
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">list_standards</samp></dt>
+<dd><p>列出受支持的标准并退出。
+</p>
+<p>可用值为：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">all</samp>&rsquo;</dt>
+<dd><p>显示所有受支持的标准。
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">timestamps, ts</samp></dt>
+<dd><p>设置所采集帧的时间戳类型。
+</p>
+<p>可用值为：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">default</samp>&rsquo;</dt>
+<dd><p>使用来自内核的时间戳。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">abs</samp>&rsquo;</dt>
+<dd><p>使用绝对时间戳（墙上时钟）。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">mono2abs</samp>&rsquo;</dt>
+<dd><p>强制将单调时间戳转换为绝对时间戳。
+</p></dd>
+</dl>
+
+<p>默认值为 <code class="code">default</code>。
+</p>
+</dd>
+<dt><samp class="option">use_libv4l2</samp></dt>
+<dd><p>使用 libv4l2（v4l-utils）转换函数。默认为 0。
+</p>
+</dd>
+</dl>
+
+<a name="vfwcap"></a>
+<h3 class="section">3.19 vfwcap<span class="pull-right"><a class="anchor hidden-xs" href="#vfwcap" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-vfwcap" aria-hidden="true">TOC</a></span></h3>
+
+<p>VfW (Video for Windows) 采集输入设备。
+</p>
+<p>作为输入传入的文件名是采集驱动编号，取值范围为 0 到 9。可以使用 &quot;list&quot; 作为文件名来打印驱动列表。任何其它文件名都会被解释为设备编号 0。
+</p>
+<a name="Options-18"></a>
+<h4 class="subsection">3.19.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-18" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-18" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">video_size</samp></dt>
+<dd><p>设置视频帧尺寸。
+</p>
+</dd>
+<dt><samp class="option">framerate</samp></dt>
+<dd><p>设置采集帧率。默认值为 <code class="code">ntsc</code>，对应帧率 <code class="code">30000/1001</code>。
+</p>
+</dd>
+</dl>
+
+<a name="x11grab"></a>
+<h3 class="section">3.20 x11grab<span class="pull-right"><a class="anchor hidden-xs" href="#x11grab" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-x11grab" aria-hidden="true">TOC</a></span></h3>
+
+<p>X11 视频输入设备。
+</p>
+<p>要在配置期间启用此输入设备，系统中需要安装 libxcb。它会在配置期间被自动检测到。
+</p>
+<p>该设备可用于采集 X11 显示器的某个区域。
+</p>
+<p>作为输入传入的文件名具有以下语法：
+</p><div class="example">
+<pre class="example-preformatted">[<var class="var">hostname</var>]:<var class="var">display_number</var>.<var class="var">screen_number</var>[+<var class="var">x_offset</var>,<var class="var">y_offset</var>]
+</pre></div>
+
+<p><var class="var">hostname</var>:<var class="var">display_number</var>.<var class="var">screen_number</var> 指定要采集的屏幕的 X11 显示名称。<var class="var">hostname</var> 可以省略，默认为 &quot;localhost&quot;。环境变量 <code class="env">DISPLAY</code> 包含默认显示名称。
+</p>
+<p><var class="var">x_offset</var> 和 <var class="var">y_offset</var> 指定所采集区域相对于 X11 屏幕左上边界的偏移量。它们默认为 0。
+</p>
+<p>请查阅 X11 文档（例如 <code class="command">man X</code>）以获取更详细的信息。
+</p>
+<p>使用 <code class="command">xdpyinfo</code> 程序可以获取有关 X11 显示器属性的基本信息（例如用 grep 查找 &quot;name&quot; 或 &quot;dimensions&quot;）。
+</p>
+<p>例如，从 <samp class="file">:0.0</samp> 采集，使用 <code class="command">ffmpeg</code>：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f x11grab -framerate 25 -video_size cif -i :0.0 out.mpg
+</pre></div>
+
+<p>在位置 <code class="code">10,20</code> 采集：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f x11grab -framerate 25 -video_size cif -i :0.0+10,20 out.mpg
+</pre></div>
+
+<a name="Options-19"></a>
+<h4 class="subsection">3.20.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-19" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-19" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">select_region</samp></dt>
+<dd><p>指定是否使用指针以图形方式选择采集区域。值为 <code class="code">1</code> 时会提示用户通过点击并拖动来以图形方式选择采集区域。仅单击而不拖动将选择整个屏幕。宽度或高度为零的区域也将选择整个屏幕。该选项会覆盖 <var class="var">video_size</var>、<var class="var">grab_x</var> 和 <var class="var">grab_y</var> 选项。默认值为 <code class="code">0</code>。
+</p>
+</dd>
+<dt><samp class="option">draw_mouse</samp></dt>
+<dd><p>指定是否绘制鼠标指针。值为 <code class="code">0</code> 表示不绘制指针。默认值为 <code class="code">1</code>。
+</p>
+</dd>
+<dt><samp class="option">follow_mouse</samp></dt>
+<dd><p>使所采集区域跟随鼠标。参数可以是 <code class="code">centered</code> 或像素数 <var class="var">PIXELS</var>。
+</p>
+<p>当它被指定为 &quot;centered&quot; 时，采集区域会跟随鼠标指针，并使指针保持在区域中心；否则，只有当鼠标指针到达距区域边缘 <var class="var">PIXELS</var>（大于零）以内时，区域才会跟随。
+</p>
+<p>例如：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f x11grab -follow_mouse centered -framerate 25 -video_size cif -i :0.0 out.mpg
+</pre></div>
+
+<p>若仅希望在鼠标指针到达距边缘 100 像素以内时才跟随：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f x11grab -follow_mouse 100 -framerate 25 -video_size cif -i :0.0 out.mpg
+</pre></div>
+
+</dd>
+<dt><samp class="option">framerate</samp></dt>
+<dd><p>设置采集帧率。默认值为 <code class="code">ntsc</code>，对应帧率 <code class="code">30000/1001</code>。
+</p>
+</dd>
+<dt><samp class="option">show_region</samp></dt>
+<dd><p>在屏幕上显示所采集的区域。
+</p>
+<p>如果 <var class="var">show_region</var> 被指定为 <code class="code">1</code>，那么采集区域会在屏幕上标示出来。使用该选项，在仅采集屏幕一部分时可以很容易地知道正在采集什么。
+</p>
+</dd>
+<dt><samp class="option">region_border</samp></dt>
+<dd><p>如果使用了 <samp class="option">-show_region 1</samp>，则设置区域边框粗细。范围为 1 到 128，默认为 3（仅限基于 XCB 的 x11grab）。
+</p>
+<p>例如：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f x11grab -show_region 1 -framerate 25 -video_size cif -i :0.0+10,20 out.mpg
+</pre></div>
+
+<p>配合 <var class="var">follow_mouse</var> 使用时：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -f x11grab -follow_mouse centered -show_region 1 -framerate 25 -video_size cif -i :0.0 out.mpg
+</pre></div>
+
+</dd>
+<dt><samp class="option">window_id</samp></dt>
+<dd><p>采集此窗口，而不是整个屏幕。默认值为 0，它映射到整个屏幕（根窗口）。
+</p>
+<p>可以使用 <code class="command">xwininfo</code> 程序查找窗口的 id，可能需要配合选项 -tree 和 -root。
+</p>
+<p>如果窗口随后被放大，新增的区域不会被录制。当窗口被关闭、取消映射（即图标化）或缩小到超出视频尺寸（默认为窗口初始尺寸）时，视频结束。
+</p>
+<p>该选项会禁用 <samp class="option">follow_mouse</samp> 和 <samp class="option">select_region</samp> 选项。
+</p>
+</dd>
+<dt><samp class="option">video_size</samp></dt>
+<dd><p>设置视频帧尺寸。默认为整个桌面或窗口。
+</p>
+</dd>
+<dt><samp class="option">grab_x</samp></dt>
+<dt><samp class="option">grab_y</samp></dt>
+<dd><p>设置采集区域坐标。它们表示为相对于 X11 窗口左上角的偏移量，并对应于设备名中的 <var class="var">x_offset</var> 和 <var class="var">y_offset</var> 参数。两个选项的默认值均为 0。
+</p></dd>
+</dl>
+
+<a name="Output-Devices"></a>
+<h2 class="chapter">4 输出设备<span class="pull-right"><a class="anchor hidden-xs" href="#Output-Devices" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Output-Devices" aria-hidden="true">TOC</a></span></h2>
+
+<p>输出设备是 FFmpeg 中已配置的元素，可以把多媒体数据写入连接到系统的输出设备。
+</p>
+<p>在配置 FFmpeg 构建时，所有受支持的输出设备默认都会被启用。可以使用 configure 选项 &quot;&ndash;list-outdevs&quot; 列出所有可用的输出设备。
+</p>
+<p>可以使用 configure 选项 &quot;&ndash;disable-outdevs&quot; 禁用所有输出设备，使用选项 &quot;&ndash;enable-outdev=<var class="var">OUTDEV</var>&quot; 有选择地启用某个输出设备，或者使用选项 &quot;&ndash;disable-outdev=<var class="var">OUTDEV</var>&quot; 禁用某个特定的输入设备。
+</p>
+<p>ff* 工具的选项 &quot;-devices&quot; 将显示已启用的输出设备列表。
+</p>
+<p>下面介绍当前可用的输出设备。
+</p>
+<a name="alsa-1"></a>
+<h3 class="section">4.1 alsa<span class="pull-right"><a class="anchor hidden-xs" href="#alsa-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-alsa-1" aria-hidden="true">TOC</a></span></h3>
+
+<p>ALSA（Advanced Linux Sound Architecture）输出设备。
+</p>
+<a name="Examples-8"></a>
+<h4 class="subsection">4.1.1 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-8" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-8" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>在默认 ALSA 设备上播放文件：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -f alsa default
+</pre></div>
+
+</li><li>在声卡 1、音频设备 7 上播放文件：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -f alsa hw:1,7
+</pre></div>
+</li></ul>
+
+<a name="AudioToolbox"></a>
+<h3 class="section">4.2 AudioToolbox<span class="pull-right"><a class="anchor hidden-xs" href="#AudioToolbox" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-AudioToolbox" aria-hidden="true">TOC</a></span></h3>
+
+<p>AudioToolbox 输出设备。
+</p>
+<p>允许在 OSX 上原生输出到 CoreAudio 设备。
+</p>
+<p>输出文件名可以为空（或为 <code class="code">-</code>），以指向默认系统输出设备；也可以是一个数字，指向使用下列命令所显示的设备索引：<code class="code">-list_devices true</code>。
+</p>
+<p>或者，也可以使用
+<samp class="option">
+    -audio_device_index &lt;INDEX&gt;
+</samp>
+，按索引选择音频输入设备，从而覆盖输入文件名中给出的任何设备名或索引。
+</p>
+<p>使用 <samp class="option">-list_devices true</samp> 可以枚举所有可用设备，列出所有设备名、UID 以及对应的索引。
+</p>
+<a name="Options-20"></a>
+<h4 class="subsection">4.2.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-20" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-20" aria-hidden="true">TOC</a></span></h4>
+
+<p>AudioToolbox 支持以下选项：
+</p>
+<dl class="table">
+<dt><samp class="option">-audio_device_index &lt;INDEX&gt;</samp></dt>
+<dd><p>按索引指定音频设备。会覆盖输出文件名中给出的任何内容。
+</p>
+</dd>
+</dl>
+
+<a name="Examples-9"></a>
+<h4 class="subsection">4.2.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-9" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-9" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>打印受支持设备的列表，并向默认设备输出正弦波：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f lavfi -i sine=r=44100 -f audiotoolbox -list_devices true -
+</pre></div>
+
+</li><li>向索引为 2 的设备输出正弦波，覆盖任何输出文件名：
+<div class="example">
+<pre class="example-preformatted">$ ffmpeg -f lavfi -i sine=r=44100 -f audiotoolbox -audio_device_index 2 -
+</pre></div>
+
+</li></ul>
+
+<a name="caca"></a>
+<h3 class="section">4.3 caca<span class="pull-right"><a class="anchor hidden-xs" href="#caca" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-caca" aria-hidden="true">TOC</a></span></h3>
+
+<p>CACA 输出设备。
+</p>
+<p>该输出设备可用于在 CACA 窗口中显示视频流。每个应用程序只允许有一个 CACA 窗口，因此在一个应用程序中只能有一个此输出设备的实例。
+</p>
+<p>要启用该输出设备，需要使用 <code class="code">--enable-libcaca</code> 配置 FFmpeg。libcaca 是一个图形库，它输出文本而不是像素。
+</p>
+<p>有关 libcaca 的更多信息，请查看：
+<a class="url" href="http://caca.zoy.org/wiki/libcaca">http://caca.zoy.org/wiki/libcaca</a>
+</p>
+<a name="Options-21"></a>
+<h4 class="subsection">4.3.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-21" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-21" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">window_title</samp></dt>
+<dd><p>设置 CACA 窗口标题，如果未指定，则默认为为该输出设备指定的文件名。
+</p>
+</dd>
+<dt><samp class="option">window_size</samp></dt>
+<dd><p>设置 CACA 窗口尺寸，可以是形如 <var class="var">width</var>x<var class="var">height</var> 的字符串或视频尺寸缩写。如果未指定，则默认为输入视频的尺寸。
+</p>
+</dd>
+<dt><samp class="option">driver</samp></dt>
+<dd><p>设置显示驱动程序。
+</p>
+</dd>
+<dt><samp class="option">algorithm</samp></dt>
+<dd><p>设置抖动算法。抖动是必需的，
+因为所渲染的画面通常拥有远超可用调色板的颜色数量。
+可接受的值可通过 <code class="code">-list_dither algorithms</code> 列出。
+</p>
+</dd>
+<dt><samp class="option">antialias</samp></dt>
+<dd><p>设置抗锯齿方法。抗锯齿可平滑所渲染的图像，
+避免常见的阶梯状锯齿效应。
+可接受的值可通过 <code class="code">-list_dither antialiases</code> 列出。
+</p>
+</dd>
+<dt><samp class="option">charset</samp></dt>
+<dd><p>设置渲染文本时将使用的字符集。
+可接受的值可通过 <code class="code">-list_dither charsets</code> 列出。
+</p>
+</dd>
+<dt><samp class="option">color</samp></dt>
+<dd><p>设置渲染文本时使用的颜色。
+可接受的值可通过 <code class="code">-list_dither colors</code> 列出。
+</p>
+</dd>
+<dt><samp class="option">list_drivers</samp></dt>
+<dd><p>若设置为 <samp class="option">true</samp>，则打印可用驱动程序列表并退出。
+</p>
+</dd>
+<dt><samp class="option">list_dither</samp></dt>
+<dd><p>列出与该参数相关的可用抖动选项。
+该参数必须是 <code class="code">algorithms</code>、<code class="code">antialiases</code>、
+<code class="code">charsets</code>、<code class="code">colors</code> 之一。
+</p></dd>
+</dl>
+
+<a name="Examples-10"></a>
+<h4 class="subsection">4.3.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-10" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-10" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>以下命令显示 <code class="command">ffmpeg</code> 的输出为一个
+CACA 窗口，并强制其尺寸为 80x25：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -c:v rawvideo -pix_fmt rgb24 -window_size 80x25 -f caca -
+</pre></div>
+
+</li><li>显示可用驱动程序列表并退出：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -pix_fmt rgb24 -f caca -list_drivers true -
+</pre></div>
+
+</li><li>显示可用抖动颜色列表并退出：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -pix_fmt rgb24 -f caca -list_dither colors -
+</pre></div>
+</li></ul>
+
+<a name="decklink-1"></a>
+<h3 class="section">4.4 decklink<span class="pull-right"><a class="anchor hidden-xs" href="#decklink-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-decklink-1" aria-hidden="true">TOC</a></span></h3>
+
+<p>decklink 输出设备为 Blackmagic
+DeckLink 设备提供播放能力。
+</p>
+<p>要启用该输出设备，你需要 Blackmagic DeckLink SDK，
+并且需要以适当的 <code class="code">--extra-cflags</code>
+和 <code class="code">--extra-ldflags</code> 进行配置。
+在 Windows 上，你需要通过 <code class="command">widl</code> 处理 IDL 文件。
+</p>
+<p>DeckLink 对其支持的格式非常挑剔。像素格式始终为
+uyvy422，帧率、场序和视频尺寸必须使用
+<code class="command">-list_formats 1</code> 针对你的设备确定。音频采样率始终为 48 kHz。
+</p>
+<a name="Options-22"></a>
+<h4 class="subsection">4.4.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-22" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-22" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">list_devices</samp></dt>
+<dd><p>若设置为 <samp class="option">true</samp>，则打印设备列表并退出。
+默认为 <samp class="option">false</samp>。该选项已废弃，请改用
+ffmpeg 的 <code class="code">-sinks</code> 选项列出可用的输出设备。
+</p>
+</dd>
+<dt><samp class="option">list_formats</samp></dt>
+<dd><p>若设置为 <samp class="option">true</samp>，则打印受支持的格式列表并退出。
+默认为 <samp class="option">false</samp>。
+</p>
+</dd>
+<dt><samp class="option">preroll</samp></dt>
+<dd><p>视频预滚的时间量，以秒为单位。
+默认为 <samp class="option">0.5</samp>。
+</p>
+</dd>
+<dt><samp class="option">duplex_mode</samp></dt>
+<dd><p>设置 decklink 设备的双工/配置模式。必须是 &lsquo;<samp class="samp">unset</samp>&rsquo;、&lsquo;<samp class="samp">half</samp>&rsquo;、&lsquo;<samp class="samp">full</samp>&rsquo;、
+&lsquo;<samp class="samp">one_sub_device_full</samp>&rsquo;、&lsquo;<samp class="samp">one_sub_device_half</samp>&rsquo;、&lsquo;<samp class="samp">two_sub_device_full</samp>&rsquo;、
+&lsquo;<samp class="samp">four_sub_device_half</samp>&rsquo;
+默认为 &lsquo;<samp class="samp">unset</samp>&rsquo;。
+</p>
+<p>注意：DeckLink SDK 11.0 已将 duplex 属性替换为 profile 属性。
+对于 DeckLink Duo 2 和 DeckLink Quad 2，使用相同连接器的任意 2 个
+子设备之间共享一个 profile。对于 DeckLink 8K Pro，所有 4 个子设备
+之间共享一个 profile。因此 DeckLink 8K Pro 支持四个 profile。
+</p>
+<p>DeckLink 8K Pro 的有效 profile 模式（使用 DeckLink SDK &gt;= 11.0）：
+&lsquo;<samp class="samp">one_sub_device_full</samp>&rsquo;、&lsquo;<samp class="samp">one_sub_device_half</samp>&rsquo;、&lsquo;<samp class="samp">two_sub_device_full</samp>&rsquo;、
+&lsquo;<samp class="samp">four_sub_device_half</samp>&rsquo;
+</p>
+<p>DeckLink Quad 2 和 DeckLink Duo 2 的有效 profile 模式：
+&lsquo;<samp class="samp">half</samp>&rsquo;、&lsquo;<samp class="samp">full</samp>&rsquo;
+</p>
+</dd>
+<dt><samp class="option">timing_offset</samp></dt>
+<dd><p>设置所用输出上的同步锁相（genlock）定时像素偏移。
+默认为 &lsquo;<samp class="samp">unset</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">link</samp></dt>
+<dd><p>设置所用输出上的 SDI 视频链路配置。必须是
+&lsquo;<samp class="samp">unset</samp>&rsquo;、&lsquo;<samp class="samp">single</samp>&rsquo; 单链路 SDI、&lsquo;<samp class="samp">dual</samp>&rsquo; 双链路 SDI 或 &lsquo;<samp class="samp">quad</samp>&rsquo; 四链路
+SDI。
+默认为 &lsquo;<samp class="samp">unset</samp>&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">sqd</samp></dt>
+<dd><p>为四链路 SDI 输出启用 Square Division Quad Split 模式。
+必须是 &lsquo;<samp class="samp">unset</samp>&rsquo;、&lsquo;<samp class="samp">true</samp>&rsquo; 或 &lsquo;<samp class="samp">false</samp>&rsquo;。
+默认为 <samp class="option">unset</samp>。
+</p>
+</dd>
+<dt><samp class="option">level_a</samp></dt>
+<dd><p>在所用输出上启用 SMPTE Level A 模式。
+必须是 &lsquo;<samp class="samp">unset</samp>&rsquo;、&lsquo;<samp class="samp">true</samp>&rsquo; 或 &lsquo;<samp class="samp">false</samp>&rsquo;。
+默认为 <samp class="option">unset</samp>。
+</p>
+</dd>
+<dt><samp class="option">vanc_queue_size</samp></dt>
+<dd><p>设置 VANC 数据的最大输出缓冲区大小，以字节为单位。如果缓冲达到该值，
+外发的 VANC 数据将被丢弃。
+默认为 &lsquo;<samp class="samp">1048576</samp>&rsquo;。
+</p>
+</dd>
+</dl>
+
+<a name="Examples-11"></a>
+<h4 class="subsection">4.4.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-11" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-11" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>列出输出设备：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -sinks decklink
+</pre></div>
+
+</li><li>列出受支持的格式：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i test.avi -f decklink -list_formats 1 'DeckLink Mini Monitor'
+</pre></div>
+
+</li><li>播放视频片段：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i test.avi -f decklink -pix_fmt uyvy422 'DeckLink Mini Monitor'
+</pre></div>
+
+</li><li>播放非标准帧率或视频尺寸的视频片段：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i test.avi -f decklink -pix_fmt uyvy422 -s 720x486 -r 24000/1001 'DeckLink Mini Monitor'
+</pre></div>
+
+</li></ul>
+
+<a name="fbdev-1"></a>
+<h3 class="section">4.5 fbdev<span class="pull-right"><a class="anchor hidden-xs" href="#fbdev-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-fbdev-1" aria-hidden="true">TOC</a></span></h3>
+
+<p>Linux 帧缓冲输出设备。
+</p>
+<p>Linux 帧缓冲是一个与图形硬件无关的抽象层，
+用于在计算机显示器上显示图形，通常是在
+控制台上。它通过文件设备节点访问，通常为
+<samp class="file">/dev/fb0</samp>。
+</p>
+<p>如需更详细的信息，请阅读 Linux 源码树中包含的
+文件 <samp class="file">Documentation/fb/framebuffer.txt</samp>。
+</p>
+<a name="Options-23"></a>
+<h4 class="subsection">4.5.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-23" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-23" aria-hidden="true">TOC</a></span></h4>
+<dl class="table">
+<dt><samp class="option">xoffset</samp></dt>
+<dt><samp class="option">yoffset</samp></dt>
+<dd><p>设置左上角的 x/y 坐标。默认为 0。
+</p></dd>
+</dl>
+
+<a name="Examples-12"></a>
+<h4 class="subsection">4.5.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-12" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-12" aria-hidden="true">TOC</a></span></h4>
+<p>在帧缓冲设备 <samp class="file">/dev/fb0</samp> 上播放文件。
+所需的像素格式取决于当前的帧缓冲设置。
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -re -i INPUT -c:v rawvideo -pix_fmt bgra -f fbdev /dev/fb0
+</pre></div>
+
+<p>另请参见 <a class="url" href="http://linux-fbdev.sourceforge.net/">http://linux-fbdev.sourceforge.net/</a> 以及 fbset(1)。
+</p>
+<a name="oss-1"></a>
+<h3 class="section">4.6 oss<span class="pull-right"><a class="anchor hidden-xs" href="#oss-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-oss-1" aria-hidden="true">TOC</a></span></h3>
+
+<p>OSS（Open Sound System）输出设备。
+</p>
+<a name="pulse-1"></a>
+<h3 class="section">4.7 pulse<span class="pull-right"><a class="anchor hidden-xs" href="#pulse-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-pulse-1" aria-hidden="true">TOC</a></span></h3>
+
+<p>PulseAudio 输出设备。
+</p>
+<p>要启用该输出设备，你需要以 <code class="code">--enable-libpulse</code> 配置 FFmpeg。
+</p>
+<p>有关 PulseAudio 的更多信息，可在 <a class="url" href="http://www.pulseaudio.org">http://www.pulseaudio.org</a> 上找到
+</p>
+<a name="Options-24"></a>
+<h4 class="subsection">4.7.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-24" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-24" aria-hidden="true">TOC</a></span></h4>
+<dl class="table">
+<dt><samp class="option">server</samp></dt>
+<dd><p>连接到特定的 PulseAudio 服务器，以 IP 地址指定。
+未提供时使用默认服务器。
+</p>
+</dd>
+<dt><samp class="option">name</samp></dt>
+<dd><p>指定 PulseAudio 在显示活动客户端时所使用的应用程序名，
+默认情况下为 <code class="code">LIBAVFORMAT_IDENT</code> 字符串。
+</p>
+</dd>
+<dt><samp class="option">stream_name</samp></dt>
+<dd><p>指定 PulseAudio 在显示活动流时所使用的流名称，
+默认情况下它被设置为指定的输出名称。
+</p>
+</dd>
+<dt><samp class="option">device</samp></dt>
+<dd><p>指定要使用的设备。未提供时使用默认设备。
+输出设备列表可通过命令 <code class="command">pactl list sinks</code> 获取。
+</p>
+</dd>
+<dt><samp class="option">buffer_size</samp></dt>
+<dt><samp class="option">buffer_duration</samp></dt>
+<dd><p>控制 PulseAudio 缓冲区的大小和时长。较小的缓冲区
+提供更多控制，但需要更频繁的更新。
+</p>
+<p><samp class="option">buffer_size</samp> 以字节为单位指定大小，而
+<samp class="option">buffer_duration</samp> 以毫秒为单位指定时长。
+</p>
+<p>当同时提供这两个选项时，将使用其中较大的值
+（时长会使用流参数重新换算为字节）。如果它们
+被设置为 0（这是默认值），则设备将使用默认的
+PulseAudio 时长值。默认情况下 PulseAudio 将缓冲区时长
+设置为约 2 秒。
+</p>
+</dd>
+<dt><samp class="option">prebuf</samp></dt>
+<dd><p>指定预缓冲大小，以字节为单位。在缓冲区中至少有
+<samp class="option">prebuf</samp> 字节可用之前，服务器不会开始
+播放。默认情况下，该选项被初始化为与
+<samp class="option">buffer_size</samp> 或 <samp class="option">buffer_duration</samp>（取二者中较大者）相同的值。
+</p>
+</dd>
+<dt><samp class="option">minreq</samp></dt>
+<dd><p>指定最小请求大小，以字节为单位。服务器向客户端请求的字节数
+不会少于 <samp class="option">minreq</samp>，而是等待直到缓冲区
+足够空闲以一次性请求更多字节。建议不要设置
+该选项，这会将其初始化为服务器认为合理的
+值。
+</p>
+</dd>
+</dl>
+
+<a name="Examples-13"></a>
+<h4 class="subsection">4.7.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-13" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-13" aria-hidden="true">TOC</a></span></h4>
+<p>在默认服务器上的默认设备上播放文件：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg  -i INPUT -f pulse &quot;stream name&quot;
+</pre></div>
+
+<a name="sndio-1"></a>
+<h3 class="section">4.8 sndio<span class="pull-right"><a class="anchor hidden-xs" href="#sndio-1" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-sndio-1" aria-hidden="true">TOC</a></span></h3>
+
+<p>sndio 音频输出设备。
+</p>
+<a name="v4l2"></a>
+<h3 class="section">4.9 v4l2<span class="pull-right"><a class="anchor hidden-xs" href="#v4l2" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-v4l2" aria-hidden="true">TOC</a></span></h3>
+
+<p>Video4Linux2 输出设备。
+</p>
+<a name="xv"></a>
+<h3 class="section">4.10 xv<span class="pull-right"><a class="anchor hidden-xs" href="#xv" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-xv" aria-hidden="true">TOC</a></span></h3>
+
+<p>XV（XVideo）输出设备。
+</p>
+<p>该输出设备允许在 X Window System
+窗口中显示视频流。
+</p>
+<a name="Options-25"></a>
+<h4 class="subsection">4.10.1 选项<span class="pull-right"><a class="anchor hidden-xs" href="#Options-25" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Options-25" aria-hidden="true">TOC</a></span></h4>
+
+<dl class="table">
+<dt><samp class="option">display_name</samp></dt>
+<dd><p>指定硬件显示名，它决定了要使用的显示域和
+通信域。
+</p>
+<p>显示名或 DISPLAY 环境变量可以是具有
+<var class="var">hostname</var>[:<var class="var">number</var>[.<var class="var">screen_number</var>]] 格式的字符串。
+</p>
+<p><var class="var">hostname</var> 指定显示器实际连接到的
+主机名。<var class="var">number</var> 指定该主机上
+显示服务器的编号。<var class="var">screen_number</var> 指定
+该服务器上要使用的屏幕。
+</p>
+<p>如果未指定，则默认为 DISPLAY 环境变量的
+值。
+</p>
+<p>例如，<code class="code">dual-headed:0.1</code> 将指定名为 &ldquo;dual-headed&rdquo; 的机器上
+显示器 0 的屏幕 1。
+</p>
+<p>关于显示名格式的更详细信息，请查阅 X11
+规范。
+</p>
+</dd>
+<dt><samp class="option">window_id</samp></dt>
+<dd><p>当设置为非零值时，设备不会创建新窗口，
+而是使用所提供的 <var class="var">window_id</var> 对应的已有窗口。默认情况下
+该选项被设置为零，设备会创建自己的窗口。
+</p>
+</dd>
+<dt><samp class="option">window_size</samp></dt>
+<dd><p>设置所创建窗口的大小，可以是
+<var class="var">width</var>x<var class="var">height</var> 形式的字符串，也可以是视频尺寸缩写。如果
+未指定，则默认为输入视频的尺寸。
+当设置了 <var class="var">window_id</var> 时忽略此项。
+</p>
+</dd>
+<dt><samp class="option">window_x</samp></dt>
+<dt><samp class="option">window_y</samp></dt>
+<dd><p>设置所创建窗口的 X 和 Y 偏移。它们默认
+都被设置为 0。这些值可能会被窗口管理器忽略。
+当设置了 <var class="var">window_id</var> 时忽略此项。
+</p>
+</dd>
+<dt><samp class="option">window_title</samp></dt>
+<dd><p>设置窗口标题，若未指定则默认为输出设备所指定的
+文件名。当设置了 <var class="var">window_id</var> 时被忽略。
+</p></dd>
+</dl>
+
+<p>有关 XVideo 的更多信息，请参见 <a class="url" href="http://www.x.org/">http://www.x.org/</a>。
+</p>
+<a name="Examples-14"></a>
+<h4 class="subsection">4.10.2 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples-14" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples-14" aria-hidden="true">TOC</a></span></h4>
+
+<ul class="itemize mark-bullet">
+<li>使用 <code class="command">ffmpeg</code> 同时解码、显示并编码视频输入：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT OUTPUT -f xv display
+</pre></div>
+
+</li><li>解码输入视频并将其显示到多个 X11 窗口：
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT -f xv normal -vf negate -f xv negated
+</pre></div>
+</li></ul>
+
+
+<a name="See-Also"></a>
+<h2 class="chapter">5 参见<span class="pull-right"><a class="anchor hidden-xs" href="#See-Also" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-See-Also" aria-hidden="true">TOC</a></span></h2>
+
+<p><a class="url" href="ffmpeg.html">ffmpeg</a>, <a class="url" href="ffplay.html">ffplay</a>, <a class="url" href="ffprobe.html">ffprobe</a>,
+<a class="url" href="libavdevice.html">libavdevice</a>
+</p>
+
+<a name="Authors"></a>
+<h2 class="chapter">6 作者<span class="pull-right"><a class="anchor hidden-xs" href="#Authors" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Authors" aria-hidden="true">TOC</a></span></h2>
+
+<p>FFmpeg 开发者。
+</p>
+<p>关于作者身份的详细信息，请参阅本项目的 Git 历史
+(https://git.ffmpeg.org/ffmpeg)，例如在 FFmpeg 源代码目录中输入命令
+<code class="command">git log</code>，或者浏览
+位于 <a class="url" href="https://git.ffmpeg.org/ffmpeg">https://git.ffmpeg.org/ffmpeg</a> 的在线仓库。
+</p>
+<p>各具体组件的维护者列于源代码树中的文件
+<samp class="file">MAINTAINERS</samp> 里。
+</p>
+
+      <p style="font-size: small;">
+        本文档使用 <a class="uref" href="https://www.gnu.org/software/texinfo/"><em class="emph">makeinfo</em></a> 生成。
+      </p>
+    </div>
+  </body>
+</html>

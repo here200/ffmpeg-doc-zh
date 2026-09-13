@@ -1,0 +1,416 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+  <head>
+    <meta charset="utf-8">
+    <title>
+      FFmpeg 自动化测试环境
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+      FFmpeg 自动化测试环境
+      </h1>
+
+
+<a name="Top"></a>
+<a name="SEC_Top"></a>
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">目录</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Introduction" href="#Introduction">1 简介</a></li>
+  <li><a id="toc-Using-FATE-from-your-FFmpeg-source-directory" href="#Using-FATE-from-your-FFmpeg-source-directory">2 从你的 FFmpeg 源码目录使用 FATE</a></li>
+  <li><a id="toc-Submitting-the-results-to-the-FFmpeg-result-aggregation-server" href="#Submitting-the-results-to-the-FFmpeg-result-aggregation-server">3 将结果提交到 FFmpeg 结果聚合服务器</a></li>
+  <li><a id="toc-Uploading-new-samples-to-the-fate-suite" href="#Uploading-new-samples-to-the-fate-suite">4 向 fate 测试套件上传新样本</a></li>
+  <li><a id="toc-FATE-makefile-targets-and-variables" href="#FATE-makefile-targets-and-variables">5 FATE makefile 目标与变量</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Makefile-targets" href="#Makefile-targets">5.1 Makefile 目标</a></li>
+    <li><a id="toc-Makefile-variables" href="#Makefile-variables">5.2 Makefile 变量</a></li>
+    <li><a id="toc-Examples" href="#Examples">5.3 示例</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+
+<a name="Introduction"></a>
+<h2 class="chapter">1 简介<span class="pull-right"><a class="anchor hidden-xs" href="#Introduction" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Introduction" aria-hidden="true">TOC</a></span></h2>
+
+<p>FATE 在客户端是一个扩展的回归测试套件，在服务器端则是结果聚合
+与展示的手段。
+</p>
+<p>本文档的第一部分说明如何从你的 FFmpeg 源码目录使用 FATE 来测试你的
+ffmpeg 二进制文件。第二部分描述如何运行 FATE，以将你的结果
+提交到 FFmpeg 的 FATE
+服务器。
+</p>
+<p>无论如何，你都可以访问以下网站，查看公开可见的 FATE
+结果：
+</p>
+<p><a class="url" href="http://fate.ffmpeg.org/">http://fate.ffmpeg.org/</a>
+</p>
+<p>特别推荐所有向 FFmpeg 贡献源代码的人这样做，因为这样可以
+看出某个平台上的某个测试是否因他们最近的贡献而出错。这通常
+发生在开发者无法在其上进行测试的
+平台上。
+</p>
+<p>本文档的第二部分描述如何运行 FATE，以将你的结果提交到
+FFmpeg 的 FATE 服务器。如果你想提交结果，请务必确认
+你的 CPU、操作系统和编译器组合尚未在上述
+网站上列出。
+</p>
+<p>在第三部分中，你可以找到 FATE makefile 目标与变量的
+完整列表。
+</p>
+
+<a name="Using-FATE-from-your-FFmpeg-source-directory"></a>
+<h2 class="chapter">2 从你的 FFmpeg 源码目录使用 FATE<span class="pull-right"><a class="anchor hidden-xs" href="#Using-FATE-from-your-FFmpeg-source-directory" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Using-FATE-from-your-FFmpeg-source-directory" aria-hidden="true">TOC</a></span></h2>
+
+<p>如果你想在自己的机器上运行 FATE，需要先配置 FFmpeg。
+你可以在配置时通过添加参数
+<code class="code">--samples=/path/to/fate-suite</code> 来指定样本的位置。
+</p>
+<div class="example">
+<pre class="example-preformatted">./configure --enable-somelib --samples=/path/to/fate-suite
+</pre></div>
+
+<p>配置成功后，你需要就地添加和/或更新样本：
+</p>
+<div class="example">
+<pre class="example-preformatted">make fate-rsync
+</pre></div>
+
+<p>现在你可以运行 FATE 了：
+</p>
+<div class="example">
+<pre class="example-preformatted">make fate
+</pre></div>
+
+<p>关于可以添加的参数列表，请参见 <a class="ref" href="#makefile-variables">makefile 变量</a>。
+</p>
+<p>如果你在配置时没有设置样本路径，或者希望在启动 FATE 之前
+覆盖它，可以通过以下三种方式之一来实现。
+</p>
+<p>一种是设置一个 make 变量：
+</p>
+<div class="example">
+<pre class="example-preformatted">make fate-rsync SAMPLES=/path/to/fate-suite
+make fate       SAMPLES=/path/to/fate-suite
+</pre></div>
+
+<p>或者为当前会话设置环境变量：
+</p>
+<div class="example">
+<pre class="example-preformatted">export FATE_SAMPLES=/path/to/fate-suite
+make fate-rsync
+make fate
+</pre></div>
+
+<p>或者在单条命令前加上它，使其仅对该命令生效：
+</p>
+<div class="example">
+<pre class="example-preformatted">FATE_SAMPLES=/path/to/fate-suite make fate-rsync
+FATE_SAMPLES=/path/to/fate-suite make fate
+</pre></div>
+
+<p>也可以在你的 shell 配置文件中设置该变量，使其永久生效。
+</p>
+<div class="info">
+<p>不要在样本路径中使用 &rsquo;~&rsquo; 字符来表示主目录。
+由于 shell 的某些细微差异，这会导致 FATE 失败。
+另外，在 Windows 上该路径必须相对于构建路径，
+在此情况下构建路径就是 FFmpeg 源码目录。
+</p></div>
+<p>请注意，某些断言默认是禁用的，因此在配置时要注意设置
+<samp class="option">--assert-level=&lt;level&gt;</samp>，例如在追求
+尽可能最高的测试覆盖率时：
+</p><div class="example">
+<pre class="example-preformatted">./configure --assert-level=2
+</pre></div>
+<p>请注意，提高断言级别可能会影响性能。
+</p>
+<p>要获取完整的测试列表，请运行以下命令：
+</p><div class="example">
+<pre class="example-preformatted">make fate-list
+</pre></div>
+
+<p>你可以使用 <code class="code">fate-</code> 前缀指定列表中的相应条目，
+从而指定要运行的一部分测试，
+例如：
+</p><div class="example">
+<pre class="example-preformatted">make fate-ffprobe_compact fate-ffprobe_xml
+</pre></div>
+
+<p>这样在出现失败时，就更容易只运行少量测试，而无需
+运行整个测试套件。
+</p>
+<p>要使用自定义包装器来运行测试，请向 <code class="command">configure</code> 传入
+<samp class="option">--target-exec</samp>，或者设置 <var class="var">TARGET_EXEC</var> Make 变量。
+</p>
+
+<a name="Submitting-the-results-to-the-FFmpeg-result-aggregation-server"></a>
+<h2 class="chapter">3 将结果提交到 FFmpeg 结果聚合服务器<span class="pull-right"><a class="anchor hidden-xs" href="#Submitting-the-results-to-the-FFmpeg-result-aggregation-server" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Submitting-the-results-to-the-FFmpeg-result-aggregation-server" aria-hidden="true">TOC</a></span></h2>
+
+<p>要将结果提交到服务器，你应当从 FFmpeg 源码中通过 shell
+脚本 <samp class="file">tests/fate.sh</samp> 运行 fate。该脚本需要
+以配置文件作为第一个参数来调用。
+</p>
+<div class="example">
+<pre class="example-preformatted">tests/fate.sh /path/to/fate_config
+</pre></div>
+
+<p>带有注释、说明各个配置变量的配置文件模板
+可以在 <samp class="file">doc/fate_config.sh.template</samp> 找到。
+</p>
+<p>上述配置模板也可以在这里获得：
+</p><pre class="verbatim">slot=                                    # some unique identifier
+repo=https://git.ffmpeg.org/ffmpeg.git   # the source repository
+#branch=release/2.6                       # the branch to test
+samples=                                 # path to samples directory
+workdir=                                 # directory in which to do all the work
+#fate_recv=&quot;ssh -T fate@fate.ffmpeg.org&quot; # command to submit report
+comment=                                 # optional description
+build_only=     # set to &quot;yes&quot; for a compile-only instance that skips tests
+skip_clean=     # set to &quot;yes&quot; to preserve build/install directories
+ignore_tests=
+
+# the following are optional and map to configure options
+arch=
+cpu=
+toolchain=
+cross_prefix=
+ar=
+as=
+cc=
+cxx=
+ld=
+nm=
+target_os=
+sysroot=
+target_exec=
+target_path=
+target_samples=
+extra_cflags=
+extra_cxxflags=
+extra_objcflags=
+extra_ldflags=
+extra_libs=
+extra_conf=     # extra configure options not covered above
+
+#make=          # name of GNU make if not 'make'
+makeopts=       # extra options passed to 'make'
+#makeopts_fate= # extra options passed to 'make' when running tests,
+                # defaulting to makeopts above if this is not set
+#tar=           # command to create a tar archive from its arguments on stdout,
+                # defaults to 'tar c'
+#fate_targets=  # targets to make when running fate; defaults to &quot;fate&quot;,
+                # can be set to run a subset of tests, e.g. &quot;fate-checkasm&quot;.
+
+#fate_environments=  # a list of names of configurations to run tests for;
+                     # each round is run with variables from ${${name}_env} set.
+
+# One example of using fate_environments:
+
+# target_exec=&quot;qemu-aarch64-static&quot;
+# fate_targets=&quot;fate-checkasm fate-cpu&quot;
+# fate_environments=&quot;sve128 sve256&quot;
+# sve128_env=&quot;QEMU_CPU=max,sve128=on&quot;
+# sve256_env=&quot;QEMU_CPU=max,sve256=on&quot;
+
+# The variables set by fate_environments can also be used explicitly
+# by target_exec, e.g. like this:
+
+# target_exec=&quot;qemu-aarch64-static -cpu \$(MY_CPU)&quot;
+# fate_targets=&quot;fate-checkasm fate-cpu&quot;
+# fate_environments=&quot;sve128 sve256&quot;
+# sve128_env=&quot;MY_CPU=max,sve128=on&quot;
+# sve256_env=&quot;MY_CPU=max,sve256=on&quot;
+</pre>
+<p>基于该配置模板，创建一个符合你需求的配置。
+<code class="env">slot</code> 配置变量可以是任何尚未
+被使用的字符串，但建议你按照以下模式命名
+&lsquo;<samp class="samp"><var class="var">arch</var>-<var class="var">os</var>-<var class="var">compiler</var>-<var class="var">compiler version</var></samp>&rsquo;。
+配置文件本身会在 shell 脚本中被 source，因此可以使用所有
+shell 特性。这使你能够根据需要
+为你的构建搭建环境。
+</p>
+<p>在你最初几次测试运行时，<code class="env">fate_recv</code> 变量应当为空或
+被注释掉。此时除省略将结果提交到服务器这一步之外，
+其余一切都会照常运行。以下文件应当
+出现在配置文件中指定的 $workdir 中：
+</p>
+<ul class="itemize mark-bullet">
+<li>configure.log
+    </li><li>compile.log
+    </li><li>test.log
+    </li><li>report
+    </li><li>version
+</li></ul>
+
+<p>当一切运行正常后，你可以创建一个 SSH 密钥对，
+并将公钥发送给 FATE 服务器管理员，可通过以下邮箱地址
+联系该管理员：<a class="email" href="mailto:fate-admin@ffmpeg.org">fate-admin@ffmpeg.org</a>。
+</p>
+<p>将你的 SSH 客户端配置为在连接 FATE 服务器时使用该密钥
+进行公钥认证。另外别忘了检查服务器的身份
+并接受其主机密钥。通常可以通过以下方式完成：
+手动运行 SSH 客户端，并在接受该密钥后将其终止。
+FATE 服务器的指纹是：
+</p>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">RSA</samp>&rsquo;</dt>
+<dd><p>d3:f1:83:97:a4:75:2b:a6:fb:d6:e8:aa:81:93:97:51
+</p></dd>
+<dt>&lsquo;<samp class="samp">ECDSA</samp>&rsquo;</dt>
+<dd><p>76:9f:68:32:04:1e:d5:d4:ec:47:3f:dc:fc:18:17:86
+</p></dd>
+</dl>
+
+<p>如果你在连接 FATE 服务器时遇到问题，可以尝试使用带有
+<code class="command">ssh</code> 命令并带一个或多个 <samp class="option">-v</samp> 选项。你应当
+获得关于你的 SSH 配置以及认证过程的
+详细输出。
+</p>
+<p>剩下的唯一一件事就是自动执行 fate.sh 脚本以及
+样本目录的同步。
+</p>
+<a name="Uploading-new-samples-to-the-fate-suite"></a>
+<h2 class="chapter">4 向 fate 测试套件上传新样本<span class="pull-right"><a class="anchor hidden-xs" href="#Uploading-new-samples-to-the-fate-suite" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Uploading-new-samples-to-the-fate-suite" aria-hidden="true">TOC</a></span></h2>
+
+<p>如果你需要上传样本，请向 samples-request 发送邮件。
+</p>
+<p>这面向在 fate 测试套件服务器上拥有账号的开发者。
+如果你上传新样本，请确保它们尽可能小，
+每个客户端的空间、网络带宽等都受益于更小的测试用例。
+另外请记住，较旧的检出会使用已有的样本文件，这意味着
+实际上通常不要替换、删除或覆盖文件，因为那样很可能会
+破坏较旧的检出或发布版本。
+此外，某个提交所需的所有样本都应当在该推送之前
+上传，理想情况下提前 24 小时。
+如果你需要账号以便频繁上传样本，或者你希望通过
+替他人做这件事来提供帮助，请向 ffmpeg-devel 发送邮件。
+</p>
+<div class="example">
+<pre class="example-preformatted">#First update your local samples copy:
+rsync -vauL --chmod=Dg+s,Duo+x,ug+rw,o+r,o-w,+X fate-suite.ffmpeg.org:/home/samples/fate-suite/ ~/fate-suite
+
+#Then do a dry run checking what would be uploaded:
+rsync -vanL --no-g --chmod=Dg+s,Duo+x,ug+rw,o+r,o-w,+X ~/fate-suite/ fate-suite.ffmpeg.org:/home/samples/fate-suite
+
+#Upload the files:
+rsync -vaL  --no-g --chmod=Dg+s,Duo+x,ug+rw,o+r,o-w,+X ~/fate-suite/ fate-suite.ffmpeg.org:/home/samples/fate-suite
+</pre></div>
+
+
+<a name="FATE-makefile-targets-and-variables"></a>
+<h2 class="chapter">5 FATE makefile 目标与变量<span class="pull-right"><a class="anchor hidden-xs" href="#FATE-makefile-targets-and-variables" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-FATE-makefile-targets-and-variables" aria-hidden="true">TOC</a></span></h2>
+
+<a name="Makefile-targets"></a>
+<h3 class="section">5.1 Makefile 目标<span class="pull-right"><a class="anchor hidden-xs" href="#Makefile-targets" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Makefile-targets" aria-hidden="true">TOC</a></span></h3>
+
+<dl class="table">
+<dt><samp class="option">fate-rsync</samp></dt>
+<dd><p>将样本文件下载/同步到已配置的样本目录。
+</p>
+</dd>
+<dt><samp class="option">fate-list</samp></dt>
+<dd><p>将列出所有 fate/回归测试目标。
+</p>
+</dd>
+<dt><samp class="option">fate-list-failing</samp></dt>
+<dd><p>列出上次执行时失败的 fate 测试。
+</p>
+</dd>
+<dt><samp class="option">fate-clear-reports</samp></dt>
+<dd><p>移除之前测试执行产生的测试报告（以清除
+来自 fate-list-failing 的潜在过期结果）。
+</p>
+</dd>
+<dt><samp class="option">fate</samp></dt>
+<dd><p>运行 FATE 测试套件（需要 fate-suite 数据集）。
+</p></dd>
+</dl>
+
+<a name="Makefile-variables"></a>
+<h3 class="section">5.2 Makefile 变量<span class="pull-right"><a class="anchor hidden-xs" href="#Makefile-variables" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Makefile-variables" aria-hidden="true">TOC</a></span></h3>
+<a class="anchor" id="makefile-variables"></a>
+<dl class="table">
+<dt><code class="env">V</code></dt>
+<dd><p>详细程度级别，可设置为 0、1 或 2。
+    </p><ul class="itemize mark-bullet">
+<li>0：只显示测试参数
+        </li><li>1：只显示测试中使用的命令
+        </li><li>2：显示全部内容
+    </li></ul>
+
+</dd>
+<dt><code class="env">SAMPLES</code></dt>
+<dd><p>在 make 时指定或覆盖 FATE 样本的路径，该设置
+仅在运行回归测试时才有意义。
+</p>
+</dd>
+<dt><code class="env">THREADS</code></dt>
+<dd><p>指定运行回归测试时使用的线程数，
+这对检测与线程相关的回归相当有用。
+</p>
+<p>该变量可以设置为字符串 &quot;random&quot;，其后可选地跟一个
+数字，如 &quot;random99&quot;，这会使每个测试使用随机的
+线程数。如果指定了数字，该数字用作最大线程数，
+否则最大值为 16。
+</p>
+<p>如果某个测试失败，该测试所用的线程数将被写入
+errfile 文件。
+</p>
+</dd>
+<dt><code class="env">THREAD_TYPE</code></dt>
+<dd><p>指定测试使用哪种线程策略，可以是 &lsquo;<samp class="samp">slice</samp>&rsquo; 或 &lsquo;<samp class="samp">frame</samp>&rsquo;，
+默认为 &lsquo;<samp class="samp">slice+frame</samp>&rsquo;
+</p>
+</dd>
+<dt><code class="env">CPUFLAGS</code></dt>
+<dd><p>指定 CPU 标志。
+</p>
+</dd>
+<dt><code class="env">TARGET_EXEC</code></dt>
+<dd><p>指定或覆盖用于运行测试的包装程序。
+<code class="env">TARGET_EXEC</code> 选项提供了一种方式，可将 FATE 包装在
+<code class="command">valgrind</code>、<code class="command">qemu-user</code> 或 <code class="command">wine</code> 中运行，或在远程目标上
+通过 <code class="command">ssh</code> 运行。
+</p>
+</dd>
+<dt><code class="env">GEN</code></dt>
+<dd><p>设置为 &lsquo;<samp class="samp">1</samp>&rsquo; 以生成缺失或不匹配的参考。
+</p>
+</dd>
+<dt><code class="env">HWACCEL</code></dt>
+<dd><p>指定运行回归测试时使用哪种硬件加速，
+默认使用 &lsquo;<samp class="samp">none</samp>&rsquo;。
+</p>
+</dd>
+<dt><code class="env">KEEP</code></dt>
+<dd><p>设置为 &lsquo;<samp class="samp">1</samp>&rsquo; 以在测试成功时保留 fate 测试生成的临时文件。
+默认为 &lsquo;<samp class="samp">0</samp>&rsquo;，此时会删除这些文件。当测试
+失败时，文件始终会被保留。
+</p>
+</dd>
+</dl>
+
+<a name="Examples"></a>
+<h3 class="section">5.3 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">make V=1 SAMPLES=/var/fate/samples THREADS=2 CPUFLAGS=mmx fate
+</pre></div>
+      <p style="font-size: small;">
+        本文档是使用 <a class="uref" href="https://www.gnu.org/software/texinfo/"><em class="emph">makeinfo</em></a> 生成的。
+      </p>
+    </div>
+  </body>
+</html>

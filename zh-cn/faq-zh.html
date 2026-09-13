@@ -1,0 +1,814 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+  <head>
+    <meta charset="utf-8">
+    <title>
+      FFmpeg 常见问题
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+      FFmpeg 常见问题
+      </h1>
+
+
+<a name="SEC_Top"></a>
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">目录</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-General-Questions" href="#General-Questions">1 通用问题</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Why-doesn_0027t-FFmpeg-support-feature-_005bxyz_005d_003f" href="#Why-doesn_0027t-FFmpeg-support-feature-_005bxyz_005d_003f">1.1 为什么 FFmpeg 不支持 [xyz] 功能？</a></li>
+    <li><a id="toc-FFmpeg-does-not-support-codec-XXX_002e-Can-you-include-a-Windows-DLL-loader-to-support-it_003f" href="#FFmpeg-does-not-support-codec-XXX_002e-Can-you-include-a-Windows-DLL-loader-to-support-it_003f">1.2 FFmpeg 不支持编解码器 XXX。你们能加入一个 Windows DLL 加载器来支持它吗？</a></li>
+    <li><a id="toc-I-cannot-read-this-file-although-this-format-seems-to-be-supported-by-ffmpeg_002e" href="#I-cannot-read-this-file-although-this-format-seems-to-be-supported-by-ffmpeg_002e">1.3 尽管 ffmpeg 似乎支持这种格式，我却无法读取该文件。</a></li>
+    <li><a id="toc-Which-codecs-are-supported-by-Windows_003f" href="#Which-codecs-are-supported-by-Windows_003f">1.4 Windows 支持哪些编解码器？</a></li>
+  </ul></li>
+  <li><a id="toc-Compilation" href="#Compilation">2 编译</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-error_003a-can_0027t-find-a-register-in-class-_0027GENERAL_005fREGS_0027-while-reloading-_0027asm_0027" href="#error_003a-can_0027t-find-a-register-in-class-_0027GENERAL_005fREGS_0027-while-reloading-_0027asm_0027">2.1 <code class="code">error: can't find a register in class 'GENERAL_REGS' while reloading 'asm'</code></a></li>
+    <li><a id="toc-I-have-installed-this-library-with-my-distro_0027s-package-manager_002e-Why-does-configure-not-see-it_003f" href="#I-have-installed-this-library-with-my-distro_0027s-package-manager_002e-Why-does-configure-not-see-it_003f">2.2 我已用发行版的包管理器安装了这个库。为什么 <code class="command">configure</code> 看不到它？</a></li>
+    <li><a id="toc-How-do-I-make-pkg_002dconfig-find-my-libraries_003f" href="#How-do-I-make-pkg_002dconfig-find-my-libraries_003f">2.3 如何让 <code class="command">pkg-config</code> 找到我的库？</a></li>
+    <li><a id="toc-How-do-I-use-pkg_002dconfig-when-cross_002dcompiling_003f" href="#How-do-I-use-pkg_002dconfig-when-cross_002dcompiling_003f">2.4 交叉编译时如何使用 <code class="command">pkg-config</code>？</a></li>
+  </ul></li>
+  <li><a id="toc-Usage" href="#Usage">3 用法</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-ffmpeg-does-not-work_003b-what-is-wrong_003f" href="#ffmpeg-does-not-work_003b-what-is-wrong_003f">3.1 ffmpeg 不工作；出了什么问题？</a></li>
+    <li><a id="toc-How-do-I-encode-single-pictures-into-movies_003f" href="#How-do-I-encode-single-pictures-into-movies_003f">3.2 如何把单张图片编码成影片？</a></li>
+    <li><a id="toc-How-do-I-encode-movie-to-single-pictures_003f" href="#How-do-I-encode-movie-to-single-pictures_003f">3.3 如何把影片编码成单张图片？</a></li>
+    <li><a id="toc-Why-do-I-see-a-slight-quality-degradation-with-multithreaded-MPEG_002a-encoding_003f" href="#Why-do-I-see-a-slight-quality-degradation-with-multithreaded-MPEG_002a-encoding_003f">3.4 为什么多线程 MPEG* 编码会出现轻微的画质下降？</a></li>
+    <li><a id="toc-How-can-I-read-from-the-standard-input-or-write-to-the-standard-output_003f" href="#How-can-I-read-from-the-standard-input-or-write-to-the-standard-output_003f">3.5 如何从标准输入读取或向标准输出写入？</a></li>
+    <li><a id="toc-_002df-jpeg-doesn_0027t-work_002e" href="#g_t_002df-jpeg-doesn_0027t-work_002e">3.6 -f jpeg 无法工作。</a></li>
+    <li><a id="toc-Why-can-I-not-change-the-frame-rate_003f" href="#Why-can-I-not-change-the-frame-rate_003f">3.7 为什么我无法更改帧率？</a></li>
+    <li><a id="toc-How-do-I-encode-Xvid-or-DivX-video-with-ffmpeg_003f" href="#How-do-I-encode-Xvid-or-DivX-video-with-ffmpeg_003f">3.8 如何用 ffmpeg 编码 Xvid 或 DivX 视频？</a></li>
+    <li><a id="toc-Which-are-good-parameters-for-encoding-high-quality-MPEG_002d4_003f" href="#Which-are-good-parameters-for-encoding-high-quality-MPEG_002d4_003f">3.9 编码高质量 MPEG-4 有哪些好参数？</a></li>
+    <li><a id="toc-Which-are-good-parameters-for-encoding-high-quality-MPEG_002d1_002fMPEG_002d2_003f" href="#Which-are-good-parameters-for-encoding-high-quality-MPEG_002d1_002fMPEG_002d2_003f">3.10 编码高质量 MPEG-1/MPEG-2 有哪些好参数？</a></li>
+    <li><a id="toc-Interlaced-video-looks-very-bad-when-encoded-with-ffmpeg_002c-what-is-wrong_003f" href="#Interlaced-video-looks-very-bad-when-encoded-with-ffmpeg_002c-what-is-wrong_003f">3.11 隔行视频用 ffmpeg 编码后看起来非常糟，出了什么问题？</a></li>
+    <li><a id="toc-How-can-I-read-DirectShow-files_003f" href="#How-can-I-read-DirectShow-files_003f">3.12 如何读取 DirectShow 文件？</a></li>
+    <li><a id="toc-How-can-I-join-video-files_003f" href="#How-can-I-join-video-files_003f">3.13 如何连接视频文件？</a></li>
+    <li><a id="toc-How-can-I-concatenate-video-files_003f" href="#How-can-I-concatenate-video-files_003f">3.14 如何拼接视频文件？</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Concatenating-using-the-concat-filter" href="#Concatenating-using-the-concat-filter">3.14.1 使用 concat <em class="emph">滤镜</em>拼接</a></li>
+      <li><a id="toc-Concatenating-using-the-concat-demuxer" href="#Concatenating-using-the-concat-demuxer">3.14.2 使用 concat <em class="emph">解复用器</em>拼接</a></li>
+      <li><a id="toc-Concatenating-using-the-concat-protocol-_0028file-level_0029" href="#Concatenating-using-the-concat-protocol-_0028file-level_0029">3.14.3 使用 concat <em class="emph">协议</em>拼接（文件级）</a></li>
+      <li><a id="toc-Concatenating-using-raw-audio-and-video" href="#Concatenating-using-raw-audio-and-video">3.14.4 使用原始音频和视频拼接</a></li>
+    </ul></li>
+    <li><a id="toc-Using-_002df-lavfi_002c-audio-becomes-mono-for-no-apparent-reason_002e" href="#Using-_002df-lavfi_002c-audio-becomes-mono-for-no-apparent-reason_002e">3.15 使用 <samp class="option">-f lavfi</samp> 时，音频无缘无故变成单声道。</a></li>
+    <li><a id="toc-Why-does-FFmpeg-not-see-the-subtitles-in-my-VOB-file_003f" href="#Why-does-FFmpeg-not-see-the-subtitles-in-my-VOB-file_003f">3.16 为什么 FFmpeg 看不到我 VOB 文件中的字幕？</a></li>
+    <li><a id="toc-Why-was-the-ffmpeg-_002dsameq-option-removed_003f-What-to-use-instead_003f" href="#Why-was-the-ffmpeg-_002dsameq-option-removed_003f-What-to-use-instead_003f">3.17 为什么移除了 <code class="command">ffmpeg</code> 的 <samp class="option">-sameq</samp> 选项？改用什么呢？</a></li>
+    <li><a id="toc-I-have-a-stretched-video_002c-why-does-scaling-not-fix-it_003f" href="#I-have-a-stretched-video_002c-why-does-scaling-not-fix-it_003f">3.18 我有一个被拉伸的视频，为什么缩放无法修复它？</a></li>
+    <li><a id="toc-How-do-I-run-ffmpeg-as-a-background-task_003f" href="#How-do-I-run-ffmpeg-as-a-background-task_003f">3.19 如何把 ffmpeg 作为后台任务运行？</a></li>
+    <li><a id="toc-How-do-I-prevent-ffmpeg-from-suspending-with-a-message-like-suspended-_0028tty-output_0029_003f" href="#How-do-I-prevent-ffmpeg-from-suspending-with-a-message-like-suspended-_0028tty-output_0029_003f">3.20 如何防止 ffmpeg 因类似 <em class="emph">suspended (tty output)</em> 的消息而挂起？</a></li>
+  </ul></li>
+  <li><a id="toc-Development" href="#Development">4 开发</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Are-there-examples-illustrating-how-to-use-the-FFmpeg-libraries_002c-particularly-libavcodec-and-libavformat_003f" href="#Are-there-examples-illustrating-how-to-use-the-FFmpeg-libraries_002c-particularly-libavcodec-and-libavformat_003f">4.1 有没有示例说明如何使用 FFmpeg 库，特别是 libavcodec 和 libavformat？</a></li>
+    <li><a id="toc-Can-you-support-my-C-compiler-XXX_003f" href="#Can-you-support-my-C-compiler-XXX_003f">4.2 你们能支持我的 C 编译器 XXX 吗？</a></li>
+    <li><a id="toc-Is-Microsoft-Visual-C_002b_002b-supported_003f" href="#Is-Microsoft-Visual-C_002b_002b-supported_003f">4.3 是否支持 Microsoft Visual C++？</a></li>
+    <li><a id="toc-Can-you-add-automake_002c-libtool-or-autoconf-support_003f" href="#Can-you-add-automake_002c-libtool-or-autoconf-support_003f">4.4 你们能添加对 automake、libtool 或 autoconf 的支持吗？</a></li>
+    <li><a id="toc-Why-not-rewrite-FFmpeg-in-object_002doriented-C_002b_002b_003f" href="#Why-not-rewrite-FFmpeg-in-object_002doriented-C_002b_002b_003f">4.5 为什么不用面向对象的 C++ 重写 FFmpeg？</a></li>
+    <li><a id="toc-Why-are-the-ffmpeg-programs-devoid-of-debugging-symbols_003f" href="#Why-are-the-ffmpeg-programs-devoid-of-debugging-symbols_003f">4.6 为什么 ffmpeg 程序没有调试符号？</a></li>
+    <li><a id="toc-I-do-not-like-the-LGPL_002c-can-I-contribute-code-under-the-GPL-instead_003f" href="#I-do-not-like-the-LGPL_002c-can-I-contribute-code-under-the-GPL-instead_003f">4.7 我不喜欢 LGPL，我可以改为按 GPL 贡献代码吗？</a></li>
+    <li><a id="toc-I_0027m-using-FFmpeg-from-within-my-C-application-but-the-linker-complains-about-missing-symbols-from-the-libraries-themselves_002e" href="#I_0027m-using-FFmpeg-from-within-my-C-application-but-the-linker-complains-about-missing-symbols-from-the-libraries-themselves_002e">4.8 我在自己的 C 应用程序中使用 FFmpeg，但链接器报错说缺少来自库本身的符号。</a></li>
+    <li><a id="toc-I_0027m-using-FFmpeg-from-within-my-C_002b_002b-application-but-the-linker-complains-about-missing-symbols-which-seem-to-be-available_002e" href="#I_0027m-using-FFmpeg-from-within-my-C_002b_002b-application-but-the-linker-complains-about-missing-symbols-which-seem-to-be-available_002e">4.9 我在自己的 C++ 应用程序中使用 FFmpeg，但链接器报错说缺少一些似乎可用的符号。</a></li>
+    <li><a id="toc-I-have-a-file-in-memory-_002f-a-API-different-from-_002aopen_002f_002aread_002f-libc-how-do-I-use-it-with-libavformat_003f" href="#I-have-a-file-in-memory-_002f-a-API-different-from-_002aopen_002f_002aread_002f-libc-how-do-I-use-it-with-libavformat_003f">4.10 我的文件在内存中／一个不同于 *open/*read/ libc 的 API，如何配合 libavformat 使用它？</a></li>
+    <li><a id="toc-Where-is-the-documentation-about-ffv1_002c-msmpeg4_002c-asv1_002c-4xm_003f" href="#Where-is-the-documentation-about-ffv1_002c-msmpeg4_002c-asv1_002c-4xm_003f">4.11 关于 ffv1、msmpeg4、asv1、4xm 的文档在哪里？</a></li>
+    <li><a id="toc-How-do-I-feed-H_002e263_002dRTP-_0028and-other-codecs-in-RTP_0029-to-libavcodec_003f" href="#How-do-I-feed-H_002e263_002dRTP-_0028and-other-codecs-in-RTP_0029-to-libavcodec_003f">4.12 如何把 H.263-RTP（以及 RTP 中的其他编解码器）喂给 libavcodec？</a></li>
+    <li><a id="toc-AVStream_002er_005fframe_005frate-is-wrong_002c-it-is-much-larger-than-the-frame-rate_002e" href="#AVStream_002er_005fframe_005frate-is-wrong_002c-it-is-much-larger-than-the-frame-rate_002e">4.13 AVStream.r_frame_rate 是错误的，它比帧率大得多。</a></li>
+    <li><a id="toc-Why-is-make-fate-not-running-all-tests_003f" href="#Why-is-make-fate-not-running-all-tests_003f">4.14 为什么 <code class="code">make fate</code> 没有运行所有测试？</a></li>
+    <li><a id="toc-Why-is-make-fate-not-finding-the-samples_003f" href="#Why-is-make-fate-not-finding-the-samples_003f">4.15 为什么 <code class="code">make fate</code> 找不到样本？</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+
+<a name="General-Questions"></a>
+<h2 class="chapter">1 通用问题<span class="pull-right"><a class="anchor hidden-xs" href="#General-Questions" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-General-Questions" aria-hidden="true">TOC</a></span></h2>
+
+<a name="Why-doesn_0027t-FFmpeg-support-feature-_005bxyz_005d_003f"></a>
+<h3 class="section">1.1 为什么 FFmpeg 不支持 [xyz] 功能？<span class="pull-right"><a class="anchor hidden-xs" href="#Why-doesn_0027t-FFmpeg-support-feature-_005bxyz_005d_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Why-doesn_0027t-FFmpeg-support-feature-_005bxyz_005d_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>因为还没有人承担这项任务。FFmpeg 的开发是由
+对各个开发者而言重要的任务所驱动的。
+如果有某项功能对你很重要，让它得以实现的最好办法
+就是自己承担这项任务，或者资助一位开发者。
+</p>
+<a name="FFmpeg-does-not-support-codec-XXX_002e-Can-you-include-a-Windows-DLL-loader-to-support-it_003f"></a>
+<h3 class="section">1.2 FFmpeg 不支持编解码器 XXX。你们能加入一个 Windows DLL 加载器来支持它吗？<span class="pull-right"><a class="anchor hidden-xs" href="#FFmpeg-does-not-support-codec-XXX_002e-Can-you-include-a-Windows-DLL-loader-to-support-it_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-FFmpeg-does-not-support-codec-XXX_002e-Can-you-include-a-Windows-DLL-loader-to-support-it_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>不。Windows DLL 不可移植、体积臃肿而且常常很慢。
+此外，FFmpeg 力求原生支持所有编解码器。
+DLL 加载器无助于这一目标。
+</p>
+<a name="I-cannot-read-this-file-although-this-format-seems-to-be-supported-by-ffmpeg_002e"></a>
+<h3 class="section">1.3 尽管 ffmpeg 似乎支持这种格式，我却无法读取该文件。<span class="pull-right"><a class="anchor hidden-xs" href="#I-cannot-read-this-file-although-this-format-seems-to-be-supported-by-ffmpeg_002e" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-I-cannot-read-this-file-although-this-format-seems-to-be-supported-by-ffmpeg_002e" aria-hidden="true">TOC</a></span></h3>
+
+<p>即使 ffmpeg 能读取该容器格式，它也可能不支持其中的全部编解码器。
+请查阅 ffmpeg 文档中列出的
+受支持编解码器列表。
+</p>
+<a name="Which-codecs-are-supported-by-Windows_003f"></a>
+<h3 class="section">1.4 Windows 支持哪些编解码器？<span class="pull-right"><a class="anchor hidden-xs" href="#Which-codecs-are-supported-by-Windows_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Which-codecs-are-supported-by-Windows_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>Windows 对 MPEG 这类标准格式的支持并不好，除非你
+安装一些额外的编解码器。
+</p>
+<p>以下视频编解码器列表在大多数 Windows 系统上应当可以工作：
+</p><dl class="table">
+<dt><samp class="option">msmpeg4v2</samp></dt>
+<dd><p>.avi/.asf
+</p></dd>
+<dt><samp class="option">msmpeg4</samp></dt>
+<dd><p>仅 .asf
+</p></dd>
+<dt><samp class="option">wmv1</samp></dt>
+<dd><p>仅 .asf
+</p></dd>
+<dt><samp class="option">wmv2</samp></dt>
+<dd><p>仅 .asf
+</p></dd>
+<dt><samp class="option">mpeg4</samp></dt>
+<dd><p>仅当你安装了 ffdshow 或 Xvid 之类的 MPEG-4 编解码器时。
+</p></dd>
+<dt><samp class="option">mpeg1video</samp></dt>
+<dd><p>仅 .mpg
+</p></dd>
+</dl>
+<p>注意，在 Windows 中 ASF 文件常常带有 .wmv 或 .wma 扩展名。还应当
+提到，Microsoft 声称对 ASF 格式拥有专利，并可能起诉
+或威胁那些使用非 Microsoft 软件创建 ASF 文件的用户。强烈
+建议尽可能避免使用 ASF。
+</p>
+<p>以下音频编解码器列表在大多数 Windows 系统上应当可以工作：
+</p><dl class="table">
+<dt><samp class="option">adpcm_ima_wav</samp></dt>
+<dt><samp class="option">adpcm_ms</samp></dt>
+<dt><samp class="option">pcm_s16le</samp></dt>
+<dd><p>总是可用
+</p></dd>
+<dt><samp class="option">libmp3lame</samp></dt>
+<dd><p>如果安装了 LAME 之类的 MP3 编解码器。
+</p></dd>
+</dl>
+
+
+<a name="Compilation"></a>
+<h2 class="chapter">2 编译<span class="pull-right"><a class="anchor hidden-xs" href="#Compilation" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Compilation" aria-hidden="true">TOC</a></span></h2>
+
+<a name="error_003a-can_0027t-find-a-register-in-class-_0027GENERAL_005fREGS_0027-while-reloading-_0027asm_0027"></a>
+<h3 class="section">2.1 <code class="code">error: can't find a register in class 'GENERAL_REGS' while reloading 'asm'</code><span class="pull-right"><a class="anchor hidden-xs" href="#error_003a-can_0027t-find-a-register-in-class-_0027GENERAL_005fREGS_0027-while-reloading-_0027asm_0027" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-error_003a-can_0027t-find-a-register-in-class-_0027GENERAL_005fREGS_0027-while-reloading-_0027asm_0027" aria-hidden="true">TOC</a></span></h3>
+
+<p>这是 gcc 的一个缺陷。不要向我们报告。请改为向
+gcc 开发者报告。请注意，我们不会为 gcc 的缺陷添加变通方案。
+</p>
+<p>另请注意，（部分）gcc 开发者认为这不是缺陷，或者
+不是他们应当修复的缺陷：
+<a class="url" href="https://gcc.gnu.org/bugzilla/show_bug.cgi?id=11203">https://gcc.gnu.org/bugzilla/show_bug.cgi?id=11203</a>.
+不过，他们中的一些人并不了解不可判定问题
+与 NP 难问题之间的区别……
+</p>
+<a name="I-have-installed-this-library-with-my-distro_0027s-package-manager_002e-Why-does-configure-not-see-it_003f"></a>
+<h3 class="section">2.2 我已用发行版的包管理器安装了这个库。为什么 <code class="command">configure</code> 看不到它？<span class="pull-right"><a class="anchor hidden-xs" href="#I-have-installed-this-library-with-my-distro_0027s-package-manager_002e-Why-does-configure-not-see-it_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-I-have-installed-this-library-with-my-distro_0027s-package-manager_002e-Why-does-configure-not-see-it_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>发行版通常把库拆分成多个软件包。主包
+包含使用该库运行程序所需的文件。开发包
+包含使用该库构建程序所需的文件。有时
+文档和/或数据也在单独的软件包中。
+</p>
+<p>要构建 FFmpeg，你需要安装开发包。它通常
+叫作 <samp class="file">libfoo-dev</samp> 或 <samp class="file">libfoo-devel</samp>。你可以在
+构建完成后把它移除，但务必保留主包。
+</p>
+<a name="How-do-I-make-pkg_002dconfig-find-my-libraries_003f"></a>
+<h3 class="section">2.3 如何让 <code class="command">pkg-config</code> 找到我的库？<span class="pull-right"><a class="anchor hidden-xs" href="#How-do-I-make-pkg_002dconfig-find-my-libraries_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-do-I-make-pkg_002dconfig-find-my-libraries_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>在你的库附近某处，有一个 <samp class="file">.pc</samp> 文件（也可能有多个），
+位于 <samp class="file">pkgconfig</samp> 目录中。你需要设置环境变量，把
+<code class="command">pkg-config</code> 指向这些文件。
+</p>
+<p>如果你需要向 <code class="command">pkg-config</code> 的搜索列表<em class="emph">添加</em>目录
+（典型场景：库是单独安装的），就把它添加到
+<code class="code">$PKG_CONFIG_PATH</code>：
+</p>
+<div class="example">
+<pre class="example-preformatted">export PKG_CONFIG_PATH=/opt/x264/lib/pkgconfig:/opt/opus/lib/pkgconfig
+</pre></div>
+
+<p>如果你需要<em class="emph">替换</em> <code class="command">pkg-config</code> 的搜索列表
+（典型场景：交叉编译），就在
+<code class="code">$PKG_CONFIG_LIBDIR</code> 中设置它：
+</p>
+<div class="example">
+<pre class="example-preformatted">export PKG_CONFIG_LIBDIR=/home/me/cross/usr/lib/pkgconfig:/home/me/cross/usr/local/lib/pkgconfig
+</pre></div>
+
+<p>如果你需要了解该库的内部依赖（典型用法：静态
+链接），就给 <code class="command">pkg-config</code> 加上 <code class="code">--static</code> 选项：
+</p>
+<div class="example">
+<pre class="example-preformatted">./configure --pkg-config-flags=--static
+</pre></div>
+
+<a name="How-do-I-use-pkg_002dconfig-when-cross_002dcompiling_003f"></a>
+<h3 class="section">2.4 交叉编译时如何使用 <code class="command">pkg-config</code>？<span class="pull-right"><a class="anchor hidden-xs" href="#How-do-I-use-pkg_002dconfig-when-cross_002dcompiling_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-do-I-use-pkg_002dconfig-when-cross_002dcompiling_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>最好的办法是在你的交叉编译环境中
+安装 <code class="command">pkg-config</code>。它会自动使用交叉编译的库。
+</p>
+<p>你也可以使用宿主机环境中的 <code class="command">pkg-config</code>，方法是
+向 <code class="command">configure</code> 显式指定 <code class="code">--pkg-config=pkg-config</code>。
+在这种情况下，你必须用 <code class="code">PKG_CONFIG_LIBDIR</code>
+把 <code class="command">pkg-config</code> 指向正确的目录，如上一项所述。
+</p>
+<p>作为折中方案，你可以在交叉编译
+环境中放一个脚本，该脚本在设置了 <code class="code">PKG_CONFIG_LIBDIR</code> 的情况下
+调用宿主机的 <code class="command">pkg-config</code>。该脚本可以像这样：
+</p>
+<div class="example">
+<pre class="example-preformatted">#!/bin/sh
+PKG_CONFIG_LIBDIR=/path/to/cross/lib/pkgconfig
+export PKG_CONFIG_LIBDIR
+exec /usr/bin/pkg-config &quot;$@&quot;
+</pre></div>
+
+<a name="Usage"></a>
+<h2 class="chapter">3 用法<span class="pull-right"><a class="anchor hidden-xs" href="#Usage" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Usage" aria-hidden="true">TOC</a></span></h2>
+
+<a name="ffmpeg-does-not-work_003b-what-is-wrong_003f"></a>
+<h3 class="section">3.1 ffmpeg 不工作；出了什么问题？<span class="pull-right"><a class="anchor hidden-xs" href="#ffmpeg-does-not-work_003b-what-is-wrong_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-ffmpeg-does-not-work_003b-what-is-wrong_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>构建之前，先在 ffmpeg 源码目录中执行一次 <code class="code">make distclean</code>。
+如果这没有帮助，请参阅
+(<a class="url" href="https://ffmpeg.org/bugreports.html">https://ffmpeg.org/bugreports.html</a>).
+</p>
+<a name="How-do-I-encode-single-pictures-into-movies_003f"></a>
+<h3 class="section">3.2 如何把单张图片编码成影片？<span class="pull-right"><a class="anchor hidden-xs" href="#How-do-I-encode-single-pictures-into-movies_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-do-I-encode-single-pictures-into-movies_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>首先，把你的图片重命名为遵循数字序列的名称。
+例如 img1.jpg、img2.jpg、img3.jpg……
+然后你可以运行：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f image2 -i img%d.jpg /tmp/a.mpg
+</pre></div>
+
+<p>注意，&lsquo;<samp class="samp">%d</samp>&rsquo; 会被图片编号替换。
+</p>
+<p><samp class="file">img%03d.jpg</samp> 表示序列 <samp class="file">img001.jpg</samp>、<samp class="file">img002.jpg</samp> 等。
+</p>
+<p>使用 <samp class="option">-start_number</samp> 选项来为序列声明一个起始编号。
+如果你的序列不是从 <samp class="file">img001.jpg</samp> 开始，
+但仍按数字顺序排列，这很有用。下面的示例
+将从 <samp class="file">img100.jpg</samp> 开始：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f image2 -start_number 100 -i img%d.jpg /tmp/a.mpg
+</pre></div>
+
+<p>如果你有大量图片需要重命名，可以使用
+下面的命令来减轻负担。该命令使用 bourne
+shell 语法，把当前目录中所有匹配 <code class="code">*jpg</code> 的文件
+以 <samp class="file">img001.jpg</samp>、<samp class="file">img002.jpg</samp> 这样的序列
+符号链接到 <samp class="file">/tmp</samp> 目录，依此类推。
+</p>
+<div class="example">
+<pre class="example-preformatted">x=1; for i in *jpg; do counter=$(printf %03d $x); ln -s &quot;$i&quot; /tmp/img&quot;$counter&quot;.jpg; x=$(($x+1)); done
+</pre></div>
+
+<p>如果你想按修改时间最早的排在前面来排序，请用
+<code class="code">$(ls -r -t *jpg)</code> 替换 <code class="code">*jpg</code>。
+</p>
+<p>然后运行：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -f image2 -i /tmp/img%03d.jpg /tmp/a.mpg
+</pre></div>
+
+<p>同样的逻辑适用于 ffmpeg 能读取的任何图像格式。
+</p>
+<p>你也可以用 <code class="command">cat</code> 把图片通过管道传给 ffmpeg：
+</p>
+<div class="example">
+<pre class="example-preformatted">cat *.jpg | ffmpeg -f image2pipe -c:v mjpeg -i - output.mpg
+</pre></div>
+
+<a name="How-do-I-encode-movie-to-single-pictures_003f"></a>
+<h3 class="section">3.3 如何把影片编码成单张图片？<span class="pull-right"><a class="anchor hidden-xs" href="#How-do-I-encode-movie-to-single-pictures_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-do-I-encode-movie-to-single-pictures_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>使用：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i movie.mpg movie%d.jpg
+</pre></div>
+
+<p>作为输入使用的 <samp class="file">movie.mpg</samp> 会被转换为
+<samp class="file">movie1.jpg</samp>、<samp class="file">movie2.jpg</samp> 等等……
+</p>
+<p>除了依赖文件格式的自动识别之外，你也可以使用
+</p><dl class="table">
+<dt><samp class="option">-c:v ppm</samp></dt>
+<dt><samp class="option">-c:v png</samp></dt>
+<dt><samp class="option">-c:v mjpeg</samp></dt>
+</dl>
+<p>来强制指定编码。
+</p>
+<p>把它应用到上一个示例：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i movie.mpg -f image2 -c:v mjpeg menu%d.jpg
+</pre></div>
+
+<p>注意，并不存在 &quot;jpeg&quot; 编解码器。请改用 &quot;mjpeg&quot;。
+</p>
+<a name="Why-do-I-see-a-slight-quality-degradation-with-multithreaded-MPEG_002a-encoding_003f"></a>
+<h3 class="section">3.4 为什么多线程 MPEG* 编码会出现轻微的画质下降？<span class="pull-right"><a class="anchor hidden-xs" href="#Why-do-I-see-a-slight-quality-degradation-with-multithreaded-MPEG_002a-encoding_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Why-do-I-see-a-slight-quality-degradation-with-multithreaded-MPEG_002a-encoding_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>对于多线程 MPEG* 编码，编码后的条带必须相互独立，
+否则线程 n 实际上必须等待 n-1 完成，所以
+出现轻微的画质下降是很合乎逻辑的。这不是缺陷。
+</p>
+<a name="How-can-I-read-from-the-standard-input-or-write-to-the-standard-output_003f"></a>
+<h3 class="section">3.5 如何从标准输入读取或向标准输出写入？<span class="pull-right"><a class="anchor hidden-xs" href="#How-can-I-read-from-the-standard-input-or-write-to-the-standard-output_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-can-I-read-from-the-standard-input-or-write-to-the-standard-output_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>使用 <samp class="file">-</samp> 作为文件名。
+</p>
+<a name="g_t_002df-jpeg-doesn_0027t-work_002e"></a>
+<h3 class="section">3.6 -f jpeg 无法工作。<span class="pull-right"><a class="anchor hidden-xs" href="#_002df-jpeg-doesn_0027t-work_002e" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-_002df-jpeg-doesn_0027t-work_002e" aria-hidden="true">TOC</a></span></h3>
+
+<p>试试 &rsquo;-f image2 test%d.jpg&rsquo;。
+</p>
+<a name="Why-can-I-not-change-the-frame-rate_003f"></a>
+<h3 class="section">3.7 为什么我无法更改帧率？<span class="pull-right"><a class="anchor hidden-xs" href="#Why-can-I-not-change-the-frame-rate_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Why-can-I-not-change-the-frame-rate_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>某些编解码器（如 MPEG-1/2）只允许少量固定帧率。
+请通过 -c:v 命令行选项选择其他编解码器。
+</p>
+<a name="How-do-I-encode-Xvid-or-DivX-video-with-ffmpeg_003f"></a>
+<h3 class="section">3.8 如何用 ffmpeg 编码 Xvid 或 DivX 视频？<span class="pull-right"><a class="anchor hidden-xs" href="#How-do-I-encode-Xvid-or-DivX-video-with-ffmpeg_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-do-I-encode-Xvid-or-DivX-video-with-ffmpeg_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>Xvid 和 DivX（4 版及更高版本）都是 ISO MPEG-4
+标准的实现（注意，还有许多其他编码格式也使用这同一
+标准）。因此，请使用 &rsquo;-c:v mpeg4&rsquo; 按这些格式进行编码。
+存储在 MPEG-4 编码文件中的默认 fourcc 将是 &rsquo;FMP4&rsquo;。如果你想
+使用不同的 fourcc，请使用 &rsquo;-vtag&rsquo; 选项。例如，&rsquo;-vtag xvid&rsquo; 将
+强制把 fourcc &rsquo;xvid&rsquo; 存储为视频 fourcc，而不是
+默认值。
+</p>
+<a name="Which-are-good-parameters-for-encoding-high-quality-MPEG_002d4_003f"></a>
+<h3 class="section">3.9 编码高质量 MPEG-4 有哪些好参数？<span class="pull-right"><a class="anchor hidden-xs" href="#Which-are-good-parameters-for-encoding-high-quality-MPEG_002d4_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Which-are-good-parameters-for-encoding-high-quality-MPEG_002d4_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>&rsquo;-mbd rd -flags +mv4+aic -trellis 2 -cmp 2 -subcmp 2 -g 300 -pass 1/2&rsquo;，
+可以尝试：&rsquo;-bf 2&rsquo;、&rsquo;-mpv_flags qp_rd&rsquo;、&rsquo;-mpv_flags mv0&rsquo;、&rsquo;-mpv_flags skip_rd&rsquo;。
+</p>
+<a name="Which-are-good-parameters-for-encoding-high-quality-MPEG_002d1_002fMPEG_002d2_003f"></a>
+<h3 class="section">3.10 编码高质量 MPEG-1/MPEG-2 有哪些好参数？<span class="pull-right"><a class="anchor hidden-xs" href="#Which-are-good-parameters-for-encoding-high-quality-MPEG_002d1_002fMPEG_002d2_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Which-are-good-parameters-for-encoding-high-quality-MPEG_002d1_002fMPEG_002d2_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>&rsquo;-mbd rd -trellis 2 -cmp 2 -subcmp 2 -g 100 -pass 1/2&rsquo;
+但要注意，&rsquo;-g 100&rsquo; 在某些解码器上可能会引发问题。
+可以尝试：&rsquo;-bf 2&rsquo;、&rsquo;-mpv_flags qp_rd&rsquo;、&rsquo;-mpv_flags mv0&rsquo;、&rsquo;-mpv_flags skip_rd&rsquo;。
+</p>
+<a name="Interlaced-video-looks-very-bad-when-encoded-with-ffmpeg_002c-what-is-wrong_003f"></a>
+<h3 class="section">3.11 隔行视频用 ffmpeg 编码后看起来非常糟，出了什么问题？<span class="pull-right"><a class="anchor hidden-xs" href="#Interlaced-video-looks-very-bad-when-encoded-with-ffmpeg_002c-what-is-wrong_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Interlaced-video-looks-very-bad-when-encoded-with-ffmpeg_002c-what-is-wrong_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>对于隔行素材，你应当使用 &rsquo;-flags +ilme+ildct&rsquo;，也许还要加上 &rsquo;-flags +alt&rsquo;，
+如果结果看起来一团糟，可以试试 &rsquo;-top 0/1&rsquo;。
+</p>
+<a name="How-can-I-read-DirectShow-files_003f"></a>
+<h3 class="section">3.12 如何读取 DirectShow 文件？<span class="pull-right"><a class="anchor hidden-xs" href="#How-can-I-read-DirectShow-files_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-can-I-read-DirectShow-files_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>如果你为 Windows 构建 FFmpeg 时使用了 <code class="code">./configure --enable-avisynth</code>，
+并且你的 AviSynth+ 安装提供了 <code class="code">DirectShowSource</code>，那么你
+就可以把 DirectShow 能够读取的任何文件用作输入。
+</p>
+<p>只需创建一个内容为下面这一行的 &quot;input.avs&quot; 文本文件……
+</p><div class="example">
+<pre class="example-preformatted">DirectShowSource(&quot;C:\path to your file\yourfile.asf&quot;)
+</pre></div>
+<p>……然后把该文本文件传给 ffmpeg：
+</p><div class="example">
+<pre class="example-preformatted">ffmpeg -i input.avs
+</pre></div>
+
+<p>关于 AviSynth 的任何其他帮助，请访问
+<a class="uref" href="http://www.avisynth.org/">AviSynth 主页</a>。
+</p>
+<a name="How-can-I-join-video-files_003f"></a>
+<h3 class="section">3.13 如何连接视频文件？<span class="pull-right"><a class="anchor hidden-xs" href="#How-can-I-join-video-files_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-can-I-join-video-files_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>“拼接”视频文件的含义相当模糊。下面的列表解释了
+各种不同的“拼接”，并指出它们在
+FFmpeg 中是如何处理的。拼接视频文件可能意味着：
+</p>
+<ul class="itemize mark-bullet">
+<li>把它们一个接一个地排列：这称为对它们进行<em class="emph">串联</em>
+（简称 concat），相关说明见
+<a class="ref" href="#How-can-I-concatenate-video-files">本 FAQ 的这一节</a>。
+
+</li><li>把它们放进同一个文件，让用户在不同的
+版本之间选择（例如：不同的音频语言）：这称为把它们
+<em class="emph">复用</em>在一起（简称 mux），只需
+用多个 <samp class="option">-i</samp> 选项调用 ffmpeg 即可完成。
+
+</li><li>对于音频，把所有声道放进单个流（例如：把两个
+单声道流合并为一个立体声流）：这有时称为把它们
+<em class="emph">合并</em>，可以使用
+<a class="url" href="ffmpeg-filters.html#amerge"><code class="code">amerge</code></a> 滤镜来完成。
+
+</li><li>对于音频，把一个叠加在另一个之上播放：这称为把它们<em class="emph">混音</em>，
+可以先把它们合并成单个流，然后
+使用 <a class="url" href="ffmpeg-filters.html#pan"><code class="code">pan</code></a> 滤镜按需混合
+各声道。
+
+</li><li>对于视频，把两者一起显示、并排显示或把一个叠在另一个的一部分之上；
+这可以使用
+<a class="url" href="ffmpeg-filters.html#overlay"><code class="code">overlay</code></a> 视频滤镜来完成。
+
+</li></ul>
+
+<a class="anchor" id="How-can-I-concatenate-video-files"></a><a name="How-can-I-concatenate-video-files_003f"></a>
+<h3 class="section">3.14 如何拼接视频文件？<span class="pull-right"><a class="anchor hidden-xs" href="#How-can-I-concatenate-video-files_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-can-I-concatenate-video-files_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>根据具体情况，有几种解决方案。
+</p>
+<a name="Concatenating-using-the-concat-filter"></a>
+<h4 class="subsection">3.14.1 使用 concat <em class="emph">滤镜</em>拼接<span class="pull-right"><a class="anchor hidden-xs" href="#Concatenating-using-the-concat-filter" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Concatenating-using-the-concat-filter" aria-hidden="true">TOC</a></span></h4>
+
+<p>FFmpeg 有一个专为此设计的 <a class="url" href="ffmpeg-filters.html#concat"><code class="code">concat</code></a> 滤镜，
+文档中附有示例。如果你需要重新编码，推荐使用这一做法。
+</p>
+<a name="Concatenating-using-the-concat-demuxer"></a>
+<h4 class="subsection">3.14.2 使用 concat <em class="emph">解复用器</em>拼接<span class="pull-right"><a class="anchor hidden-xs" href="#Concatenating-using-the-concat-demuxer" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Concatenating-using-the-concat-demuxer" aria-hidden="true">TOC</a></span></h4>
+
+<p>FFmpeg 有一个 <a class="url" href="ffmpeg-formats.html#concat"><code class="code">concat</code></a> 解复用器，当你想避免重新编码
+而你的格式不支持文件级串联时，可以使用它。
+</p>
+<a name="Concatenating-using-the-concat-protocol-_0028file-level_0029"></a>
+<h4 class="subsection">3.14.3 使用 concat <em class="emph">协议</em>拼接（文件级）<span class="pull-right"><a class="anchor hidden-xs" href="#Concatenating-using-the-concat-protocol-_0028file-level_0029" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Concatenating-using-the-concat-protocol-_0028file-level_0029" aria-hidden="true">TOC</a></span></h4>
+
+<p>FFmpeg 有一个专为此设计的 <a class="url" href="ffmpeg-protocols.html#concat"><code class="code">concat</code></a> 协议，
+文档中附有示例。
+</p>
+<p>少数多媒体容器（MPEG-1、MPEG-2 PS、DV）允许仅通过串联
+包含它们的文件来串联视频。
+</p>
+<p>因此，你可以先把多媒体文件转码为这些特殊格式，然后
+使用朴素无华的 <code class="code">cat</code> 命令（或
+Windows 下同样朴素的 <code class="code">copy</code>），最后再转码回你
+所选用的格式，从而完成串联。
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i input1.avi -qscale:v 1 intermediate1.mpg
+ffmpeg -i input2.avi -qscale:v 1 intermediate2.mpg
+cat intermediate1.mpg intermediate2.mpg &gt; intermediate_all.mpg
+ffmpeg -i intermediate_all.mpg -qscale:v 2 output.avi
+</pre></div>
+
+<p>此外，你还可以使用 <code class="code">concat</code> 协议代替 <code class="code">cat</code> 或
+<code class="code">copy</code>，这样可以避免创建可能非常巨大的中间文件。
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i input1.avi -qscale:v 1 intermediate1.mpg
+ffmpeg -i input2.avi -qscale:v 1 intermediate2.mpg
+ffmpeg -i concat:&quot;intermediate1.mpg|intermediate2.mpg&quot; -c copy intermediate_all.mpg
+ffmpeg -i intermediate_all.mpg -qscale:v 2 output.avi
+</pre></div>
+
+<p>请注意，你可能需要对字符 &quot;|&quot; 进行转义，它对许多
+shell 来说都是特殊字符。
+</p>
+<p>另一种选择是使用命名管道，前提是你的平台支持它：
+</p>
+<div class="example">
+<pre class="example-preformatted">mkfifo intermediate1.mpg
+mkfifo intermediate2.mpg
+ffmpeg -i input1.avi -qscale:v 1 -y intermediate1.mpg &lt; /dev/null &amp;
+ffmpeg -i input2.avi -qscale:v 1 -y intermediate2.mpg &lt; /dev/null &amp;
+cat intermediate1.mpg intermediate2.mpg |\
+ffmpeg -f mpeg -i - -c:v mpeg4 -c:a libmp3lame output.avi
+</pre></div>
+
+<a name="Concatenating-using-raw-audio-and-video"></a>
+<h4 class="subsection">3.14.4 使用原始音频和视频拼接<span class="pull-right"><a class="anchor hidden-xs" href="#Concatenating-using-raw-audio-and-video" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Concatenating-using-raw-audio-and-video" aria-hidden="true">TOC</a></span></h4>
+
+<p>类似地，yuv4mpegpipe 格式以及原始视频、原始音频编解码器也
+允许串联，而且转码这一步几乎是无损的。
+使用多个 yuv4mpegpipe 时，需要从除第一个流之外的
+所有流中丢弃第一行。这可以通过管道传送给
+<code class="code">tail</code> 来实现，如下所示。请注意，通过管道传送给 <code class="code">tail</code> 时，你
+必须使用命令分组 <code class="code">{  ;}</code>，才能正确地放到后台。
+</p>
+<p>例如，假设我们想把两个 FLV 文件串联成一个
+output.flv 文件：
+</p>
+<div class="example">
+<pre class="example-preformatted">mkfifo temp1.a
+mkfifo temp1.v
+mkfifo temp2.a
+mkfifo temp2.v
+mkfifo all.a
+mkfifo all.v
+ffmpeg -i input1.flv -vn -f u16le -c:a pcm_s16le -ac 2 -ar 44100 - &gt; temp1.a &lt; /dev/null &amp;
+ffmpeg -i input2.flv -vn -f u16le -c:a pcm_s16le -ac 2 -ar 44100 - &gt; temp2.a &lt; /dev/null &amp;
+ffmpeg -i input1.flv -an -f yuv4mpegpipe - &gt; temp1.v &lt; /dev/null &amp;
+{ ffmpeg -i input2.flv -an -f yuv4mpegpipe - &lt; /dev/null | tail -n +2 &gt; temp2.v ; } &amp;
+cat temp1.a temp2.a &gt; all.a &amp;
+cat temp1.v temp2.v &gt; all.v &amp;
+ffmpeg -f u16le -c:a pcm_s16le -ac 2 -ar 44100 -i all.a \
+       -f yuv4mpegpipe -i all.v \
+       -y output.flv
+rm temp[12].[av] all.[av]
+</pre></div>
+
+<a name="Using-_002df-lavfi_002c-audio-becomes-mono-for-no-apparent-reason_002e"></a>
+<h3 class="section">3.15 使用 <samp class="option">-f lavfi</samp> 时，音频无缘无故变成单声道。<span class="pull-right"><a class="anchor hidden-xs" href="#Using-_002df-lavfi_002c-audio-becomes-mono-for-no-apparent-reason_002e" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Using-_002df-lavfi_002c-audio-becomes-mono-for-no-apparent-reason_002e" aria-hidden="true">TOC</a></span></h3>
+
+<p>使用 <samp class="option">-dumpgraph -</samp> 来准确查明声道布局是在
+哪里丢失的。
+</p>
+<p>很可能是在 <code class="code">auto-inserted aresample</code> 处。试着理解
+为什么在那个位置需要这个转换滤镜。
+</p>
+<p>输出之前就是一个很可能的位置，因为 <samp class="option">-f lavfi</samp> 目前
+仅支持 packed S16。
+</p>
+<p>然后在滤镜图中显式插入正确的 <code class="code">aformat</code>，
+并指定确切的格式。
+</p>
+<div class="example">
+<pre class="example-preformatted">aformat=sample_fmts=s16:channel_layouts=stereo
+</pre></div>
+
+<a name="Why-does-FFmpeg-not-see-the-subtitles-in-my-VOB-file_003f"></a>
+<h3 class="section">3.16 为什么 FFmpeg 看不到我 VOB 文件中的字幕？<span class="pull-right"><a class="anchor hidden-xs" href="#Why-does-FFmpeg-not-see-the-subtitles-in-my-VOB-file_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Why-does-FFmpeg-not-see-the-subtitles-in-my-VOB-file_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>VOB 和少数其他格式没有能够描述
+文件中全部内容的全局头。相反，应用程序应当扫描
+文件来查看其中包含什么。由于 VOB 文件往往很大，所以只
+扫描开头部分。如果字幕恰好只出现在文件较后的位置，
+它们一开始就不会被检测到。
+</p>
+<p>包括 <code class="code">ffmpeg</code> 命令行工具在内的一些应用程序，只能
+处理初始扫描期间检测到的流；那些
+稍后才检测到的流会被忽略。
+</p>
+<p>初始扫描的大小由两个选项控制：<code class="code">probesize</code>
+（默认 ~5&nbsp;Mo）和 <code class="code">analyzeduration</code>（默认 5,000,000&nbsp;µs = 5&nbsp;s）。要
+让字幕流被检测到，这两个值都必须足够大。
+</p>
+<a name="Why-was-the-ffmpeg-_002dsameq-option-removed_003f-What-to-use-instead_003f"></a>
+<h3 class="section">3.17 为什么移除了 <code class="command">ffmpeg</code> 的 <samp class="option">-sameq</samp> 选项？改用什么呢？<span class="pull-right"><a class="anchor hidden-xs" href="#Why-was-the-ffmpeg-_002dsameq-option-removed_003f-What-to-use-instead_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Why-was-the-ffmpeg-_002dsameq-option-removed_003f-What-to-use-instead_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p><samp class="option">-sameq</samp> 选项的意思是 &quot;same quantizer&quot;，只在
+非常有限的情况下才有意义。遗憾的是，很多人把它误认为
+&quot;same quality&quot;，并在它并不合理的场合使用它：它大体上
+能达到预期的可见效果，但实现它的方式非常低效
+。
+</p>
+<p>每个编码器都有自己的一套选项来设定质量与大小的平衡，
+请使用你所用编码器的选项，把质量级别设定到
+对你来说可以接受的程度。最常用于此的选项是
+<samp class="option">-qscale</samp> 和 <samp class="option">-qmax</samp>，但你应当仔细阅读
+你所选编码器的文档。
+</p>
+<a name="I-have-a-stretched-video_002c-why-does-scaling-not-fix-it_003f"></a>
+<h3 class="section">3.18 我有一个被拉伸的视频，为什么缩放无法修复它？<span class="pull-right"><a class="anchor hidden-xs" href="#I-have-a-stretched-video_002c-why-does-scaling-not-fix-it_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-I-have-a-stretched-video_002c-why-does-scaling-not-fix-it_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>许多视频编解码器和格式都能存储视频的<em class="emph">宽高比</em>：
+它要么是整幅图像宽与高之比（DAR，显示宽高比），
+要么是单个像素宽与高之比（SAR，样本宽高
+比）。例如，分辨率为 640×350 的 EGA 屏幕具有 4:3 的 DAR 和 35:48 的
+SAR。
+</p>
+<p>大多数静止图像处理都使用方形像素，即 1:1 SAR，但许多
+视频标准，尤其是模拟到数字过渡时期的标准，使用
+非方形像素。
+</p>
+<p>FFmpeg 中的大多数处理滤镜都会处理宽高比，以避免
+拉伸图像：裁剪会调整 DAR 以保持 SAR 不变，
+缩放会调整 SAR 以保持 DAR 不变。
+</p>
+<p>如果你想拉伸或“反拉伸”图像，就需要用
+以下滤镜来覆盖该信息：
+<a class="url" href="ffmpeg-filters.html#setdar_002c-setsar"><code class="code">setdar or setsar filters</code></a>.
+</p>
+<p>不要忘记仔细检查原始视频，以确认
+这种拉伸是来自图像本身，还是来自宽高比信息。
+</p>
+<p>例如，要修复编码糟糕的 EGA 采集，可以使用以下命令，
+要么用第一条放大到方形像素，要么用第二条设置
+正确的宽高比，要么用第三条避免转码（可能因格式 / 编解码器 / 播放器 /
+月相的不同而无效）：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i ega_screen.nut -vf scale=640:480,setsar=1 ega_screen_scaled.nut
+ffmpeg -i ega_screen.nut -vf setdar=4/3 ega_screen_anamorphic.nut
+ffmpeg -i ega_screen.nut -aspect 4/3 -c copy ega_screen_overridden.nut
+</pre></div>
+
+<a class="anchor" id="background-task"></a><a name="How-do-I-run-ffmpeg-as-a-background-task_003f"></a>
+<h3 class="section">3.19 如何把 ffmpeg 作为后台任务运行？<span class="pull-right"><a class="anchor hidden-xs" href="#How-do-I-run-ffmpeg-as-a-background-task_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-do-I-run-ffmpeg-as-a-background-task_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>ffmpeg 在执行操作时通常会检查控制台输入，以接收诸如 &quot;q&quot; 用于停止
+和 &quot;?&quot; 用于提供帮助之类的输入。ffmpeg 没有办法
+检测自己何时作为后台任务运行。
+当它检查控制台输入时，可能导致在后台运行 ffmpeg 的
+进程被挂起。
+</p>
+<p>要阻止这些输入检查，让 ffmpeg 能作为后台任务运行，
+请在 ffmpeg 调用中使用 <a class="url" href="ffmpeg.html#stdin-option"><code class="code">-nostdin</code> 选项</a>，
+这在以下两种情况下都有效：无论你是在 shell 中运行 ffmpeg，还是通过操作系统 API 在
+其独立进程中调用 ffmpeg。
+</p>
+<p>另一种做法是，当你在 shell 中运行 ffmpeg 时，可以把
+标准输入重定向到 <code class="code">/dev/null</code>（在 Linux 和 macOS 上）
+或 <code class="code">NUL</code>（在 Windows 上）。这个重定向既可以在 ffmpeg
+调用处执行，也可以在调用 ffmpeg 的 shell 脚本中执行。
+</p>
+<p>例如：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -nostdin -i INPUT OUTPUT
+</pre></div>
+
+<p>或者（在 Linux、macOS 以及其他类 UNIX shell 上）：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT OUTPUT &lt;/dev/null
+</pre></div>
+
+<p>或者（在 Windows 上）：
+</p>
+<div class="example">
+<pre class="example-preformatted">ffmpeg -i INPUT OUTPUT &lt;NUL
+</pre></div>
+
+<a name="How-do-I-prevent-ffmpeg-from-suspending-with-a-message-like-suspended-_0028tty-output_0029_003f"></a>
+<h3 class="section">3.20 如何防止 ffmpeg 因类似 <em class="emph">suspended (tty output)</em> 的消息而挂起？<span class="pull-right"><a class="anchor hidden-xs" href="#How-do-I-prevent-ffmpeg-from-suspending-with-a-message-like-suspended-_0028tty-output_0029_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-do-I-prevent-ffmpeg-from-suspending-with-a-message-like-suspended-_0028tty-output_0029_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>如果你在后台运行 ffmpeg，可能会发现它的进程挂起了。
+可能会出现类似 <em class="emph">suspended (tty output)</em> 的消息。问题在于如何
+防止该进程被挂起。
+</p>
+<p>例如：
+</p>
+<div class="example">
+<pre class="example-preformatted">% ffmpeg -i INPUT OUTPUT &amp;&gt; ~/tmp/log.txt &amp;
+[1] 93352
+%
+[1]  + suspended (tty output)  ffmpeg -i INPUT OUTPUT &amp;&gt;
+</pre></div>
+
+<p>尽管消息中说的是 &quot;tty output&quot;，但这里的问题在于
+ffmpeg 在运行时通常会检查控制台输入。操作系统
+检测到这一点，就会挂起该进程，直到你能把它切换到
+前台并处理它。
+</p>
+<p>解决办法是使用正确的技巧，告诉 ffmpeg 不要读取
+控制台输入。你可以使用
+<a class="url" href="ffmpeg.html#stdin-option"><code class="code">-nostdin</code> 选项</a>，
+或者用 <code class="code">&lt; /dev/null</code> 重定向标准输入。
+请参见 FAQ
+<a class="ref" href="#background-task"><em class="emph">如何把 ffmpeg 作为后台任务运行？</em></a>
+了解详情。
+</p>
+<a name="Development"></a>
+<h2 class="chapter">4 开发<span class="pull-right"><a class="anchor hidden-xs" href="#Development" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Development" aria-hidden="true">TOC</a></span></h2>
+
+<a name="Are-there-examples-illustrating-how-to-use-the-FFmpeg-libraries_002c-particularly-libavcodec-and-libavformat_003f"></a>
+<h3 class="section">4.1 有没有示例说明如何使用 FFmpeg 库，特别是 libavcodec 和 libavformat？<span class="pull-right"><a class="anchor hidden-xs" href="#Are-there-examples-illustrating-how-to-use-the-FFmpeg-libraries_002c-particularly-libavcodec-and-libavformat_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Are-there-examples-illustrating-how-to-use-the-FFmpeg-libraries_002c-particularly-libavcodec-and-libavformat_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>有的。请查看源码仓库中的 <samp class="file">doc/examples</samp> 目录，
+也可在线获取：
+<a class="url" href="https://github.com/FFmpeg/FFmpeg/tree/master/doc/examples">https://github.com/FFmpeg/FFmpeg/tree/master/doc/examples</a>。
+</p>
+<p>示例默认也会安装，通常位于
+<code class="code">$PREFIX/share/ffmpeg/examples</code>。
+</p>
+<p>还可以阅读 FFmpeg 文档中的开发者指南。或者，
+查看众多已经集成 FFmpeg 的开源项目之一的源代码，它们列于
+（<a class="url" href="projects.html">projects.html</a>）。
+</p>
+<a name="Can-you-support-my-C-compiler-XXX_003f"></a>
+<h3 class="section">4.2 你们能支持我的 C 编译器 XXX 吗？<span class="pull-right"><a class="anchor hidden-xs" href="#Can-you-support-my-C-compiler-XXX_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Can-you-support-my-C-compiler-XXX_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>视情况而定。如果你的编译器符合 C11，那么支持它的补丁很可能会受到欢迎，
+前提是这些补丁不会用与编译器相关的
+<code class="code">#ifdef</code> 污染源代码。
+</p>
+<a name="Is-Microsoft-Visual-C_002b_002b-supported_003f"></a>
+<h3 class="section">4.3 是否支持 Microsoft Visual C++？<span class="pull-right"><a class="anchor hidden-xs" href="#Is-Microsoft-Visual-C_002b_002b-supported_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Is-Microsoft-Visual-C_002b_002b-supported_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>支持。请参见 FFmpeg 文档中的 <a class="uref" href="platform.html">Microsoft Visual C++</a>
+一节。
+</p>
+<a name="Can-you-add-automake_002c-libtool-or-autoconf-support_003f"></a>
+<h3 class="section">4.4 你们能添加对 automake、libtool 或 autoconf 的支持吗？<span class="pull-right"><a class="anchor hidden-xs" href="#Can-you-add-automake_002c-libtool-or-autoconf-support_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Can-you-add-automake_002c-libtool-or-autoconf-support_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>不能。这些工具过于臃肿，而且会使构建变得复杂。
+</p>
+<a name="Why-not-rewrite-FFmpeg-in-object_002doriented-C_002b_002b_003f"></a>
+<h3 class="section">4.5 为什么不用面向对象的 C++ 重写 FFmpeg？<span class="pull-right"><a class="anchor hidden-xs" href="#Why-not-rewrite-FFmpeg-in-object_002doriented-C_002b_002b_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Why-not-rewrite-FFmpeg-in-object_002doriented-C_002b_002b_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>FFmpeg 已经以高度模块化的方式组织，不需要
+用正式的对象语言重写。此外，许多开发者
+更青睐纯 C；它对他们来说很好用。关于此问题的更多论述，
+请阅读 <a class="uref" href="https://web.archive.org/web/20111004021423/http://kernel.org/pub/linux/docs/lkml/#s15">&quot;Programming Religion&quot;</a>。
+</p>
+<a name="Why-are-the-ffmpeg-programs-devoid-of-debugging-symbols_003f"></a>
+<h3 class="section">4.6 为什么 ffmpeg 程序没有调试符号？<span class="pull-right"><a class="anchor hidden-xs" href="#Why-are-the-ffmpeg-programs-devoid-of-debugging-symbols_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Why-are-the-ffmpeg-programs-devoid-of-debugging-symbols_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>构建过程会创建 <code class="command">ffmpeg_g</code>、<code class="command">ffplay_g</code> 等，它们
+包含完整的调试信息。这些二进制文件会被剥离以创建
+<code class="command">ffmpeg</code>、<code class="command">ffplay</code> 等。如果你需要调试信息，请使用
+*_g 版本。
+</p>
+<a name="I-do-not-like-the-LGPL_002c-can-I-contribute-code-under-the-GPL-instead_003f"></a>
+<h3 class="section">4.7 我不喜欢 LGPL，我可以改为按 GPL 贡献代码吗？<span class="pull-right"><a class="anchor hidden-xs" href="#I-do-not-like-the-LGPL_002c-can-I-contribute-code-under-the-GPL-instead_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-I-do-not-like-the-LGPL_002c-can-I-contribute-code-under-the-GPL-instead_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>可以，只要该代码是可选的，并且能够轻松、干净地置于
+#if CONFIG_GPL 之下而不会破坏任何东西。因此，举例来说，新增一个编解码器
+或滤镜以 GPL 发布是可以的，而对 LGPL 代码的缺陷修复则不行。
+</p>
+<a name="I_0027m-using-FFmpeg-from-within-my-C-application-but-the-linker-complains-about-missing-symbols-from-the-libraries-themselves_002e"></a>
+<h3 class="section">4.8 我在自己的 C 应用程序中使用 FFmpeg，但链接器报错说缺少来自库本身的符号。<span class="pull-right"><a class="anchor hidden-xs" href="#I_0027m-using-FFmpeg-from-within-my-C-application-but-the-linker-complains-about-missing-symbols-from-the-libraries-themselves_002e" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-I_0027m-using-FFmpeg-from-within-my-C-application-but-the-linker-complains-about-missing-symbols-from-the-libraries-themselves_002e" aria-hidden="true">TOC</a></span></h3>
+
+<p>FFmpeg 默认构建静态库。在静态库中，依赖关系
+不会被处理。这带来两个后果。第一，你必须按依赖顺序指定
+库：<code class="code">-lavdevice</code> 必须位于
+<code class="code">-lavformat</code> 之前，而 <code class="code">-lavutil</code> 必须位于其它所有库之后，等等。
+第二，FFmpeg 中使用的外部库也必须一并指定。
+</p>
+<p>获取按依赖顺序排列的完整所需库列表的一个简便方法是
+使用 <code class="code">pkg-config</code>。
+</p>
+<div class="example">
+<pre class="example-preformatted">c99 -o program program.c $(pkg-config --cflags --libs libavformat libavcodec)
+</pre></div>
+
+<p>请参见 <samp class="file">doc/example/Makefile</samp> 和 <samp class="file">doc/example/pc-uninstalled</samp>
+以了解更多细节。
+</p>
+<a name="I_0027m-using-FFmpeg-from-within-my-C_002b_002b-application-but-the-linker-complains-about-missing-symbols-which-seem-to-be-available_002e"></a>
+<h3 class="section">4.9 我在自己的 C++ 应用程序中使用 FFmpeg，但链接器报错说缺少一些似乎可用的符号。<span class="pull-right"><a class="anchor hidden-xs" href="#I_0027m-using-FFmpeg-from-within-my-C_002b_002b-application-but-the-linker-complains-about-missing-symbols-which-seem-to-be-available_002e" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-I_0027m-using-FFmpeg-from-within-my-C_002b_002b-application-but-the-linker-complains-about-missing-symbols-which-seem-to-be-available_002e" aria-hidden="true">TOC</a></span></h3>
+
+<p>FFmpeg 是一个纯 C 项目，因此要在你的 C++ 应用程序中使用这些库，
+你需要明确声明你使用的是 C 库。要做到这一点，可以
+用 <code class="code">extern &quot;C&quot;</code> 包住 FFmpeg 的头文件包含。
+</p>
+<p>参见 <a class="url" href="http://www.parashift.com/c++-faq-lite/mixing-c-and-cpp.html#faq-32.3">http://www.parashift.com/c++-faq-lite/mixing-c-and-cpp.html#faq-32.3</a>
+</p>
+<a name="I-have-a-file-in-memory-_002f-a-API-different-from-_002aopen_002f_002aread_002f-libc-how-do-I-use-it-with-libavformat_003f"></a>
+<h3 class="section">4.10 我的文件在内存中／一个不同于 *open/*read/ libc 的 API，如何配合 libavformat 使用它？<span class="pull-right"><a class="anchor hidden-xs" href="#I-have-a-file-in-memory-_002f-a-API-different-from-_002aopen_002f_002aread_002f-libc-how-do-I-use-it-with-libavformat_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-I-have-a-file-in-memory-_002f-a-API-different-from-_002aopen_002f_002aread_002f-libc-how-do-I-use-it-with-libavformat_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>你必须使用 <code class="code">avio_alloc_context</code> 创建一个自定义的 AVIOContext，
+参见 FFmpeg 中的 <samp class="file">libavformat/aviobuf.c</samp> 以及 MPlayer 或 MPlayer2 源码中的 <samp class="file">libmpdemux/demux_lavf.c</samp>。
+</p>
+<a name="Where-is-the-documentation-about-ffv1_002c-msmpeg4_002c-asv1_002c-4xm_003f"></a>
+<h3 class="section">4.11 关于 ffv1、msmpeg4、asv1、4xm 的文档在哪里？<span class="pull-right"><a class="anchor hidden-xs" href="#Where-is-the-documentation-about-ffv1_002c-msmpeg4_002c-asv1_002c-4xm_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Where-is-the-documentation-about-ffv1_002c-msmpeg4_002c-asv1_002c-4xm_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>参见 <a class="url" href="https://www.ffmpeg.org/~michael/">https://www.ffmpeg.org/~michael/</a>
+</p>
+<a name="How-do-I-feed-H_002e263_002dRTP-_0028and-other-codecs-in-RTP_0029-to-libavcodec_003f"></a>
+<h3 class="section">4.12 如何把 H.263-RTP（以及 RTP 中的其他编解码器）喂给 libavcodec？<span class="pull-right"><a class="anchor hidden-xs" href="#How-do-I-feed-H_002e263_002dRTP-_0028and-other-codecs-in-RTP_0029-to-libavcodec_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-How-do-I-feed-H_002e263_002dRTP-_0028and-other-codecs-in-RTP_0029-to-libavcodec_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>尽管 RTP 因为面向网络而显得特殊，但它像其它任何容器一样，
+必须先 <em class="emph">解复用</em> RTP，然后再把载荷送入 libavcodec。
+在这种特定情况下，请参阅 RFC 4629 了解应当如何操作。
+</p>
+<a name="AVStream_002er_005fframe_005frate-is-wrong_002c-it-is-much-larger-than-the-frame-rate_002e"></a>
+<h3 class="section">4.13 AVStream.r_frame_rate 是错误的，它比帧率大得多。<span class="pull-right"><a class="anchor hidden-xs" href="#AVStream_002er_005fframe_005frate-is-wrong_002c-it-is-much-larger-than-the-frame-rate_002e" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-AVStream_002er_005fframe_005frate-is-wrong_002c-it-is-much-larger-than-the-frame-rate_002e" aria-hidden="true">TOC</a></span></h3>
+
+<p><code class="code">r_frame_rate</code> 不是平均帧率，它是能够准确表示所有
+时间戳的最小帧率。所以，不，如果它大于平均值，
+它也没有错！
+例如，如果你有 25 和 30 fps 混合的内容，那么 <code class="code">r_frame_rate</code>
+将是 150（它是最小公倍数）。
+如果你需要的是平均帧率，请参见 <code class="code">AVStream.avg_frame_rate</code>。
+</p>
+<a name="Why-is-make-fate-not-running-all-tests_003f"></a>
+<h3 class="section">4.14 为什么 <code class="code">make fate</code> 没有运行所有测试？<span class="pull-right"><a class="anchor hidden-xs" href="#Why-is-make-fate-not-running-all-tests_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Why-is-make-fate-not-running-all-tests_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>请确保你拥有 fate-suite 样本，并且 <code class="code">SAMPLES</code> Make 变量
+或 <code class="code">FATE_SAMPLES</code> 环境变量或 <code class="code">--samples</code>
+<code class="command">configure</code> 选项已设置为正确的路径。
+</p>
+<a name="Why-is-make-fate-not-finding-the-samples_003f"></a>
+<h3 class="section">4.15 为什么 <code class="code">make fate</code> 找不到样本？<span class="pull-right"><a class="anchor hidden-xs" href="#Why-is-make-fate-not-finding-the-samples_003f" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Why-is-make-fate-not-finding-the-samples_003f" aria-hidden="true">TOC</a></span></h3>
+
+<p>你的样本路径中是否恰好含有一个 <code class="code">~</code> 字符，用来表示
+主目录？该值在某些使用方式下 shell 无法将其展开，
+从而导致 FATE 找不到文件。只需把 <code class="code">~</code> 替换为完整路径。
+</p>
+      <p style="font-size: small;">
+        本文档由 <a class="uref" href="https://www.gnu.org/software/texinfo/"><em class="emph">makeinfo</em></a> 生成。
+      </p>
+    </div>
+  </body>
+</html>

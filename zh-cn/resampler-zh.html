@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+  <head>
+    <meta charset="utf-8">
+    <title>
+      FFmpeg 重采样器文档
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+      FFmpeg 重采样器文档
+      </h1>
+
+
+<a name="SEC_Top"></a>
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">目录</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Description" href="#Description">1 描述</a></li>
+  <li><a id="toc-Resampler-Options" href="#Resampler-Options">2 重采样器选项</a></li>
+  <li><a id="toc-See-Also" href="#See-Also">3 参见</a></li>
+  <li><a id="toc-Authors" href="#Authors">4 作者</a></li>
+</ul>
+</div>
+</div>
+
+<a name="Description"></a>
+<h2 class="chapter">1 描述<span class="pull-right"><a class="anchor hidden-xs" href="#Description" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Description" aria-hidden="true">TOC</a></span></h2>
+
+<p>FFmpeg 重采样器为
+libswresample 库的音频重采样工具提供了高层接口。特别是，
+它允许执行音频重采样、音频声道布局重矩阵化，
+并转换音频格式与打包布局。
+</p>
+
+<a name="Resampler-Options"></a>
+<h2 class="chapter">2 重采样器选项<span class="pull-right"><a class="anchor hidden-xs" href="#Resampler-Options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Resampler-Options" aria-hidden="true">TOC</a></span></h2>
+
+<p>音频重采样器支持以下具名选项。
+</p>
+<p>在 FFmpeg 工具中，可以通过指定 -<var class="var">option</var> <var class="var">value</var> 来
+设置选项，对于 aresample 滤镜使用 <var class="var">option</var>=<var class="var">value</var>，
+也可以在
+<code class="code">SwrContext</code> 选项中显式设置该值，或使用 <samp class="file">libavutil/opt.h</samp> API
+进行编程调用。
+</p>
+<dl class="table">
+<dt><samp class="option">uchl, used_chlayout</samp></dt>
+<dd><p>设置所使用的输入声道布局。默认未设置。此选项
+仅用于特殊的重映射。
+</p>
+</dd>
+<dt><samp class="option">isr, in_sample_rate</samp></dt>
+<dd><p>设置输入采样率。默认值为 0。
+</p>
+</dd>
+<dt><samp class="option">osr, out_sample_rate</samp></dt>
+<dd><p>设置输出采样率。默认值为 0。
+</p>
+</dd>
+<dt><samp class="option">isf, in_sample_fmt</samp></dt>
+<dd><p>指定输入采样格式。默认设置为 <code class="code">none</code>。
+</p>
+</dd>
+<dt><samp class="option">osf, out_sample_fmt</samp></dt>
+<dd><p>指定输出采样格式。默认设置为 <code class="code">none</code>。
+</p>
+</dd>
+<dt><samp class="option">tsf, internal_sample_fmt</samp></dt>
+<dd><p>设置内部采样格式。默认值为 <code class="code">none</code>。
+未显式设置时将自动选择该格式。
+</p>
+</dd>
+<dt><samp class="option">ichl, in_chlayout</samp></dt>
+<dt><samp class="option">ochl, out_chlayout</samp></dt>
+<dd><p>设置输入/输出声道布局。
+</p>
+<p>所需语法请参见 <a data-manual="ffmpeg-utils" href="./ffmpeg-utils.html#channel-layout-syntax">ffmpeg-utils(1) 手册中的声道布局一节</a>，
+其中给出了所需的语法。
+</p>
+</dd>
+<dt><samp class="option">clev, center_mix_level</samp></dt>
+<dd><p>设置中置混音电平。该值以分贝表示，必须
+位于区间 [-32,32] 内。
+</p>
+</dd>
+<dt><samp class="option">slev, surround_mix_level</samp></dt>
+<dd><p>设置环绕声混音电平。该值以分贝表示，必须
+位于区间 [-32,32] 内。
+</p>
+</dd>
+<dt><samp class="option">lfe_mix_level</samp></dt>
+<dd><p>设置 LFE 混入非 LFE 的电平。当存在 LFE 输入但没有
+LFE 输出时使用。该值以分贝表示，必须
+位于区间 [-32,32] 内。
+</p>
+</dd>
+<dt><samp class="option">rmvol, rematrix_volume</samp></dt>
+<dd><p>设置重矩阵音量。默认值为 1.0。
+</p>
+</dd>
+<dt><samp class="option">rematrix_maxval</samp></dt>
+<dd><p>设置重矩阵化的最大输出值。
+可用于在防止削波与防止音量降低之间取舍。
+取值为 1.0 可防止削波。
+</p>
+</dd>
+<dt><samp class="option">flags, swr_flags</samp></dt>
+<dd><p>设置转换器所使用的标志。默认值为 0。
+</p>
+<p>它支持以下各个标志：
+</p><dl class="table">
+<dt><samp class="option">res</samp></dt>
+<dd><p>强制重采样，该标志强制使用重采样，即使
+输入与输出采样率相同。
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">dither_scale</samp></dt>
+<dd><p>设置抖动缩放。默认值为 1。
+</p>
+</dd>
+<dt><samp class="option">dither_method</samp></dt>
+<dd><p>设置抖动方法。默认值为 0。
+</p>
+<p>支持的取值：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">rectangular</samp>&rsquo;</dt>
+<dd><p>选择矩形抖动
+</p></dd>
+<dt>&lsquo;<samp class="samp">triangular</samp>&rsquo;</dt>
+<dd><p>选择三角抖动
+</p></dd>
+<dt>&lsquo;<samp class="samp">triangular_hp</samp>&rsquo;</dt>
+<dd><p>选择带高通的三角抖动
+</p></dd>
+<dt>&lsquo;<samp class="samp">lipshitz</samp>&rsquo;</dt>
+<dd><p>选择 Lipshitz 噪声整形抖动。
+</p></dd>
+<dt>&lsquo;<samp class="samp">shibata</samp>&rsquo;</dt>
+<dd><p>选择 Shibata 噪声整形抖动。
+</p></dd>
+<dt>&lsquo;<samp class="samp">low_shibata</samp>&rsquo;</dt>
+<dd><p>选择 low Shibata 噪声整形抖动。
+</p></dd>
+<dt>&lsquo;<samp class="samp">high_shibata</samp>&rsquo;</dt>
+<dd><p>选择 high Shibata 噪声整形抖动。
+</p></dd>
+<dt>&lsquo;<samp class="samp">f_weighted</samp>&rsquo;</dt>
+<dd><p>选择 f 加权噪声整形抖动
+</p></dd>
+<dt>&lsquo;<samp class="samp">modified_e_weighted</samp>&rsquo;</dt>
+<dd><p>选择修正 e 加权噪声整形抖动
+</p></dd>
+<dt>&lsquo;<samp class="samp">improved_e_weighted</samp>&rsquo;</dt>
+<dd><p>选择改进 e 加权噪声整形抖动
+</p>
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">resampler</samp></dt>
+<dd><p>设置重采样引擎。默认值为 swr。
+</p>
+<p>支持的取值：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">swr</samp>&rsquo;</dt>
+<dd><p>选择原生 SW 重采样器；此时滤镜选项 precision 和 cheby
+不适用。
+</p></dd>
+<dt>&lsquo;<samp class="samp">soxr</samp>&rsquo;</dt>
+<dd><p>选择 SoX 重采样器（在可用时）；此时补偿以及滤镜选项
+filter_size、phase_shift、exact_rational、filter_type &amp; kaiser_beta
+不适用。
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">filter_size</samp></dt>
+<dd><p>仅适用于 swr，设置重采样滤波器大小，默认值为 32。
+</p>
+</dd>
+<dt><samp class="option">phase_shift</samp></dt>
+<dd><p>仅适用于 swr，设置重采样相移，默认值为 10，且必须
+位于区间 [0,30] 内。
+</p>
+</dd>
+<dt><samp class="option">linear_interp</samp></dt>
+<dd><p>启用（默认）时使用线性插值。如果希望在
+exact_rational 失败时优先保持速度而非质量，请将其禁用。
+</p>
+</dd>
+<dt><samp class="option">exact_rational</samp></dt>
+<dd><p>仅适用于 swr，启用时，尝试根据输入和
+输出采样率使用精确的 phase_count。但是，如果它大于 <code class="code">1 &lt;&lt; phase_shift</code>，
+则回退为将 phase_count 设为 <code class="code">1 &lt;&lt; phase_shift</code>。默认启用。
+</p>
+</dd>
+<dt><samp class="option">cutoff</samp></dt>
+<dd><p>设置截止频率（swr：6dB 点；soxr：0dB 点）比值；必须是 0 到 1 之间的浮点
+值。使用 swr 时默认值为 0.97，使用 soxr 时为 0.91
+（在采样率为 44100 时，可将整个音频频段保留到 20kHz）。
+</p>
+</dd>
+<dt><samp class="option">precision</samp></dt>
+<dd><p>仅适用于 soxr，用于计算重采样信号的精度（比特数）。
+默认值 20（在配合适当抖动时，适合目标位深
+为 16 的场景）对应 SoX 的 &rsquo;High Quality&rsquo;；取值 28
+对应 SoX 的 &rsquo;Very High Quality&rsquo;。
+</p>
+</dd>
+<dt><samp class="option">cheby</samp></dt>
+<dd><p>仅适用于 soxr，选择通带滚降无（Chebyshev）以及对 &rsquo;irrational&rsquo;
+比值使用更高精度的近似。默认值为 0。
+</p>
+</dd>
+<dt><samp class="option">async</samp></dt>
+<dd><p>仅适用于 swr，使用拉伸、
+压缩、填充和修剪，以简单的单参数方式将音频同步到时间戳。将其设为 1 将启用填充
+和修剪，更大的值表示每秒钟数据可被
+拉伸或压缩的最大采样数。
+默认值为 0，因此不应用任何补偿来使采样
+与音频时间戳匹配。
+</p>
+</dd>
+<dt><samp class="option">first_pts</samp></dt>
+<dd><p>仅适用于 swr，假定第一个 pts 应为该值。时间单位为 1 / 采样率。
+这允许在流的起始处进行填充/修剪。默认情况下，不对
+第一帧的预期 pts 作任何假定，因此不进行填充或
+修剪。例如，可以将其设为 0，以便在音频流
+晚于视频流开始时用静音填充开头，或修剪因编码器
+延迟而产生的具有负 pts 的采样。
+</p>
+</dd>
+<dt><samp class="option">min_comp</samp></dt>
+<dd><p>仅适用于 swr，设置时间戳与音频数据之间的最小差值（以
+秒为单位），达到该值才触发对数据的拉伸/压缩/填充或修剪，
+以使其与时间戳匹配。默认情况下
+拉伸/压缩/填充和修剪处于禁用状态
+（<samp class="option">min_comp</samp> = <code class="code">FLT_MAX</code>）。
+</p>
+</dd>
+<dt><samp class="option">min_hard_comp</samp></dt>
+<dd><p>仅适用于 swr，设置时间戳与音频数据之间的最小差值（以
+秒为单位），达到该值才触发添加/丢弃采样，以使其与
+时间戳匹配。此选项实际上是用于在
+硬补偿（修剪/填充）与软补偿（压缩/拉伸）之间进行选择的阈值。请注意，
+默认情况下所有补偿都通过 <samp class="option">min_comp</samp> 禁用。
+默认值为 0.1。
+</p>
+</dd>
+<dt><samp class="option">comp_duration</samp></dt>
+<dd><p>仅适用于 swr，设置对数据进行拉伸/压缩以使其与
+时间戳匹配的持续时间（以秒为单位）。必须是非负的双精度浮点值，
+默认值为 1.0。
+</p>
+</dd>
+<dt><samp class="option">max_soft_comp</samp></dt>
+<dd><p>仅适用于 swr，设置对数据进行拉伸/压缩以使其
+与时间戳匹配的最大倍数。必须是非负的双精度浮点值，默认值
+为 0。
+</p>
+</dd>
+<dt><samp class="option">matrix_encoding</samp></dt>
+<dd><p>选择矩阵立体声编码。
+</p>
+<p>它接受以下取值：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">none</samp>&rsquo;</dt>
+<dd><p>选择 none
+</p></dd>
+<dt>&lsquo;<samp class="samp">dolby</samp>&rsquo;</dt>
+<dd><p>选择 Dolby
+</p></dd>
+<dt>&lsquo;<samp class="samp">dplii</samp>&rsquo;</dt>
+<dd><p>选择 Dolby Pro Logic II
+</p></dd>
+</dl>
+
+<p>默认值为 <code class="code">none</code>。
+</p>
+</dd>
+<dt><samp class="option">filter_type</samp></dt>
+<dd><p>仅适用于 swr，选择重采样滤波器类型。这只影响重采样
+操作。
+</p>
+<p>它接受以下取值：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">cubic</samp>&rsquo;</dt>
+<dd><p>选择 cubic
+</p></dd>
+<dt>&lsquo;<samp class="samp">blackman_nuttall</samp>&rsquo;</dt>
+<dd><p>选择 Blackman Nuttall 窗 sinc
+</p></dd>
+<dt>&lsquo;<samp class="samp">kaiser</samp>&rsquo;</dt>
+<dd><p>选择 Kaiser 窗 sinc
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">kaiser_beta</samp></dt>
+<dd><p>仅适用于 swr，设置 Kaiser 窗 beta 值。必须是位于
+区间 [2,16] 内的双精度浮点值，默认值为 9。
+</p>
+</dd>
+<dt><samp class="option">output_sample_bits</samp></dt>
+<dd><p>仅适用于 swr，设置用于抖动的输出采样位数。必须是位于
+区间 [0,64] 内的整数，默认值为 0，表示不使用。
+</p>
+</dd>
+</dl>
+
+
+<a name="See-Also"></a>
+<h2 class="chapter">3 参见<span class="pull-right"><a class="anchor hidden-xs" href="#See-Also" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-See-Also" aria-hidden="true">TOC</a></span></h2>
+
+<p><a class="url" href="ffmpeg.html">ffmpeg</a>, <a class="url" href="ffplay.html">ffplay</a>, <a class="url" href="ffprobe.html">ffprobe</a>,
+<a class="url" href="libswresample.html">libswresample</a>
+</p>
+
+<a name="Authors"></a>
+<h2 class="chapter">4 作者<span class="pull-right"><a class="anchor hidden-xs" href="#Authors" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Authors" aria-hidden="true">TOC</a></span></h2>
+
+<p>FFmpeg 开发人员。
+</p>
+<p>关于作者身份的详细信息，请参见本项目的 Git 历史记录
+（https://git.ffmpeg.org/ffmpeg），例如在 FFmpeg 源代码目录中输入命令
+<code class="command">git log</code>，或浏览位于
+<a class="url" href="https://git.ffmpeg.org/ffmpeg">https://git.ffmpeg.org/ffmpeg</a> 的在线仓库。
+</p>
+<p>各具体组件的维护者列在源代码树中的文件
+<samp class="file">MAINTAINERS</samp> 里。
+</p>
+
+      <p style="font-size: small;">
+        本文档由 <a class="uref" href="https://www.gnu.org/software/texinfo/"><em class="emph">makeinfo</em></a> 生成。
+      </p>
+    </div>
+  </body>
+</html>

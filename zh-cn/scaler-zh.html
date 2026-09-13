@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+  <head>
+    <meta charset="utf-8">
+    <title>
+      FFmpeg 缩放器文档
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+      FFmpeg 缩放器文档
+      </h1>
+
+
+<a name="SEC_Top"></a>
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">目录</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Description" href="#Description">1 描述</a></li>
+  <li><a id="toc-Scaler-Options" href="#Scaler-Options">2 缩放器选项</a></li>
+  <li><a id="toc-See-Also" href="#See-Also">3 参见</a></li>
+  <li><a id="toc-Authors" href="#Authors">4 作者</a></li>
+</ul>
+</div>
+</div>
+
+<a name="Description"></a>
+<h2 class="chapter">1 描述<span class="pull-right"><a class="anchor hidden-xs" href="#Description" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Description" aria-hidden="true">TOC</a></span></h2>
+
+<p>FFmpeg 重缩放器为 libswscale 库的
+图像转换工具提供高层接口。特别地，它允许执行
+图像重缩放和像素格式转换。
+</p>
+
+<a class="anchor" id="scaler_005foptions"></a><a name="Scaler-Options"></a>
+<h2 class="chapter">2 缩放器选项<span class="pull-right"><a class="anchor hidden-xs" href="#Scaler-Options" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Scaler-Options" aria-hidden="true">TOC</a></span></h2>
+
+<p>视频缩放器支持以下具名选项。
+</p>
+<p>可以在 FFmpeg 工具中通过指定 -<var class="var">option</var> <var class="var">value</var> 来设置选项，
+仅有下面说明的少数几个仅限 API 的例外。
+对于程序化使用，可以在
+<code class="code">SwsContext</code> 选项中显式设置，或通过 <samp class="file">libavutil/opt.h</samp> API 设置。
+</p>
+<dl class="table">
+<dd>
+<a class="anchor" id="scaler"></a></dd>
+<dt><samp class="option">scaler, scaler_sub</samp></dt>
+<dd><p>选择要使用的缩放算法。两者的默认值都是 &lsquo;<samp class="samp">auto</samp>&rsquo;。
+它接受以下取值：
+</p>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">auto</samp>&rsquo;</dt>
+<dd><p>自动选择。对于 &lsquo;<samp class="samp">scaler_sub</samp>&rsquo;，它表示与
+&lsquo;<samp class="samp">scaler</samp>&rsquo; 相同的算法。对于 &lsquo;<samp class="samp">scaler</samp>&rsquo;，它默认为由
+&lsquo;<samp class="samp">sws_flags</samp>&rsquo; 所选择的缩放器标志。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">bilinear</samp>&rsquo;</dt>
+<dd><p>双线性滤波器。（又称三角形滤波器）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">bicubic</samp>&rsquo;</dt>
+<dd><p>2 抽头三次 BC 样条（又称 Mitchell-Netravali 样条）。B 和 C 参数可以通过
+设置 <code class="code">param0</code> 和 <code class="code">param1</code> 来配置，
+默认值分别为 0.0 和 0.6。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">point, neighbor</samp>&rsquo;</dt>
+<dd><p>点采样（又称最近邻）。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">area</samp>&rsquo;</dt>
+<dd><p>区域平均。在放大时等效于 &lsquo;<samp class="samp">bilinear</samp>&rsquo;。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">gaussian</samp>&rsquo;</dt>
+<dd><p>2 抽头高斯滤波器近似。锐度参数可以通过设置
+<code class="code">param0</code> 来配置，默认值为 3.0。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">sinc</samp>&rsquo;</dt>
+<dd><p>未加窗的 sinc 滤波器。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">lanczos</samp>&rsquo;</dt>
+<dd><p>Lanczos 重采样（加窗 sinc）。滤波器抽头数可以通过设置
+<code class="code">param0</code> 来配置，默认值为 3。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">spline</samp>&rsquo;</dt>
+<dd><p>未加窗的自然双三次样条。
+</p></dd>
+</dl>
+
+<a class="anchor" id="sws_005fflags"></a></dd>
+<dt><samp class="option">sws_flags</samp></dt>
+<dd><p>设置缩放器标志。它也曾用于设置缩放算法，
+但该用法已被弃用，建议改用设置 &lsquo;<samp class="samp">scaler</samp>&rsquo;。
+只能选择一种算法。默认值为 &lsquo;<samp class="samp">bicubic</samp>&rsquo;。
+</p>
+<p>它接受以下取值：
+</p><dl class="table">
+<dt>&lsquo;<samp class="samp">fast_bilinear</samp>&rsquo;</dt>
+<dd><p>选择快速双线性缩放算法。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">bilinear</samp>&rsquo;</dt>
+<dd><p>选择双线性缩放算法。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">bicubic</samp>&rsquo;</dt>
+<dd><p>选择双三次缩放算法。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">experimental</samp>&rsquo;</dt>
+<dd><p>选择实验性缩放算法。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">neighbor</samp>&rsquo;</dt>
+<dd><p>选择最近邻重缩放算法。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">area</samp>&rsquo;</dt>
+<dd><p>选择区域平均重缩放算法。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">bicublin</samp>&rsquo;</dt>
+<dd><p>对亮度分量选择双三次缩放算法，
+对色度分量选择双线性。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">gauss</samp>&rsquo;</dt>
+<dd><p>选择高斯重缩放算法。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">sinc</samp>&rsquo;</dt>
+<dd><p>选择 sinc 重缩放算法。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">lanczos</samp>&rsquo;</dt>
+<dd><p>选择 Lanczos 重缩放算法。默认宽度（alpha）为 3，
+可以通过设置 <code class="code">param0</code> 来更改。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">spline</samp>&rsquo;</dt>
+<dd><p>选择自然双三次样条重缩放算法。（已弃用）
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">print_info</samp>&rsquo;</dt>
+<dd><p>启用打印/调试日志记录。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">accurate_rnd</samp>&rsquo;</dt>
+<dd><p>启用精确舍入。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">full_chroma_int</samp>&rsquo;</dt>
+<dd><p>启用全色度插值。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">full_chroma_inp</samp>&rsquo;</dt>
+<dd><p>选择全色度输入。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">bitexact</samp>&rsquo;</dt>
+<dd><p>启用比特精确输出。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">unstable</samp>&rsquo;</dt>
+<dd><p>允许使用实验性的新代码。可能会对输出产生细微影响，
+甚至产生错误结果。仅供测试。
+</p></dd>
+</dl>
+
+</dd>
+<dt><samp class="option">srcw <var class="var">(API only)</var></samp></dt>
+<dd><p>设置源宽度。
+</p>
+</dd>
+<dt><samp class="option">srch <var class="var">(API only)</var></samp></dt>
+<dd><p>设置源高度。
+</p>
+</dd>
+<dt><samp class="option">dstw <var class="var">(API only)</var></samp></dt>
+<dd><p>设置目标宽度。
+</p>
+</dd>
+<dt><samp class="option">dsth <var class="var">(API only)</var></samp></dt>
+<dd><p>设置目标高度。
+</p>
+</dd>
+<dt><samp class="option">src_format <var class="var">(API only)</var></samp></dt>
+<dd><p>设置源像素格式（必须用整数表示）。
+</p>
+</dd>
+<dt><samp class="option">dst_format <var class="var">(API only)</var></samp></dt>
+<dd><p>设置目标像素格式（必须用整数表示）。
+</p>
+</dd>
+<dt><samp class="option">src_range <var class="var">(boolean)</var></samp></dt>
+<dd><p>如果该值设为 <code class="code">1</code>，表示源为全范围。默认值为
+<code class="code">0</code>，表示源为有限范围。
+</p>
+</dd>
+<dt><samp class="option">dst_range <var class="var">(boolean)</var></samp></dt>
+<dd><p>如果该值设为 <code class="code">1</code>，则为目标启用全范围。
+默认值为 <code class="code">0</code>，即启用有限范围。
+</p>
+</dd>
+<dt><samp class="option">gamma <var class="var">(boolean)</var></samp></dt>
+<dd><p>如果该值设为 <code class="code">1</code>，则启用 gamma 校正缩放。默认值为 <code class="code">0</code>。
+</p>
+<a class="anchor" id="sws_005fparams"></a></dd>
+<dt><samp class="option">param0, param1</samp></dt>
+<dd><p>设置缩放算法参数。所指定的值专用于某些
+缩放算法，会被其它算法忽略。
+所指定的值为浮点数。
+</p>
+</dd>
+<dt><samp class="option">sws_dither</samp></dt>
+<dd><p>设置抖动算法。接受以下取值之一。
+默认值为 &lsquo;<samp class="samp">auto</samp>&rsquo;。
+</p>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">auto</samp>&rsquo;</dt>
+<dd><p>自动选择
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">none</samp>&rsquo;</dt>
+<dd><p>不抖动
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">bayer</samp>&rsquo;</dt>
+<dd><p>bayer 抖动
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">ed</samp>&rsquo;</dt>
+<dd><p>误差扩散抖动
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">a_dither</samp>&rsquo;</dt>
+<dd><p>基于加法的算术抖动
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">x_dither</samp>&rsquo;</dt>
+<dd><p>基于 xor 的算术抖动（随机性更强，图案不如
+a_dither 明显）。
+</p>
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">alphablend</samp></dt>
+<dd><p>设置当输入含 alpha 而输出不含 alpha 时要使用的 alpha 混合方式。
+默认值为 &lsquo;<samp class="samp">none</samp>&rsquo;。
+</p>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">uniform_color</samp>&rsquo;</dt>
+<dd><p>混合到统一的背景色上
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">checkerboard</samp>&rsquo;</dt>
+<dd><p>混合到棋盘格上
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">none</samp>&rsquo;</dt>
+<dd><p>不混合
+</p>
+</dd>
+</dl>
+
+</dd>
+<dt><samp class="option">sws_backends</samp></dt>
+<dd><p>设置允许的 swscale 后端。这是一个标志选项，
+因此可以组合多个后端。
+</p>
+<dl class="table">
+<dt>&lsquo;<samp class="samp">auto</samp>&rsquo;</dt>
+<dd><p>自动选择。等于 &lsquo;<samp class="samp">stable</samp>&rsquo; 或 &lsquo;<samp class="samp">all</samp>&rsquo;，具体取决于
+是否设置了 &lsquo;<samp class="samp">unstable</samp>&rsquo; 标志。这是默认值。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">stable</samp>&rsquo;</dt>
+<dd><p>所有稳定后端。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">unstable</samp>&rsquo;</dt>
+<dd><p>所有不稳定后端。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">all</samp>&rsquo;</dt>
+<dd><p>所有可用后端。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">legacy</samp>&rsquo;</dt>
+<dd><p>旧版 swscale 代码。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">c</samp>&rsquo;</dt>
+<dd><p>基于模板的参考代码。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">memcpy</samp>&rsquo;</dt>
+<dd><p>使用 libc <code class="code">memcpy</code> 的快速路径。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">x86</samp>&rsquo;</dt>
+<dd><p>x86 SIMD 内核。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">aarch64</samp>&rsquo;</dt>
+<dd><p>AArch64 NEON 内核。
+</p>
+</dd>
+<dt>&lsquo;<samp class="samp">spirv</samp>&rsquo;</dt>
+<dd><p>Vulkan SPIR-V 后端。
+</p>
+</dd>
+</dl>
+
+</dd>
+</dl>
+
+
+<a name="See-Also"></a>
+<h2 class="chapter">3 参见<span class="pull-right"><a class="anchor hidden-xs" href="#See-Also" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-See-Also" aria-hidden="true">TOC</a></span></h2>
+
+<p><a class="url" href="ffmpeg.html">ffmpeg</a>, <a class="url" href="ffplay.html">ffplay</a>, <a class="url" href="ffprobe.html">ffprobe</a>,
+<a class="url" href="libswscale.html">libswscale</a>
+</p>
+
+<a name="Authors"></a>
+<h2 class="chapter">4 作者<span class="pull-right"><a class="anchor hidden-xs" href="#Authors" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Authors" aria-hidden="true">TOC</a></span></h2>
+
+<p>FFmpeg 开发者。
+</p>
+<p>关于作者身份的详细信息，请参阅本项目的 Git 历史记录
+（https://git.ffmpeg.org/ffmpeg），例如在 FFmpeg 源代码目录中输入命令
+<code class="command">git log</code>，或浏览
+位于 <a class="url" href="https://git.ffmpeg.org/ffmpeg">https://git.ffmpeg.org/ffmpeg</a> 的在线仓库。
+</p>
+<p>各具体组件的维护者列在文件
+<samp class="file">MAINTAINERS</samp> 中，该文件位于源代码树中。
+</p>
+
+      <p style="font-size: small;">
+        本文档由 <a class="uref" href="https://www.gnu.org/software/texinfo/"><em class="emph">makeinfo</em></a> 生成。
+      </p>
+    </div>
+  </body>
+</html>

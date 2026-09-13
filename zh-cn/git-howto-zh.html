@@ -1,0 +1,562 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+  <head>
+    <meta charset="utf-8">
+    <title>
+      使用 Git 开发 FFmpeg
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+      使用 Git 开发 FFmpeg
+      </h1>
+
+
+
+<a name="SEC_Top"></a>
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">目录</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Introduction" href="#Introduction">1 简介</a></li>
+  <li><a id="toc-Basics-Usage" href="#Basics-Usage">2 基本用法</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Get-Git" href="#Get-Git">2.1 获取 Git</a></li>
+    <li><a id="toc-Cloning-the-source-tree" href="#Cloning-the-source-tree">2.2 克隆源码树</a></li>
+    <li><a id="toc-Updating-the-source-tree-to-the-latest-revision" href="#Updating-the-source-tree-to-the-latest-revision-1">2.3 将源码树更新至最新修订版本</a></li>
+    <li><a id="toc-Rebasing-your-local-branches" href="#Rebasing-your-local-branches">2.4 变基本地分支</a></li>
+    <li><a id="toc-Adding_002fremoving-files_002fdirectories" href="#Adding_002fremoving-files_002fdirectories">2.5 添加/删除文件/目录</a></li>
+    <li><a id="toc-Showing-modifications" href="#Showing-modifications">2.6 显示修改</a></li>
+    <li><a id="toc-Inspecting-the-changelog" href="#Inspecting-the-changelog">2.7 查看变更日志</a></li>
+    <li><a id="toc-Checking-source-tree-status" href="#Checking-source-tree-status">2.8 检查源码树状态</a></li>
+    <li><a id="toc-Committing" href="#Committing">2.9 提交</a></li>
+    <li><a id="toc-Writing-a-commit-message" href="#Writing-a-commit-message">2.10 编写提交信息</a></li>
+    <li><a id="toc-Preparing-a-patchset" href="#Preparing-a-patchset">2.11 准备补丁集</a></li>
+    <li><a id="toc-Sending-patches-for-review" href="#Sending-patches-for-review">2.12 发送补丁以供评审</a></li>
+    <li><a id="toc-Renaming_002fmoving_002fcopying-files-or-contents-of-files" href="#Renaming_002fmoving_002fcopying-files-or-contents-of-files">2.13 重命名/移动/复制文件或文件内容</a></li>
+  </ul></li>
+  <li><a id="toc-Git-configuration" href="#Git-configuration">3 Git 配置</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Personal-Git-installation" href="#Personal-Git-installation">3.1 个人 Git 安装</a></li>
+    <li><a id="toc-Repository-configuration" href="#Repository-configuration">3.2 仓库配置</a></li>
+  </ul></li>
+  <li><a id="toc-FFmpeg-specific" href="#FFmpeg-specific">4 FFmpeg 特有内容</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Reverting-broken-commits" href="#Reverting-broken-commits">4.1 回退有问题的提交</a></li>
+    <li><a id="toc-Pushing-changes-to-remote-trees" href="#Pushing-changes-to-remote-trees">4.2 将变更推送到远端树</a></li>
+    <li><a id="toc-Finding-a-specific-svn-revision" href="#Finding-a-specific-svn-revision">4.3 查找特定的 svn 修订版本</a></li>
+  </ul></li>
+  <li><a id="toc-gpg-key-generation" href="#gpg-key-generation">5 gpg 密钥生成</a></li>
+  <li><a id="toc-Pre_002dpush-checklist" href="#Pre_002dpush-checklist">6 推送前检查清单</a></li>
+  <li><a id="toc-Server-Issues" href="#Server-Issues">7 服务器问题</a></li>
+</ul>
+</div>
+</div>
+
+<a name="Introduction"></a>
+<h2 class="chapter">1 简介<span class="pull-right"><a class="anchor hidden-xs" href="#Introduction" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Introduction" aria-hidden="true">TOC</a></span></h2>
+
+<p>本文档旨在提供一组常用 Git 命令的快速参考。你应当始终
+使用 Git 直接提供的详尽而详细的
+文档：
+</p>
+<div class="example">
+<pre class="example-preformatted">git --help
+man git
+</pre></div>
+
+<p>会显示可用的子命令，
+</p>
+<div class="example">
+<pre class="example-preformatted">git &lt;command&gt; --help
+man git-&lt;command&gt;
+</pre></div>
+
+<p>会显示关于子命令 &lt;command&gt; 的信息。
+</p>
+<p>更多信息可以在
+<a class="url" href="http://gitref.org">Git Reference</a> 网站上找到。
+</p>
+<p>想了解更多关于 Git 项目的信息，请访问
+<a class="url" href="http://git-scm.com/">Git 网站</a>。
+</p>
+<p>遇到问题时请查阅这些资源，它们相当详尽。
+</p>
+<p>接下来是 Git 的基本介绍以及一些 FFmpeg 特有的
+指南，以便更轻松地为该项目做贡献。
+</p>
+<a name="Basics-Usage"></a>
+<h2 class="chapter">2 基本用法<span class="pull-right"><a class="anchor hidden-xs" href="#Basics-Usage" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Basics-Usage" aria-hidden="true">TOC</a></span></h2>
+
+<a name="Get-Git"></a>
+<h3 class="section">2.1 获取 Git<span class="pull-right"><a class="anchor hidden-xs" href="#Get-Git" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Get-Git" aria-hidden="true">TOC</a></span></h3>
+
+<p>你可以从 <a class="url" href="http://git-scm.com/">http://git-scm.com/</a> 获取 Git
+大多数发行版和操作系统都为其提供了软件包。
+</p>
+
+<a name="Cloning-the-source-tree"></a>
+<h3 class="section">2.2 克隆源码树<span class="pull-right"><a class="anchor hidden-xs" href="#Cloning-the-source-tree" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Cloning-the-source-tree" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git clone https://git.ffmpeg.org/ffmpeg.git &lt;target&gt;
+</pre></div>
+
+<p>这会把 FFmpeg 源码放入目录 <var class="var">&lt;target&gt;</var> 中。
+</p>
+<div class="example">
+<pre class="example-preformatted">git clone git@source.ffmpeg.org:ffmpeg &lt;target&gt;
+</pre></div>
+
+<p>这会把 FFmpeg 源码放入目录 <var class="var">&lt;target&gt;</var>，并让你
+把变更推送回远端仓库。
+</p>
+<div class="example">
+<pre class="example-preformatted">git clone git@ffmpeg.org:ffmpeg-web &lt;target&gt;
+</pre></div>
+
+<p>这会把 FFmpeg 网站的源码放入目录
+<var class="var">&lt;target&gt;</var>，并让你把变更推送回远端仓库。
+</p>
+<p>如果你对 ffmpeg-web 仓库没有写权限，你可以在
+创建只读的 ffmpeg-web 克隆之后制作补丁：
+</p>
+<div class="example">
+<pre class="example-preformatted">git clone git://ffmpeg.org/ffmpeg-web &lt;target&gt;
+</pre></div>
+
+<p>请确保你的检出中没有 Windows 换行符，
+否则你可能会遇到莫名其妙的编译失败。实现这一点的
+一种方法是运行
+</p>
+<div class="example">
+<pre class="example-preformatted">git config --global core.autocrlf false
+</pre></div>
+
+
+<a class="anchor" id="Updating-the-source-tree-to-the-latest-revision"></a><a name="Updating-the-source-tree-to-the-latest-revision-1"></a>
+<h3 class="section">2.3 将源码树更新至最新修订版本<span class="pull-right"><a class="anchor hidden-xs" href="#Updating-the-source-tree-to-the-latest-revision" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Updating-the-source-tree-to-the-latest-revision" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git pull (--rebase)
+</pre></div>
+
+<p>会从被跟踪的分支拉取最新变更。被跟踪的分支
+可以是远端的。默认情况下，master 分支跟踪远端
+origin 中的 master 分支。
+</p>
+<div class="warning">
+<p>推荐使用 <code class="command">--rebase</code>（见下文）。
+</p></div>
+<a name="Rebasing-your-local-branches"></a>
+<h3 class="section">2.4 变基本地分支<span class="pull-right"><a class="anchor hidden-xs" href="#Rebasing-your-local-branches" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Rebasing-your-local-branches" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git pull --rebase
+</pre></div>
+
+<p>会从主仓库获取变更，并把你的本地提交重放到
+其上。这是让所有本地变更位于 FFmpeg master 树顶部的
+必要做法。master 树会拒绝包含合并提交的推送。
+</p>
+
+<a name="Adding_002fremoving-files_002fdirectories"></a>
+<h3 class="section">2.5 添加/删除文件/目录<span class="pull-right"><a class="anchor hidden-xs" href="#Adding_002fremoving-files_002fdirectories" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Adding_002fremoving-files_002fdirectories" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git add [-A] &lt;filename/dirname&gt;
+git rm [-r] &lt;filename/dirname&gt;
+</pre></div>
+
+<p>Git 需要被告知你在工作目录中所做的、会导致文件出现或
+消失的所有变更。
+跨文件的行移动会被自动跟踪。
+</p>
+
+<a name="Showing-modifications"></a>
+<h3 class="section">2.6 显示修改<span class="pull-right"><a class="anchor hidden-xs" href="#Showing-modifications" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Showing-modifications" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git diff &lt;filename(s)&gt;
+</pre></div>
+
+<p>会以统一差异格式显示工作目录中的所有本地修改。
+</p>
+
+<a name="Inspecting-the-changelog"></a>
+<h3 class="section">2.7 查看变更日志<span class="pull-right"><a class="anchor hidden-xs" href="#Inspecting-the-changelog" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Inspecting-the-changelog" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git log &lt;filename(s)&gt;
+</pre></div>
+
+<p>你也可以使用诸如 <code class="command">gitview</code> 或 <code class="command">gitk</code> 之类的图形化工具，
+或者访问 <a class="url" href="https://git.ffmpeg.org/ffmpeg.git">https://git.ffmpeg.org/ffmpeg.git</a> 处的 Web 界面。
+</p>
+<a name="Checking-source-tree-status"></a>
+<h3 class="section">2.8 检查源码树状态<span class="pull-right"><a class="anchor hidden-xs" href="#Checking-source-tree-status" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Checking-source-tree-status" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git status
+</pre></div>
+
+<p>会检测你所做的所有变更，并列出在提交的情况下将执行哪些
+操作（新增、修改、删除等）。
+</p>
+
+<a name="Committing"></a>
+<h3 class="section">2.9 提交<span class="pull-right"><a class="anchor hidden-xs" href="#Committing" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Committing" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git diff --check
+</pre></div>
+
+<p>以便在提交前再次检查你的变更，避免日后出现
+麻烦。所有有经验的开发者对每一次提交都会这样做，无论
+改动有多小。
+</p>
+<p>他们每个人都曾多次因此免于出丑。
+多余的调试输出或表面性的修改很容易混入，
+请通过这一额外层次的审查来避免问题。
+</p>
+<p>对于只做表面修改的提交，你应当从下面这条命令得到（几乎）空的输出
+</p>
+<div class="example">
+<pre class="example-preformatted">git diff -w -b &lt;filename(s)&gt;
+</pre></div>
+
+<p>还要检查以下命令的输出
+</p>
+<div class="example">
+<pre class="example-preformatted">git status
+</pre></div>
+
+<p>以确保你没有未跟踪的文件或删除操作。
+</p>
+<div class="example">
+<pre class="example-preformatted">git add [-i|-p|-A] &lt;filenames/dirnames&gt;
+</pre></div>
+
+<p>请确保你已经告诉 Git 你的姓名、电子邮件地址和 GPG 密钥
+</p>
+<div class="example">
+<pre class="example-preformatted">git config --global user.name &quot;My Name&quot;
+git config --global user.email my@email.invalid
+git config --global user.signingkey ABCDEF0123245
+</pre></div>
+
+<p>启用对所有提交的签名，或使用 -S
+</p>
+<div class="example">
+<pre class="example-preformatted">git config --global commit.gpgsign true
+</pre></div>
+
+<p>使用 <samp class="option">--global</samp> 为你的所有 Git 检出设置全局配置。
+</p>
+<p>Git 会选择文件中要提交的变更。你也可以选择使用
+交互模式或补丁模式，逐个代码块地选择哪些内容应当
+加入提交。
+</p>
+
+<div class="example">
+<pre class="example-preformatted">git commit
+</pre></div>
+
+<p>Git 会把选中的变更提交到当前本地分支。
+</p>
+<p>编辑器会提示你输入日志信息，该编辑器要么在个人配置文件中
+通过以下命令设置
+</p>
+<div class="example">
+<pre class="example-preformatted">git config --global core.editor
+</pre></div>
+
+<p>要么由以下环境变量之一设置：
+<var class="var">GIT_EDITOR</var>、<var class="var">VISUAL</var> 或 <var class="var">EDITOR</var>。
+</p>
+<a name="Writing-a-commit-message"></a>
+<h3 class="section">2.10 编写提交信息<span class="pull-right"><a class="anchor hidden-xs" href="#Writing-a-commit-message" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Writing-a-commit-message" aria-hidden="true">TOC</a></span></h3>
+
+<p>日志信息应当简洁但具有描述性。
+</p>
+<p>第一行必须包含上下文、一个冒号以及对该提交所做事情的
+非常简短的摘要。如有必要，可以添加细节，
+并以空行分隔。除非包含代码，否则这些细节每行不应
+超过 60-72 个字符。
+</p>
+<p>一条良好提交信息的示例：
+</p>
+<div class="example">
+<pre class="example-preformatted">avcodec/cbs: add a helper to read extradata within packet side data
+
+Using ff_cbs_read() on the raw buffer will not parse it as extradata,
+resulting in parsing errors for example when handling ISOBMFF avcC.
+This helper works around that.
+</pre></div>
+
+<div class="example">
+<pre class="example-preformatted">ptr might be NULL
+</pre></div>
+
+<p>如果第一行的摘要不够，请在信息正文中
+解释你为何做出某项变更，你所做的内容大多数时候从变更本身
+就显而易见。只说 &quot;bug fix&quot; 或 &quot;10l&quot; 是很糟糕的。请记住，
+各种技能水平的人在阅读你的代码时都会查看并
+从中学习。除了上下文之外，不要在日志信息中包含文件名，
+Git 会提供该信息。
+</p>
+<p>如果该提交修复了一个已登记的问题，请在正文的单独一行中
+说明：<code class="code">Fix Trac ticket #42.</code>
+</p>
+<p>第一行将被用于命名
+补丁，由 <code class="command">git format-patch</code> 完成。
+</p>
+<p>在 <code class="command">git log --oneline</code> 中常见的第一行错误
+包括：开头缺少上下文；描述代码在补丁之前的行为；
+行太长或折行到第二行。
+</p>
+<a name="Preparing-a-patchset"></a>
+<h3 class="section">2.11 准备补丁集<span class="pull-right"><a class="anchor hidden-xs" href="#Preparing-a-patchset" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Preparing-a-patchset" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git format-patch &lt;commit&gt; [-o directory]
+</pre></div>
+
+<p>将为 <var class="var">&lt;commit&gt;</var> 与
+当前 <var class="var">HEAD</var> 之间的每个提交生成一组补丁。例如
+</p>
+<div class="example">
+<pre class="example-preformatted">git format-patch origin/master
+</pre></div>
+
+<p>将为当前分支上所有不存在于
+上游中的提交生成补丁。
+还有一个有用的快捷方式
+</p>
+<div class="example">
+<pre class="example-preformatted">git format-patch -n
+</pre></div>
+
+<p>它会从最近 <var class="var">n</var> 个提交生成补丁。
+默认情况下，补丁在当前目录中创建。
+</p>
+<a name="Sending-patches-for-review"></a>
+<h3 class="section">2.12 发送补丁以供评审<span class="pull-right"><a class="anchor hidden-xs" href="#Sending-patches-for-review" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Sending-patches-for-review" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git send-email &lt;commit list|directory&gt;
+</pre></div>
+
+<p>将发送由 <code class="command">git format-patch</code> 创建的补丁，或直接
+生成它们。所有电子邮件字段都可以在全局/本地
+配置中设置，或通过在命令行中覆盖。
+注意，该工具通常必须单独安装（例如基于 Debian 的发行版上的 <var class="var">git-email</var>
+软件包）。
+</p>
+
+<a name="Renaming_002fmoving_002fcopying-files-or-contents-of-files"></a>
+<h3 class="section">2.13 重命名/移动/复制文件或文件内容<span class="pull-right"><a class="anchor hidden-xs" href="#Renaming_002fmoving_002fcopying-files-or-contents-of-files" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Renaming_002fmoving_002fcopying-files-or-contents-of-files" aria-hidden="true">TOC</a></span></h3>
+
+<p>Git 会自动跟踪此类更改，将它们作为普通提交处理。
+</p>
+<div class="example">
+<pre class="example-preformatted">mv/cp path/file otherpath/otherfile
+git add [-A] .
+git commit
+</pre></div>
+
+
+<a name="Git-configuration"></a>
+<h2 class="chapter">3 Git 配置<span class="pull-right"><a class="anchor hidden-xs" href="#Git-configuration" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Git-configuration" aria-hidden="true">TOC</a></span></h2>
+
+<p>为简化一些工作流程，建议同时配置
+你的个人 Git 安装和本地 FFmpeg 仓库。
+</p>
+<a name="Personal-Git-installation"></a>
+<h3 class="section">3.1 个人 Git 安装<span class="pull-right"><a class="anchor hidden-xs" href="#Personal-Git-installation" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Personal-Git-installation" aria-hidden="true">TOC</a></span></h3>
+
+<p>将以下内容添加到 <samp class="file">~/.gitconfig</samp>，以帮助 <code class="command">git send-email</code>
+和 <code class="command">git format-patch</code> 检测重命名：
+</p>
+<div class="example">
+<pre class="example-preformatted">[diff]
+        renames = copy
+</pre></div>
+
+<a name="Repository-configuration"></a>
+<h3 class="section">3.2 仓库配置<span class="pull-right"><a class="anchor hidden-xs" href="#Repository-configuration" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Repository-configuration" aria-hidden="true">TOC</a></span></h3>
+
+<p>为了让 <code class="command">git send-email</code> 自动将补丁发送
+到 ffmpeg-devel 邮件列表，请将以下配置段添加
+到 <samp class="file">/path/to/ffmpeg/repository/.git/config</samp>：
+</p>
+<div class="example">
+<pre class="example-preformatted">[sendemail]
+        to = ffmpeg-devel@ffmpeg.org
+</pre></div>
+
+<a name="FFmpeg-specific"></a>
+<h2 class="chapter">4 FFmpeg 特有内容<span class="pull-right"><a class="anchor hidden-xs" href="#FFmpeg-specific" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-FFmpeg-specific" aria-hidden="true">TOC</a></span></h2>
+
+<a name="Reverting-broken-commits"></a>
+<h3 class="section">4.1 回退有问题的提交<span class="pull-right"><a class="anchor hidden-xs" href="#Reverting-broken-commits" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Reverting-broken-commits" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git reset &lt;commit&gt;
+</pre></div>
+
+<p><code class="command">git reset</code> 将撤销直到 <var class="var">&lt;commit&gt;</var> 为止的更改提交，重写
+当前分支的历史。
+</p>
+<div class="example">
+<pre class="example-preformatted">git commit --amend
+</pre></div>
+
+<p>可以快速修改最后一次提交的详细信息。
+</p>
+<div class="example">
+<pre class="example-preformatted">git rebase -i origin/master
+</pre></div>
+
+<p>将在主仓库之上重放本地提交，从而可以在这一过程中编辑、合并
+或删除其中一些提交。
+</p>
+<div class="info">
+<p><code class="command">git reset</code>、<code class="command">git commit --amend</code> 和 <code class="command">git rebase</code>
+会重写历史，因此你应当只在本地分支或主题分支上使用它们。
+主仓库将拒绝这些更改。
+</p></div>
+<div class="example">
+<pre class="example-preformatted">git revert &lt;commit&gt;
+</pre></div>
+
+<p><code class="command">git revert</code> 将生成一个回退提交。这不会使
+有问题的提交从历史中消失。
+</p>
+<a name="Pushing-changes-to-remote-trees"></a>
+<h3 class="section">4.2 将变更推送到远端树<span class="pull-right"><a class="anchor hidden-xs" href="#Pushing-changes-to-remote-trees" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Pushing-changes-to-remote-trees" aria-hidden="true">TOC</a></span></h3>
+
+<div class="example">
+<pre class="example-preformatted">git push origin master --dry-run
+</pre></div>
+
+<p>将模拟把本地 master 分支推送到默认远端
+（<var class="var">origin</var>），并列出哪些分支、范围或提交原本会被
+推送。
+如果本地树和远端树
+不同步，Git 会阻止你推送更改。参见 <a class="ref" href="#Updating-the-source-tree-to-the-latest-revision">将源码树更新到最新修订版本</a>。
+</p>
+<div class="example">
+<pre class="example-preformatted">git remote add &lt;name&gt; &lt;url&gt;
+</pre></div>
+
+<p>将添加一个带名称引用的额外远端，如果你想
+将本地分支推送到远端主机上进行评审，它会很有用。
+</p>
+<div class="example">
+<pre class="example-preformatted">git push &lt;remote&gt; &lt;refspec&gt;
+</pre></div>
+
+<p>将把更改推送到 <var class="var">&lt;remote&gt;</var> 仓库。
+省略 <var class="var">&lt;refspec&gt;</var> 会使 <code class="command">git push</code> 更新所有与本地分支
+匹配的远端分支。
+</p>
+<a name="Finding-a-specific-svn-revision"></a>
+<h3 class="section">4.3 查找特定的 svn 修订版本<span class="pull-right"><a class="anchor hidden-xs" href="#Finding-a-specific-svn-revision" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Finding-a-specific-svn-revision" aria-hidden="true">TOC</a></span></h3>
+
+<p>从 1.7.1 版本起，Git 支持 &lsquo;<samp class="samp">:/foo</samp>&rsquo; 语法，用于根据
+正则表达式指定提交。参见 man gitrevisions
+</p>
+<div class="example">
+<pre class="example-preformatted">git show :/'as revision 23456'
+</pre></div>
+
+<p>将显示 svn 变更集 &lsquo;<samp class="samp">r23456</samp>&rsquo;。对于较旧的 Git 版本，在
+<code class="command">git log</code> 输出中搜索是最简单的选择（尤其是当使用带有
+搜索功能的分页器时）。
+</p>
+<p>该提交可以用以下命令检出
+</p>
+<div class="example">
+<pre class="example-preformatted">git checkout -b svn_23456 :/'as revision 23456'
+</pre></div>
+
+<p>或者对于 Git &lt; 1.7.1，使用
+</p>
+<div class="example">
+<pre class="example-preformatted">git checkout -b svn_23456 $SHA1
+</pre></div>
+
+<p>其中 <var class="var">$SHA1</var> 是 <code class="command">git log</code> 输出中的提交哈希。
+</p>
+
+<a name="gpg-key-generation"></a>
+<h2 class="chapter">5 gpg 密钥生成<span class="pull-right"><a class="anchor hidden-xs" href="#gpg-key-generation" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-gpg-key-generation" aria-hidden="true">TOC</a></span></h2>
+
+<p>如果你还没有 gpg 密钥，我们建议你创建一个基于 ed25519 的密钥，因为它
+体积小、速度快且安全。尤其是在 git 中会产生较小的签名。
+</p>
+<div class="example">
+<pre class="example-preformatted">gpg --default-new-key-algo &quot;ed25519/cert,sign+cv25519/encr&quot; --quick-generate-key &quot;human@server.com&quot;
+</pre></div>
+
+<p>生成密钥时，请确保指定的电子邮件地址与 git 中使用的电子邮件地址一致，因为像
+github 这类网站会将不一致视为宣布此类提交未经验证的理由。生成密钥后，你
+可以将其添加到 MAINTAINER 文件，并上传到密钥服务器。
+</p>
+<a name="Pre_002dpush-checklist"></a>
+<h2 class="chapter">6 推送前检查清单<span class="pull-right"><a class="anchor hidden-xs" href="#Pre_002dpush-checklist" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Pre_002dpush-checklist" aria-hidden="true">TOC</a></span></h2>
+
+<p>一旦你有一组认为可以推送的提交，
+就请逐项完成以下检查清单，以复核一切都处于
+正确的顺序。该列表力求详尽。如果你只是
+推送注释中的一个拼写错误，某些步骤可能没有必要。
+请运用你的常识，但如有疑问，宁可谨慎行事。
+</p>
+<p>首先，确保你将要推送的提交和分支
+与你想要推送的内容一致，并且没有任何遗漏、多余或
+错误的内容。你可以通过运行 git push 命令
+并先加上 <samp class="option">--dry-run</samp> 来查看将要推送的内容。然后检查用
+<code class="command">git log -p 1234567..987654</code> 列出的提交。<code class="command">git status</code> 命令
+可能有助于找出被遗忘添加的本地更改。
+</p>
+<p>接下来，让代码完整跑一遍我们的测试套件。
+</p>
+<ul class="itemize mark-bullet">
+<li><code class="command">make distclean</code>
+</li><li><code class="command">/path/to/ffmpeg/configure</code>
+</li><li><code class="command">make fate</code>
+</li><li>如果 fate 因缺少样本而失败，请运行 <code class="command">make fate-rsync</code> 并重试
+</li></ul>
+
+<p>在推送之前，请确保你的所有更改都已检查过，
+测试套件只检查回归，而且只是在一定程度上。它
+显然不会检查新添加的功能/代码是否正常工作，除非你
+为此添加了测试（推荐这样做）。
+</p>
+<p>另请注意，每一个提交都应当通过测试套件，而不只是
+一系列补丁的结果。
+</p>
+<p>一旦全部通过，就把更改推送到你的公共 ffmpeg 克隆，并向
+ffmpeg-devel 发送合并请求。你也可以直接推送它们，但这并不
+推荐。
+</p>
+<a name="Server-Issues"></a>
+<h2 class="chapter">7 服务器问题<span class="pull-right"><a class="anchor hidden-xs" href="#Server-Issues" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Server-Issues" aria-hidden="true">TOC</a></span></h2>
+
+<p>如果你在使用 Git 服务器时遇到技术
+问题，请联系项目管理员 <a class="email" href="mailto:root@ffmpeg.org">root@ffmpeg.org</a>。
+</p>      <p style="font-size: small;">
+        本文档由 <a class="uref" href="https://www.gnu.org/software/texinfo/"><em class="emph">makeinfo</em></a> 生成。
+      </p>
+    </div>
+  </body>
+</html>

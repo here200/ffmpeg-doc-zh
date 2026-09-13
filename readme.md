@@ -10,6 +10,12 @@
 
 
 
+## 翻译目标
+
+![](./images/翻译目标.png)
+
+
+
 ## 在线预览
 
 [ffmpeg-zh.html](https://here200.github.io/ffmpeg-doc-zh/ffmpeg-zh.html)

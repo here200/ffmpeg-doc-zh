@@ -1,0 +1,343 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+  <head>
+    <meta charset="utf-8">
+    <title>
+      平台特定信息
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+      平台特定信息
+      </h1>
+
+
+<a name="SEC_Top"></a>
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">目录</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Unix_002dlike" href="#Unix_002dlike">1 类 Unix</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Advanced-linking-configuration" href="#Advanced-linking-configuration">1.1 高级链接配置</a></li>
+    <li><a id="toc-BSD" href="#BSD">1.2 BSD</a></li>
+    <li><a id="toc-_0028Open_0029Solaris" href="#g_t_0028Open_0029Solaris">1.3 (Open)Solaris</a></li>
+    <li><a id="toc-Darwin-_0028Mac-OS-X_002c-iPhone_0029" href="#Darwin-_0028Mac-OS-X_002c-iPhone_0029">1.4 Darwin (Mac OS X、iPhone)</a></li>
+  </ul></li>
+  <li><a id="toc-DOS" href="#DOS">2 DOS</a></li>
+  <li><a id="toc-OS_002f2" href="#OS_002f2">3 OS/2</a></li>
+  <li><a id="toc-Windows" href="#Windows">4 Windows</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Native-Windows-compilation-using-MinGW-or-MinGW_002dw64" href="#Native-Windows-compilation-using-MinGW-or-MinGW_002dw64">4.1 使用 MinGW 或 MinGW-w64 的本机 Windows 编译</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Native-Windows-compilation-using-MSYS2" href="#Native-Windows-compilation-using-MSYS2">4.1.1 使用 MSYS2 的本机 Windows 编译</a></li>
+    </ul></li>
+    <li><a id="toc-Microsoft-Visual-C_002b_002b-or-Intel-C_002b_002b-Compiler-for-Windows" href="#Microsoft-Visual-C_002b_002b-or-Intel-C_002b_002b-Compiler-for-Windows">4.2 用于 Windows 的 Microsoft Visual C++ 或 Intel C++ 编译器</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Linking-to-FFmpeg-with-Microsoft-Visual-C_002b_002b" href="#Linking-to-FFmpeg-with-Microsoft-Visual-C_002b_002b">4.2.1 使用 Microsoft Visual C++ 链接到 FFmpeg</a></li>
+    </ul></li>
+    <li><a id="toc-Cross-compilation-for-Windows-with-Linux" href="#Cross-compilation-for-Windows-with-Linux-1">4.3 在 Linux 上为 Windows 交叉编译</a></li>
+    <li><a id="toc-Compilation-under-Cygwin" href="#Compilation-under-Cygwin">4.4 在 Cygwin 下编译</a></li>
+    <li><a id="toc-Crosscompilation-for-Windows-under-Cygwin" href="#Crosscompilation-for-Windows-under-Cygwin">4.5 在 Cygwin 下为 Windows 交叉编译</a></li>
+    <li><a id="toc-ARM64EC" href="#ARM64EC">4.6 ARM64EC</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+
+<a name="Unix_002dlike"></a>
+<h2 class="chapter">1 类 Unix<span class="pull-right"><a class="anchor hidden-xs" href="#Unix_002dlike" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Unix_002dlike" aria-hidden="true">TOC</a></span></h2>
+
+<a name="Advanced-linking-configuration"></a>
+<h3 class="section">1.1 高级链接配置<span class="pull-right"><a class="anchor hidden-xs" href="#Advanced-linking-configuration" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Advanced-linking-configuration" aria-hidden="true">TOC</a></span></h3>
+
+<p>如果你以静态方式编译了 FFmpeg 库，并想用它们来
+构建你自己的共享库，你可能需要强制启用 PIC 支持（在
+FFmpeg configure 期间使用 <code class="code">--enable-pic</code>），并向你的项目 LDFLAGS
+添加以下选项：
+</p>
+<div class="example">
+<pre class="example-preformatted">-Wl,-Bsymbolic
+</pre></div>
+
+<p>如果你的目标平台要求二进制文件与位置无关，你应当
+把正确的链接标志（例如 <code class="code">-pie</code>）传给 <code class="code">--extra-ldexeflags</code>。
+</p>
+<a name="BSD"></a>
+<h3 class="section">1.2 BSD<span class="pull-right"><a class="anchor hidden-xs" href="#BSD" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-BSD" aria-hidden="true">TOC</a></span></h3>
+
+<p>BSD make 无法构建 FFmpeg，你需要安装并使用 GNU Make
+（<code class="command">gmake</code>）。
+</p>
+<a name="g_t_0028Open_0029Solaris"></a>
+<h3 class="section">1.3 (Open)Solaris<span class="pull-right"><a class="anchor hidden-xs" href="#_0028Open_0029Solaris" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-_0028Open_0029Solaris" aria-hidden="true">TOC</a></span></h3>
+
+<p>构建 FFmpeg 需要 GNU Make，因此你必须调用 <code class="command">gmake</code>，
+标准的 Solaris Make 无法工作。
+</p>
+<a class="anchor" id="Darwin"></a><a name="Darwin-_0028Mac-OS-X_002c-iPhone_0029"></a>
+<h3 class="section">1.4 Darwin (Mac OS X、iPhone)<span class="pull-right"><a class="anchor hidden-xs" href="#Darwin-_0028Mac-OS-X_002c-iPhone_0029" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Darwin-_0028Mac-OS-X_002c-iPhone_0029" aria-hidden="true">TOC</a></span></h3>
+
+<p>Xcode 附带的工具链足以构建基本的
+非加速代码。
+</p>
+<p>x86 上的 macOS 需要 <code class="command">nasm</code> 来构建大部分
+优化汇编函数。
+<a class="uref" href="https://wiki.gentoo.org/wiki/Project:Prefix">Gentoo Prefix</a>、
+<a class="uref" href="https://brew.sh/">Homebrew</a>
+或 <a class="uref" href="https://www.macports.org">MacPorts</a> 都可以轻松提供它。
+</p>
+
+<a name="DOS"></a>
+<h2 class="chapter">2 DOS<span class="pull-right"><a class="anchor hidden-xs" href="#DOS" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-DOS" aria-hidden="true">TOC</a></span></h2>
+
+<p>出于各种原因，使用交叉编译器是更好的选择。
+<a class="url" href="http://www.delorie.com/howto/djgpp/linux-x-djgpp.html">http://www.delorie.com/howto/djgpp/linux-x-djgpp.html</a>
+</p>
+
+<a name="OS_002f2"></a>
+<h2 class="chapter">3 OS/2<span class="pull-right"><a class="anchor hidden-xs" href="#OS_002f2" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-OS_002f2" aria-hidden="true">TOC</a></span></h2>
+
+<p>关于在 OS/2 上编译 FFmpeg 的信息，请参见
+<a class="url" href="http://www.edm2.com/index.php/FFmpeg">http://www.edm2.com/index.php/FFmpeg</a>。
+</p>
+
+<a name="Windows"></a>
+<h2 class="chapter">4 Windows<span class="pull-right"><a class="anchor hidden-xs" href="#Windows" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Windows" aria-hidden="true">TOC</a></span></h2>
+
+<a name="Native-Windows-compilation-using-MinGW-or-MinGW_002dw64"></a>
+<h3 class="section">4.1 使用 MinGW 或 MinGW-w64 的本机 Windows 编译<span class="pull-right"><a class="anchor hidden-xs" href="#Native-Windows-compilation-using-MinGW-or-MinGW_002dw64" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Native-Windows-compilation-using-MinGW-or-MinGW_002dw64" aria-hidden="true">TOC</a></span></h3>
+
+<p>FFmpeg 可以构建为使用 MinGW-w64 工具链在 Windows 上
+本机运行。请从
+<a class="url" href="https://www.msys2.org/">https://www.msys2.org/</a> 和/或 <a class="url" href="https://www.mingw-w64.org/">https://www.mingw-w64.org/</a> 安装最新版本的 MSYS2 和 MinGW-w64。
+你可以在下载部分和
+常见问题中找到详细的安装说明。
+</p>
+<p>注意事项：
+</p>
+<ul class="itemize mark-bullet">
+<li>不鼓励为 MSYS 环境构建，请改用 MSYS2 提供的
+某个 MinGW-w64 环境。UCRT64 提供基于 GCC 的
+工具链，CLANG64 提供基于 LLVM 的工具链，而 CLANGARM64 面向 ARM64 上的
+Windows。
+
+</li><li>通过禁用 Makefile 中的隐式规则可以加快使用 MSYS2 构建的速度，
+办法是调用 <code class="code">make -r</code> 而不是普通的 <code class="code">make</code>。这种
+加速对于普通的一次性构建几乎不存在，只有在第二次运行 make 时
+才比较明显（例如执行
+<code class="code">make install</code> 时）。
+
+</li><li>为了编译 FFplay，你必须安装
+<a class="uref" href="http://www.libsdl.org/">SDL</a> 的 MinGW 开发库以及 <code class="code">pkg-config</code>。
+
+</li><li>在配置 FFmpeg 时使用 <code class="code">./configure --enable-shared</code>，
+你就可以把 FFmpeg 库（例如 libavutil、libavcodec、
+libavformat）构建为 DLL。
+
+</li></ul>
+
+<a name="Native-Windows-compilation-using-MSYS2"></a>
+<h4 class="subsection">4.1.1 使用 MSYS2 的本机 Windows 编译<span class="pull-right"><a class="anchor hidden-xs" href="#Native-Windows-compilation-using-MSYS2" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Native-Windows-compilation-using-MSYS2" aria-hidden="true">TOC</a></span></h4>
+
+<p>MSYS2 的 MinGW-w64 环境提供开箱即用的工具链和
+依赖，这些依赖可通过 <code class="command">pacman</code> 获取。
+</p>
+<p>使用启动器启动你想要在其中构建的环境的 shell，
+例如 <samp class="file">ucrt64.exe</samp>，或 UCRT64 对应的开始菜单
+快捷方式。然后安装工具链和 FFmpeg
+依赖。<code class="command">pacboy</code> 包装器来自 <code class="code">pactoys</code>
+包，它会填入当前环境的包名前缀，因此
+同一条命令在每个环境中都可用。
+</p>
+<div class="example">
+<pre class="example-preformatted"># normal msys2 packages
+pacman -S make pkgconf diffutils pactoys
+
+# mingw-w64 packages and toolchains for the current environment
+pacboy -S cc nasm SDL2
+</pre></div>
+
+<a name="Microsoft-Visual-C_002b_002b-or-Intel-C_002b_002b-Compiler-for-Windows"></a>
+<h3 class="section">4.2 用于 Windows 的 Microsoft Visual C++ 或 Intel C++ 编译器<span class="pull-right"><a class="anchor hidden-xs" href="#Microsoft-Visual-C_002b_002b-or-Intel-C_002b_002b-Compiler-for-Windows" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Microsoft-Visual-C_002b_002b-or-Intel-C_002b_002b-Compiler-for-Windows" aria-hidden="true">TOC</a></span></h3>
+
+<p>FFmpeg 可以用 MSVC 2019 16.8 或更高版本构建，这是第一个能够
+编译 C11 的版本。
+</p>
+<p>你需要以下先决条件：
+</p>
+<ul class="itemize mark-bullet">
+<li><a class="uref" href="https://www.msys2.org/">MSYS2</a>
+</li><li><a class="uref" href="https://www.nasm.us/">NASM</a>
+（也可通过 MSYS2 的包管理器获取。）
+</li></ul>
+
+<p>要在 MSYS2 中建立合适的环境，你需要运行
+<code class="code">msys2_shell.cmd -use-full-path</code>，它要在 Visual Studio 或 Intel Compiler 的
+命令提示符中执行。
+</p>
+<p>把 <code class="code">nasm.exe</code> 放到你的 <code class="code">PATH</code> 中的某个位置。
+</p>
+<p>接下来，确保你想使用的任何其它头文件和库（例如 zlib）都
+位于编译器能够看到的位置。为此，请修改 <code class="code">LIB</code>
+和 <code class="code">INCLUDE</code> 环境变量，使其包含指向这些目录的 <strong class="strong">Windows 风格</strong>
+路径。或者，你也可以尝试使用
+<code class="code">--extra-cflags</code>/<code class="code">--extra-ldflags</code> 配置选项。
+</p>
+<p>最后，运行：
+</p>
+<div class="example">
+<pre class="example-preformatted">For MSVC:
+./configure --toolchain=msvc
+
+For ICL:
+./configure --toolchain=icl
+
+make
+make install
+</pre></div>
+
+<p>如果你希望编译共享库，请把 <code class="code">--enable-shared</code> 加到你的
+配置选项中。注意，由于 MSVC 和 ICL 处理 DLL 导入与
+导出的方式，你无法同时编译静态库和共享库，而且
+启用共享库会自动禁用静态库。
+</p>
+<p>注意事项：
+</p>
+<ul class="itemize mark-bullet">
+<li>如果你希望构建时启用 zlib 支持，就必须从某处获取一个兼容的
+zlib 二进制文件（带 MSVC 导入库），或者，如果你希望静态
+链接，可以按照下面的说明用 MSVC 构建一个兼容的
+<code class="code">zlib.lib</code>。无论使用哪种方法，你仍然必须
+遵循第 3 步，否则编译会失败。
+<ol class="enumerate">
+<li> 获取 <a class="uref" href="http://zlib.net/">zlib 源码</a>。
+</li><li> 编辑 <code class="code">win32/Makefile.msc</code>，使其使用 -MT 而不是 -MD，因为
+FFmpeg 也是这样构建的。
+</li><li> 编辑 <code class="code">zconf.h</code> 并删除它对 <code class="code">unistd.h</code> 的包含。构建 FFmpeg 时
+它会错误地被包含进来。
+</li><li> 运行 <code class="code">nmake -f win32/Makefile.msc</code>。
+</li><li> 把 <code class="code">zlib.lib</code>、<code class="code">zconf.h</code> 和 <code class="code">zlib.h</code> 移到 MSVC
+能看到的地方。
+</li></ol>
+
+</li></ul>
+
+<a name="Linking-to-FFmpeg-with-Microsoft-Visual-C_002b_002b"></a>
+<h4 class="subsection">4.2.1 使用 Microsoft Visual C++ 链接到 FFmpeg<span class="pull-right"><a class="anchor hidden-xs" href="#Linking-to-FFmpeg-with-Microsoft-Visual-C_002b_002b" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Linking-to-FFmpeg-with-Microsoft-Visual-C_002b_002b" aria-hidden="true">TOC</a></span></h4>
+
+<p>如果你打算链接由 MSVC 构建的静态库，你需要
+确保在你项目的设置中把 <code class="code">Runtime Library</code> 设置为
+<code class="code">Multi-threaded (/MT)</code>。
+</p>
+<p>如果你打算使用由 dlltool 创建的导入库，你必须
+在链接器优化设置中把 <code class="code">References</code> 设为 <code class="code">No (/OPT:NOREF)</code>，
+否则生成的二进制文件会在运行时失败。
+在使用由 <code class="code">lib.exe</code> 生成的导入库时不需要这样做。
+此问题已在上游报告，参见
+<a class="url" href="http://sourceware.org/bugzilla/show_bug.cgi?id=12633">http://sourceware.org/bugzilla/show_bug.cgi?id=12633</a>。
+</p>
+<p>要创建能与 <code class="code">/OPT:REF</code> 选项
+（该选项在 Release 模式下默认启用）配合使用的导入库，请按以下步骤操作：
+</p>
+<ol class="enumerate">
+<li> 打开 <em class="emph">Visual Studio 命令提示符</em>。
+
+<p>或者，在普通的命令行提示符中调用 <samp class="file">vcvarsall.bat</samp>，
+它会为 Visual C++ 工具设置好环境变量。
+</p>
+</li><li> 进入存放所创建的 LIB 和 DLL 文件的 <samp class="file">bin</samp>
+目录。
+
+</li><li> 用 <code class="command">lib.exe</code> 生成新的导入库：
+
+<div class="example">
+<pre class="example-preformatted">lib /machine:i386 /def:..\lib\foo-version.def  /out:foo.lib
+</pre></div>
+
+<p>把 <code class="code">foo-version</code> 和 <code class="code">foo</code> 替换为相应的库名。
+</p>
+</li></ol>
+
+<a class="anchor" id="Cross-compilation-for-Windows-with-Linux"></a><a name="Cross-compilation-for-Windows-with-Linux-1"></a>
+<h3 class="section">4.3 在 Linux 上为 Windows 交叉编译<span class="pull-right"><a class="anchor hidden-xs" href="#Cross-compilation-for-Windows-with-Linux" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Cross-compilation-for-Windows-with-Linux" aria-hidden="true">TOC</a></span></h3>
+
+<p>你必须使用 MinGW-w64 交叉编译工具，大多数 Linux
+发行版都以软件包形式提供这些工具。
+</p>
+<p>然后用以下选项配置 FFmpeg：
+</p><div class="example">
+<pre class="example-preformatted">./configure --arch=x86_64 --target-os=mingw32 --cross-prefix=x86_64-w64-mingw32-
+</pre></div>
+<p>（你可以根据为
+MinGW-w64 工具选择的前缀来更改 cross-prefix）。
+</p>
+<p>然后你可以用 <a class="uref" href="https://www.winehq.org/">Wine</a> 轻松测试 FFmpeg。
+</p>
+<a name="Compilation-under-Cygwin"></a>
+<h3 class="section">4.4 在 Cygwin 下编译<span class="pull-right"><a class="anchor hidden-xs" href="#Compilation-under-Cygwin" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Compilation-under-Cygwin" aria-hidden="true">TOC</a></span></h3>
+
+<p>安装 Cygwin 时要包含所有 &quot;Base&quot; 包，再加上
+以下 &quot;Devel&quot; 包：
+</p><div class="example">
+<pre class="example-preformatted">binutils, gcc-core, make, git, texinfo
+</pre></div>
+
+<p>为了运行 FATE，你还需要以下 &quot;Utils&quot; 包：
+</p><div class="example">
+<pre class="example-preformatted">diffutils
+</pre></div>
+
+<p>如果你想用附加的库来构建 FFmpeg，请从任意 Cygwin 软件包仓库下载适用于 Ogg 和 Vorbis 的 Cygwin
+&quot;Devel&quot; 包：
+</p><div class="example">
+<pre class="example-preformatted">libogg-devel, libvorbis-devel
+</pre></div>
+
+<a name="Crosscompilation-for-Windows-under-Cygwin"></a>
+<h3 class="section">4.5 在 Cygwin 下为 Windows 交叉编译<span class="pull-right"><a class="anchor hidden-xs" href="#Crosscompilation-for-Windows-under-Cygwin" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Crosscompilation-for-Windows-under-Cygwin" aria-hidden="true">TOC</a></span></h3>
+
+<p>使用 Cygwin 你可以创建不需要 cygwin1.dll 的 Windows 二进制文件。
+</p>
+<p>只需像前面说明的那样安装 Cygwin，再加上 MinGW-w64 交叉
+工具链的 &quot;Devel&quot; 包：
+</p><div class="example">
+<pre class="example-preformatted">mingw64-x86_64-gcc-core, mingw64-x86_64-binutils
+</pre></div>
+
+<p>然后用以下命令配置：
+</p><div class="example">
+<pre class="example-preformatted">./configure --arch=x86_64 --target-os=mingw32 --cross-prefix=x86_64-w64-mingw32-
+</pre></div>
+
+<a name="ARM64EC"></a>
+<h3 class="section">4.6 ARM64EC<span class="pull-right"><a class="anchor hidden-xs" href="#ARM64EC" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-ARM64EC" aria-hidden="true">TOC</a></span></h3>
+
+<p>FFmpeg 不打算支持 Windows ARM64EC 构建配置；
+为 ARM64EC 的用途而改动各个库的补丁
+将不会被接受。
+</p>
+<p>在这种构建配置下构建 FFmpeg 或许仍然可行；
+这样的构建在某种程度上看似可以工作。不过这种构建可能存在
+一些 ABI 不一致——对此我们不打算修复。
+</p>
+<p>（要把 aarch64 汇编代码改为严格支持 ARM64EC，需要对
+几乎所有此类汇编代码做 ifdef 处理或修改，这会带来
+巨大的维护负担。此外，改动库的 ABI
+接口以修复 ABI 不一致，可能需要大量且侵入性的
+改动。）
+</p>
+      <p style="font-size: small;">
+        本文档由 <a class="uref" href="https://www.gnu.org/software/texinfo/"><em class="emph">makeinfo</em></a> 生成。
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,1192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- Created by GNU Texinfo 7.2, https://www.gnu.org/software/texinfo/ -->
+  <head>
+    <meta charset="utf-8">
+    <title>
+      开发者文档
+    </title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="style.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <h1>
+      开发者文档
+      </h1>
+
+
+<a name="SEC_Top"></a>
+
+<div class="region-contents" id="SEC_Contents">
+<h2 class="contents-heading">目录</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Introduction" href="#Introduction">1 简介</a></li>
+  <li><a id="toc-Coding-Rules" href="#Coding-Rules-1">2 编码规则</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Language" href="#Language">2.1 语言</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-SIMD_002fDSP" href="#SIMD_002fDSP-1">2.1.1 SIMD/DSP</a></li>
+      <li><a id="toc-Other-languages" href="#Other-languages">2.1.2 其他语言</a></li>
+    </ul></li>
+    <li><a id="toc-Code-formatting-conventions" href="#Code-formatting-conventions">2.2 代码格式化约定</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Examples" href="#Examples">2.2.1 示例</a></li>
+      <li><a id="toc-Vim-configuration" href="#Vim-configuration">2.2.2 Vim 配置</a></li>
+      <li><a id="toc-Emacs-configuration" href="#Emacs-configuration">2.2.3 Emacs 配置</a></li>
+    </ul></li>
+    <li><a id="toc-Comments" href="#Comments">2.3 注释</a></li>
+    <li><a id="toc-Naming-conventions" href="#Naming-conventions-1">2.4 命名约定</a></li>
+    <li><a id="toc-Miscellaneous-conventions" href="#Miscellaneous-conventions">2.5 其他约定</a></li>
+  </ul></li>
+  <li><a id="toc-Development-Policy" href="#Development-Policy-1">3 开发政策</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Code-behaviour" href="#Code-behaviour">3.1 代码行为</a></li>
+    <li><a id="toc-Patches_002fCommitting" href="#Patches_002fCommitting">3.2 补丁/提交</a></li>
+    <li><a id="toc-Code" href="#Code">3.3 代码</a></li>
+    <li><a id="toc-Library-public-interfaces" href="#Library-public-interfaces">3.4 库的公共接口</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Adding-new-interfaces" href="#Adding-new-interfaces">3.4.1 新增接口</a></li>
+      <li><a id="toc-Removing-interfaces" href="#Removing-interfaces-1">3.4.2 移除接口</a></li>
+      <li><a id="toc-Major-version-bumps" href="#Major-version-bumps-1">3.4.3 主版本号提升</a></li>
+    </ul></li>
+    <li><a id="toc-Documentation_002fOther" href="#Documentation_002fOther">3.5 文档/其他</a></li>
+  </ul></li>
+  <li><a id="toc-Submitting-patches" href="#Submitting-patches-1">4 提交补丁</a></li>
+  <li><a id="toc-New-codecs-or-formats-checklist" href="#New-codecs-or-formats-checklist">5 新编解码器或格式检查清单</a></li>
+  <li><a id="toc-Patch-submission-checklist" href="#Patch-submission-checklist">6 补丁提交检查清单</a></li>
+  <li><a id="toc-Patch-review-process" href="#Patch-review-process">7 补丁评审流程</a></li>
+  <li><a id="toc-Regression-tests" href="#Regression-tests-1">8 回归测试</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Adding-files-to-the-fate_002dsuite-dataset" href="#Adding-files-to-the-fate_002dsuite-dataset">8.1 向 fate-suite 数据集添加文件</a></li>
+    <li><a id="toc-Visualizing-Test-Coverage" href="#Visualizing-Test-Coverage">8.2 可视化测试覆盖率</a></li>
+    <li><a id="toc-Using-Valgrind" href="#Using-Valgrind">8.3 使用 Valgrind</a></li>
+  </ul></li>
+  <li><a id="toc-Maintenance-process" href="#Maintenance-process">9 维护流程</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-MAINTAINERS" href="#MAINTAINERS-1">9.1 MAINTAINERS</a></li>
+    <li><a id="toc-Becoming-a-maintainer" href="#Becoming-a-maintainer-1">9.2 成为维护者</a></li>
+  </ul></li>
+  <li><a id="toc-Release-process" href="#Release-process-1">10 发布流程</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Criteria-for-Point-Releases" href="#Criteria-for-Point-Releases-1">10.1 点版本发布的标准</a></li>
+    <li><a id="toc-Release-Checklist" href="#Release-Checklist">10.2 发布检查清单</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+
+<a name="Introduction"></a>
+<h2 class="chapter">1 简介<span class="pull-right"><a class="anchor hidden-xs" href="#Introduction" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Introduction" aria-hidden="true">TOC</a></span></h2>
+
+<p>本文讨论的是 FFmpeg 自身<em class="emph">的</em>开发。有关在其他程序中使用
+FFmpeg 库的信息可在别处找到，例如：
+</p><ul class="itemize mark-bullet">
+<li>已安装的头文件
+</li><li><a class="url" href="http://ffmpeg.org/doxygen/trunk/index.html">Doxygen 文档</a>
+由头文件生成
+</li><li><samp class="file">doc/examples</samp> 下的示例
+</li></ul>
+
+<p>有关在外部程序中使用 FFmpeg 的更详细法律信息，请阅读
+源码树中的 <samp class="file">LICENSE</samp> 文件，并查阅
+<a class="url" href="https://ffmpeg.org/legal.html">https://ffmpeg.org/legal.html</a>。
+</p>
+<p>如果你为自己的使用场景修改了 FFmpeg 代码，我们强烈建议你
+<em class="emph">把改动提交回给我们</em>，并以本文档作为指南。这样做既有
+务实的理由，也有理念上的理由：
+</p><ul class="itemize mark-bullet">
+<li>维护外部改动以跟上上游开发既
+耗时又容易出错。把你的代码放进主源码树，它就会
+由 FFmpeg 开发者维护。
+</li><li>FFmpeg 开发者中包括该领域的顶尖专家，他们能发现你的代码中的缺陷或
+设计缺陷。
+</li><li>通过支持你认为有用的项目，你能确保它持续得到
+维护和开发。
+</li></ul>
+
+<p>所有提议的代码改动都应当提交到
+<a class="url" href="https://code.ffmpeg.org/FFmpeg/FFmpeg/pulls">Forgejo</a> 或
+<a class="url" href="mailto:ffmpeg-devel@ffmpeg.org">开发邮件列表</a>进行评审，具体
+说明详见<a class="ref" href="#Submitting-patches">提交补丁</a>一章。代码
+应当符合<a class="ref" href="#Development-Policy">开发政策</a>并遵循<a class="ref" href="#Coding-Rules">编码规则</a>。
+提交代码的开发者和作者要对各自的改动负责，
+并应当设法修复其提交所引发的问题。
+</p>
+<a class="anchor" id="Coding-Rules"></a><a name="Coding-Rules-1"></a>
+<h2 class="chapter">2 编码规则<span class="pull-right"><a class="anchor hidden-xs" href="#Coding-Rules" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Coding-Rules" aria-hidden="true">TOC</a></span></h2>
+
+<a name="Language"></a>
+<h3 class="section">2.1 语言<span class="pull-right"><a class="anchor hidden-xs" href="#Language" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Language" aria-hidden="true">TOC</a></span></h3>
+
+<p>FFmpeg 主要使用 ISO C11 语言编写，但公共
+头文件必须保持 C99 兼容。
+</p>
+<p>在有充分理由时可以使用编译器特定的扩展，但不得
+依赖这些扩展，也就是说，代码必须仍能使用缺少
+该扩展的编译器编译并运行。
+</p>
+<p>代码库中的任何位置都不得使用以下 C99 特性：
+</p><ul class="itemize mark-bullet">
+<li>变长数组；
+
+</li><li>复数；
+</li></ul>
+
+<a name="SIMD_002fDSP-1"></a>
+<h4 class="subsection">2.1.1 SIMD/DSP<span class="pull-right"><a class="anchor hidden-xs" href="#SIMD_002fDSP" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-SIMD_002fDSP" aria-hidden="true">TOC</a></span></h4>
+<a class="anchor" id="SIMD_002fDSP"></a>
+<p>由于现代编译器无法从纯 C 代码生成高效的 SIMD 或其他
+对性能至关重要的 DSP 代码，因此使用手写汇编。
+通常这类代码被隔离在一个单独的函数中。此时标准做法是
+为该函数编写多个版本——一个可在任何环境下工作、
+也可能有助于调试的纯 C 版本，以及可能的多个
+针对特定架构的优化实现。随后初始化代码会
+在运行时选择可用的最佳版本，并将其载入一个函数
+指针；该函数此后总是通过这个指针调用。
+</p>
+<p>编写汇编时使用的具体语法为：
+</p><ul class="itemize mark-bullet">
+<li>x86 上使用 NASM；
+
+</li><li>ARM 和 RISC-V 上使用 GAS。
+</li></ul>
+
+<p>一个用于汇编的单元测试框架名为 <code class="code">checkasm</code>，位于
+<samp class="file">tests/checkasm</samp> 下。所有新的汇编都应当附带 <code class="code">checkasm</code> 测试；
+为缺少测试的现有汇编补充测试也受到强烈鼓励。
+</p>
+<a name="Other-languages"></a>
+<h4 class="subsection">2.1.2 其他语言<span class="pull-right"><a class="anchor hidden-xs" href="#Other-languages" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Other-languages" aria-hidden="true">TOC</a></span></h4>
+
+<p>在特殊情况下可以使用 C 以外的其他语言：
+</p><ul class="itemize mark-bullet">
+<li>当相关代码无法按 <a class="ref" href="#SIMD_002fDSP">SIMD/DSP</a> 一节所述的
+标准方式编写时，可使用编译器内建函数或内联汇编。这
+通常适用于需要内联的代码。
+
+</li><li>在与 macOS 特定接口交互时需要使用的 Objective-C。
+</li></ul>
+
+<a name="Code-formatting-conventions"></a>
+<h3 class="section">2.2 代码格式化约定<span class="pull-right"><a class="anchor hidden-xs" href="#Code-formatting-conventions" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Code-formatting-conventions" aria-hidden="true">TOC</a></span></h3>
+
+<p>关于文件中的代码风格，有以下准则：
+</p>
+<ul class="itemize mark-bullet">
+<li>缩进大小为 4。
+
+</li><li>在 Makefiles 之外禁止使用制表符，任何
+形式的行尾空白字符同样被禁止。包含其中任何一种的提交都会被
+git 仓库拒绝。
+
+</li><li>你应当尽量把代码行限制在 80 个字符以内；但只有在这样做
+确实能提高可读性时才应如此。
+
+</li><li>使用 K&amp;R 代码风格。
+</li></ul>
+<p>这种呈现方式受 &rsquo;indent -i4 -kr -nut&rsquo; 启发。
+</p>
+<a name="Examples"></a>
+<h4 class="subsection">2.2.1 示例<span class="pull-right"><a class="anchor hidden-xs" href="#Examples" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Examples" aria-hidden="true">TOC</a></span></h4>
+<p>一些值得注意的示例，用于说明 FFmpeg 中常见的代码风格：
+</p>
+<ul class="itemize mark-bullet">
+<li>赋值运算符两侧以及
+<code class="code">if</code>/<code class="code">do</code>/<code class="code">while</code>/<code class="code">for</code> 关键字之后要有空格：
+
+<div class="example user-c user-good">
+<pre class="example-preformatted">// Good
+if (condition)
+    av_foo();
+</pre></div>
+
+<div class="example user-c user-good">
+<pre class="example-preformatted">// Good
+for (size_t i = 0; i &lt; len; i++)
+    av_bar(i);
+</pre></div>
+
+<div class="example user-c user-good">
+<pre class="example-preformatted">// Good
+size_t size = 0;
+</pre></div>
+
+<p>不过，括号与条件之间不要加空格，除非这样有助于
+复杂条件的可读性，因此不应像下面这样写：
+</p>
+<div class="example user-c user-bad">
+<pre class="example-preformatted">// Bad style
+if ( condition )
+    av_foo();
+</pre></div>
+
+</li><li>不要使用不必要的括号，除非这样有助于可读性：
+
+<div class="example user-c user-good">
+<pre class="example-preformatted">// Good
+int fields = ilace ? 2 : 1;
+</pre></div>
+
+</li><li>不要用花括号包裹单行语句块。只有在有配套的 else 语句时才使用花括号。这样便于日后追踪代码改动。
+
+<div class="example user-c user-good">
+<pre class="example-preformatted">// Good
+if (bits_pixel == 24) {
+    avctx-&gt;pix_fmt = AV_PIX_FMT_BGR24;
+} else if (bits_pixel == 8) {
+    avctx-&gt;pix_fmt = AV_PIX_FMT_GRAY8;
+} else
+    return AVERROR_INVALIDDATA;
+
+</pre></div>
+
+</li><li>在合适的情况下避免在条件中赋值：
+
+<div class="example user-c user-good">
+<pre class="example-preformatted">// Good
+video_enc-&gt;chroma_intra_matrix = av_mallocz(sizeof(*video_enc-&gt;chroma_intra_matrix) * 64)
+if (!video_enc-&gt;chroma_intra_matrix)
+    return AVERROR(ENOMEM);
+</pre></div>
+
+<div class="example user-c user-bad">
+<pre class="example-preformatted">// Bad style
+if (!(video_enc-&gt;chroma_intra_matrix = av_mallocz(sizeof(*video_enc-&gt;chroma_intra_matrix) * 64)))
+    return AVERROR(ENOMEM);
+</pre></div>
+
+<div class="example user-c user-good">
+<pre class="example-preformatted">// Ok
+while ((entry = av_dict_iterate(options, entry)))
+    av_log(ctx, AV_LOG_INFO, &quot;Item '%s': '%s'\n&quot;, entry-&gt;key, entry-&gt;value);
+</pre></div>
+
+</li><li>声明指针变量时，<code class="code">*</code> 属于变量而非类型：
+
+<div class="example user-c user-good">
+<pre class="example-preformatted">// Good
+AVStream *stream;
+</pre></div>
+
+<div class="example user-c user-bad">
+<pre class="example-preformatted">// Bad style
+AVStream* stream;
+</pre></div>
+
+</li><li>在合理的情况下，优先使用较小的变量作用域，尤其是在 for 循环中：
+
+<div class="example user-c user-good">
+<pre class="example-preformatted">// Good
+for (unsigned i = 0; i &lt; submix-&gt;nb_elements; i++) {
+    // Do something...
+}
+</pre></div>
+
+<div class="example user-c user-bad">
+<pre class="example-preformatted">// Bad style
+unsigned i;
+//...
+for (i = 0; i &lt; submix-&gt;nb_elements; i++) {
+    // Do something...
+}
+</pre></div>
+
+</li></ul>
+
+<p>如果你处理的文件并未始终遵循这些准则，
+请把你正在编辑的部分改为遵循这些准则，但不要
+为了让文件符合这些准则而在文件中做无关的改动。
+</p>
+<a name="Vim-configuration"></a>
+<h4 class="subsection">2.2.2 Vim 配置<span class="pull-right"><a class="anchor hidden-xs" href="#Vim-configuration" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Vim-configuration" aria-hidden="true">TOC</a></span></h4>
+<p>为了让 Vim 遵循 FFmpeg 的格式化约定，请把
+以下片段粘贴到你的 <samp class="file">.vimrc</samp> 中：
+</p><div class="example">
+<pre class="example-preformatted">&quot; indentation rules for FFmpeg: 4 spaces, no tabs
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+set cindent
+set cinoptions=(0
+&quot; Allow tabs in Makefiles.
+autocmd FileType make,automake set noexpandtab shiftwidth=8 softtabstop=8
+&quot; Trailing whitespace and tabs are forbidden, so highlight them.
+highlight ForbiddenWhitespace ctermbg=red guibg=red
+match ForbiddenWhitespace /\s\+$\|\t/
+&quot; Do not highlight spaces at the end of line while typing on that line.
+autocmd InsertEnter * match ForbiddenWhitespace /\t\|\s\+\%#\@&lt;!$/
+</pre></div>
+
+<a name="Emacs-configuration"></a>
+<h4 class="subsection">2.2.3 Emacs 配置<span class="pull-right"><a class="anchor hidden-xs" href="#Emacs-configuration" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Emacs-configuration" aria-hidden="true">TOC</a></span></h4>
+<p>对于 Emacs，请把以下大致等效的配置行添加到你的 <samp class="file">.emacs.d/init.el</samp> 中：
+</p><div class="example lisp">
+<pre class="lisp-preformatted">(c-add-style &quot;ffmpeg&quot;
+             '(&quot;k&amp;r&quot;
+               (c-basic-offset . 4)
+               (indent-tabs-mode . nil)
+               (show-trailing-whitespace . t)
+               (c-offsets-alist
+                (statement-cont . (c-lineup-assignments +)))
+               )
+             )
+(setq c-default-style &quot;ffmpeg&quot;)
+</pre></div>
+
+<a name="Comments"></a>
+<h3 class="section">2.3 注释<span class="pull-right"><a class="anchor hidden-xs" href="#Comments" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Comments" aria-hidden="true">TOC</a></span></h3>
+<p>使用 JavaDoc/Doxygen 格式（参见下面的示例），以便代码文档
+能够自动生成。所有非平凡函数上方都应当有注释，
+说明该函数的作用，即使只有一句话。
+所有结构体及其成员变量也应当有文档。
+</p>
+<p>避免使用 Qt 风格以及类似的、其中含有 <code class="code">!</code> 的 Doxygen 语法，即把
+<code class="code">//!</code> 替换为 <code class="code">///</code> 等。此外，标记命令应当采用 @ 语法，
+即使用 <code class="code">@param</code> 而不是 <code class="code">\param</code>。
+</p>
+<div class="example">
+<pre class="example-preformatted">/**
+ * @file
+ * MPEG codec.
+ * @author ...
+ */
+
+/**
+ * Summary sentence.
+ * more text ...
+ * ...
+ */
+typedef struct Foobar {
+    int var1; /**&lt; var1 description */
+    int var2; ///&lt; var2 description
+    /** var3 description */
+    int var3;
+} Foobar;
+
+/**
+ * Summary sentence.
+ * more text ...
+ * ...
+ * @param my_parameter description of my_parameter
+ * @return return value description
+ */
+int myfunc(int my_parameter)
+...
+</pre></div>
+
+<a class="anchor" id="Naming-conventions"></a><a name="Naming-conventions-1"></a>
+<h3 class="section">2.4 命名约定<span class="pull-right"><a class="anchor hidden-xs" href="#Naming-conventions" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Naming-conventions" aria-hidden="true">TOC</a></span></h3>
+
+<p>函数、变量和结构体成员的名称必须小写，使用
+下划线（_）分隔单词。例如，&lsquo;<samp class="samp">avfilter_get_video_buffer</samp>&rsquo;
+是可接受的函数名，而 &lsquo;<samp class="samp">AVFilterGetVideo</samp>&rsquo; 则不是。
+</p>
+<p>结构体、联合体、枚举以及经 typedef 的类型名必须使用 CamelCase。所有结构体
+和联合体都应当 typedef 为与结构体/联合体标签相同的名称，例如
+<code class="code">typedef struct AVFoo { ... } AVFoo;</code>。枚举通常不
+进行 typedef。
+</p>
+<p>枚举常量和宏必须使用大写，但伪装成
+函数的宏除外，它们应当采用函数的命名约定。
+</p>
+<p>库中的所有标识符应当按如下方式设置命名空间：
+</p><ul class="itemize mark-bullet">
+<li>文件和更低作用域的标识符（例如局部变量、
+静态函数）以及结构体和联合体成员不需要命名空间，
+
+</li><li>对于在文件作用域之外可见、但仅在单个库内部使用的变量和函数，必须使用
+<code class="code">ff_</code> 前缀，例如
+&lsquo;<samp class="samp">ff_w64_demuxer</samp>&rsquo;。这样当 FFmpeg 被静态链接时可避免
+名称冲突。
+
+</li><li>对于在文件作用域之外可见、跨多个库内部使用的变量和函数，
+请使用 <code class="code">avpriv_</code> 作为前缀，例如
+&lsquo;<samp class="samp">avpriv_report_missing_feature</samp>&rsquo;。
+
+</li><li>所有其它内部标识符，例如私有类型名或宏名，设置命名空间只是为了
+避免可能的内部冲突。例如 <code class="code">H264_NAL_SPS</code>
+与 <code class="code">HEVC_NAL_SPS</code>。
+
+</li><li>除了常用的 <code class="code">av_</code> 之外，每个库的公开符号还有自己的前缀
+（libavformat 用 <code class="code">avformat_</code>，
+libavcodec 用 <code class="code">avcodec_</code>，libswresample 用 <code class="code">swr_</code> 等等）。
+请查看现有代码并据此选择名称。
+
+</li><li>其它公开标识符（结构体、联合体、枚举、宏、类型名）必须使用其
+所属库的公开前缀（<code class="code">AV</code>、<code class="code">Sws</code> 或 <code class="code">Swr</code>）。
+</li></ul>
+
+<p>此外，不应侵占为系统保留的名称空间。
+以 <code class="code">_t</code> 结尾的标识符由
+<a class="url" href="http://pubs.opengroup.org/onlinepubs/007904975/functions/xsh_chap02_02.html#tag_02_02_02">POSIX</a> 保留。
+还要避免使用以 <code class="code">__</code> 开头，或以 <code class="code">_</code> 后跟大写字母开头的名称，
+因为它们由 C 标准保留。以 <code class="code">_</code> 开头的名称
+在文件层级被保留，不得用于对外可见的
+符号。如有疑问，干脆完全避免使用以 <code class="code">_</code> 开头的名称。
+</p>
+<a name="Miscellaneous-conventions"></a>
+<h3 class="section">2.5 其他约定<span class="pull-right"><a class="anchor hidden-xs" href="#Miscellaneous-conventions" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Miscellaneous-conventions" aria-hidden="true">TOC</a></span></h3>
+
+<ul class="itemize mark-bullet">
+<li>只有在必要时才应使用强制类型转换。如果多余的括号
+不能让代码更易理解，也应当避免使用。
+</li><li>在适用的情况下，应当使用 SI 单位。例如超时应当以秒为基本单位，而不是微秒。
+这意味着像 &lsquo;<samp class="samp">1.0</samp>&rsquo; 这样的裸值必须表示 1 秒，&lsquo;<samp class="samp">50m</samp>&rsquo; 表示 50 毫秒。重量则应当使用克。
+</li></ul>
+
+<a class="anchor" id="Development-Policy"></a><a name="Development-Policy-1"></a>
+<h2 class="chapter">3 开发政策<span class="pull-right"><a class="anchor hidden-xs" href="#Development-Policy" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Development-Policy" aria-hidden="true">TOC</a></span></h2>
+
+<a name="Code-behaviour"></a>
+<h3 class="section">3.1 代码行为<span class="pull-right"><a class="anchor hidden-xs" href="#Code-behaviour" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Code-behaviour" aria-hidden="true">TOC</a></span></h3>
+
+<a name="Correctness"></a>
+<p>代码必须是有效的。它不得崩溃、中止、访问无效指针、泄漏
+内存、导致数据竞争或有符号整数溢出，或以其它方式造成
+未定义行为。应当检查错误码，并在适用时
+将其转发给调用者。
+</p>
+<a name="Thread_002d-and-library_002dsafety"></a>
+<p>我们的库可能被同一进程中的多个相互独立的调用者调用。
+这些调用可能来自任意数量的线程，而且不同调用点
+可能彼此并不知晓——例如，某个用户程序可能直接调用我们的
+库，同时又使用了一个或多个同样会调用我们库的库。
+代码在此类条件下必须表现正确。
+</p>
+<a name="Robustness"></a>
+<p>代码必须把从调用者接收的、或从文件、网络等读取的任何字节流
+视为不可信。任意输入都绝不能导致不安全的
+行为或安全问题。
+</p>
+<p>对于常见格式和编解码器的常见实际错误，应当在可行时检测，
+在适当时报告，并加以处理以尽可能产生最佳输出，
+例如通过错误隐藏。
+</p>
+<p>所有错误仍必须被安全处理，但如果这些错误被检测到，
+是否报告或如何处理则交由实现决定。
+</p>
+<a name="Memory-allocation"></a>
+<p>代码必须使用 <code class="code">av_malloc()</code> 系列函数，它们来自
+<samp class="file">libavutil/mem.h</samp>，以完成所有内存分配，特殊情况除外
+（例如与要求使用特定
+分配器的外部库交互时）。
+</p>
+<p>所有分配都应当检查，失败时返回 <code class="code">AVERROR(ENOMEM)</code>。
+常见错误是错误处理路径会泄漏内存——请确保
+不会发生这种情况。
+</p>
+<a name="stdio"></a>
+<p>我们的库不得直接访问 stdio 流 stdin/stdout/stderr
+（例如通过 <code class="code">printf()</code> 系列函数），因为这不是库安全的。对于
+日志记录，请使用 <code class="code">av_log()</code>。
+</p>
+<a name="Patches_002fCommitting"></a>
+<h3 class="section">3.2 补丁/提交<span class="pull-right"><a class="anchor hidden-xs" href="#Patches_002fCommitting" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Patches_002fCommitting" aria-hidden="true">TOC</a></span></h3>
+<a name="Licenses-for-patches-must-be-compatible-with-FFmpeg_002e"></a>
+<p>贡献的代码应当以下列许可证授权：
+<a class="uref" href="http://www.gnu.org/licenses/lgpl-2.1.html">LGPL 2.1</a>，
+并包含 &quot;or any later version&quot; 条款；或者，如果你更倾向于
+赠与式许可证，也可以采用
+<a class="uref" href="http://opensource.org/licenses/isc-license.txt">ISC</a> 或
+<a class="uref" href="http://mit-license.org/">MIT</a> 许可证。
+<a class="uref" href="http://www.gnu.org/licenses/gpl-2.0.html">GPL 2</a>（包含
+&quot;or any later version&quot; 条款）也是可以接受的，但首选
+LGPL。
+如果你新增文件，请为其加上合适的许可证头部。不要从随意的
+地方复制粘贴，请以现有文件作为模板。
+</p>
+<a name="You-must-not-commit-code-which-breaks-FFmpeg_0021"></a>
+<p>这指的是已启用且会破坏编译的未完成代码，
+或者是能编译但不能工作、会破坏回归测试的代码。未完成
+但已禁用的代码在特定情况下可能被允许，例如
+缺少样本，或只实现了一小部分特性的实现。
+在推送之前，务必查看邮件列表中是否有评审者提出异议，并测试
+FATE。
+</p>
+<a name="Commit-messages"></a>
+<p>提交信息是告知其他开发者某个改动做了什么以及为什么做的
+极为重要的工具。每个提交都必须始终带有填写规范的
+提交信息，格式如下：
+</p><div class="example">
+<pre class="example-preformatted">area changed: short 1 line description
+
+details describing what and why and giving references.
+</pre></div>
+
+<p>如果该提交解决了我们缺陷跟踪系统上的已知缺陷或其它外部问题
+（例如 CVE），提交信息中应当包含相关的缺陷 ID 或其它
+外部标识符。注意，这应当是在给出恰当解释之外的补充，而不是
+替代解释。诸如 &quot;fixed!&quot; 或 &quot;Changed it.&quot; 这样的评论
+是不可接受的。
+</p>
+<p>应用已在邮件列表中充分讨论过的补丁时，
+请在提交信息中引用该讨论帖。
+</p>
+<a name="Testing-must-be-adequate-but-not-excessive_002e"></a>
+<p>如果它对你和他人有效，并且通过了 FATE，那么在满足其它提交
+标准的前提下，提交它是可以的。你不必担心
+测试过度。如果你的代码有问题（可移植性、触发
+编译器缺陷、异常环境等），它们会被报告并最终
+修复。
+</p>
+<a name="Do-not-commit-unrelated-changes-together_002e"></a>
+<p>应当把它们拆分成自包含的部分。另外别忘了，
+如果部分 B 依赖部分 A，而 A 不依赖 B，那么 A 可以
+并且应当先于 B 单独提交。把改动很好地
+拆分成自包含的部分，能让在提交日志邮件列表上评审和理解它们
+变得更容易。这在日后调试时
+也有帮助。
+另外，如果你对是否要拆分存有疑虑，请不要犹豫，
+在开发者邮件列表上提问/讨论。
+</p>
+<a name="Bug-fixes-intended-for-backporting-should-stay-focused_002e"></a>
+<p>在完整修复所报告问题的前提下，缺陷修复应尽可能小。
+对于正确性或健壮性并非必需的改动应当单独提交，
+尤其是当它们会增加复杂度或影响向后移植时。
+</p>
+<a name="Cosmetic-changes-should-be-kept-in-separate-patches_002e"></a>
+<p>如果源码缩进和其它表面性改动与功能性改动混在一起，我们会拒绝，
+此类提交将被拒绝并移除。不过，
+能被 <code class="code">git diff --ignore-all-space</code> 忽略的缩进改动
+（例如空白字符数量的变化、行首/行尾空格）可以与
+功能性改动混在一起，因为评审者可以用 <code class="code">git diff -w</code> 或
+<code class="code">git log -p --ignore-all-space</code> 只评审改动中的功能性
+部分。Forgejo 的拉取请求界面也提供了
+&ldquo;Hide whitespace changes&rdquo; 选项用于此目的。每位
+开发者都有自己的缩进风格，你不应改动它。当然，
+如果你（重）写某些内容，可以使用自己的风格，尽管我们更
+希望整个 FFmpeg 的缩进是一致的（许多项目
+强制规定某种缩进风格——我们不这样做。）。如果你确实需要做
+非空白的表面性改动，请把它们与真正的改动严格分开。
+</p>
+<p>注意：如果你不得不把 if(){ .. } 加在一大段（&gt; 5 行）代码之上，
+那么要么不要改动其中内部部分的缩进（不要
+把它向右移）！要么在单独的提交中这么做
+</p>
+<a name="Credit-the-author-of-the-patch_002e"></a>
+<p>请确保提交的作者设置正确。（参见 git commit &ndash;author）
+如果你应用了补丁，请发送
+一封回复到 ffmpeg-devel（或你获取该补丁的地方），说明
+你已应用该补丁。
+</p>
+<a name="Credit-any-researchers"></a>
+<p>如果某个提交/补丁修复了某位研究人员发现的问题，请务必在提交信息中
+署明该研究人员发现/报告了该问题。
+</p>
+<a name="Always-wait-long-enough-before-pushing-changes"></a>
+<p>未经许可，切勿向他人积极维护的代码提交改动。
+请把补丁发送到 ffmpeg-devel。如果在一段合理的
+时间内无人回复（构建失败和安全修复为 12 小时，小改动为 3 天，
+大补丁为 1 周），那么如果你认为没问题就可以提交你的补丁。
+另请注意，维护者完全可以直接要求更多的评审时间！
+</p>
+<a name="Code"></a>
+<h3 class="section">3.3 代码<span class="pull-right"><a class="anchor hidden-xs" href="#Code" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Code" aria-hidden="true">TOC</a></span></h3>
+<a name="Warnings-for-correct-code-may-be-disabled-if-there-is-no-other-option_002e"></a>
+<p>编译器警告表示潜在的缺陷或风格不佳的代码。如果某类
+警告总是指向正确且整洁的代码，那么就应当禁用该警告，
+而不是改动代码。
+因此，剩下的警告要么是缺陷，要么是正确代码。
+如果是缺陷，就必须修复该缺陷。如果不是，则应当改动
+代码使其不再产生警告，除非那样做会导致性能下降
+或使代码晦涩难懂。
+</p>
+<a name="Library-public-interfaces"></a>
+<h3 class="section">3.4 库的公共接口<span class="pull-right"><a class="anchor hidden-xs" href="#Library-public-interfaces" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Library-public-interfaces" aria-hidden="true">TOC</a></span></h3>
+<p>FFmpeg 中的每个库都在其已安装的头文件中提供一组公开 API，
+这些 API 就是列在该库的
+<samp class="file">Makefile</samp> 中变量 <code class="code">HEADERS</code> 里的那些。在这些头文件中定义的所有标识符
+（除明确另有说明的以外），以及从编译后的共享库或静态库中导出的
+相应符号，都被视为公开接口，并且必须
+遵守本节所述的 API 与 ABI 兼容性规则。
+</p>
+<p>公开 API 在给定的主版本内必须向后兼容。也就是说，任何
+能在某个库版本下编译并正常运行的合法用户代码，必须仍然
+能在任何后续版本下编译并正常运行，只要主版本号
+未变。这里的 &quot;合法用户代码&quot; 指以有文档记载和/或预期的方式调用我们的 API，
+并且不依赖任何未定义行为的代码。
+提升主版本号可能会破坏向后兼容性，但仅限于
+<a class="ref" href="#Major-version-bumps">主版本号提升</a> 中所述的范围。
+</p>
+<p>我们还保证共享库和静态库的 ABI 向后兼容性。
+也就是说，应当能够用一个后续版本的构建替换我们库的共享或静态构建
+（在静态库的情况下需要重新链接用户二进制文件），而不会破坏任何合法的用户二进制文件，
+只要主版本号
+保持不变。
+</p>
+<a name="Adding-new-interfaces"></a>
+<h4 class="subsection">3.4.1 新增接口<span class="pull-right"><a class="anchor hidden-xs" href="#Adding-new-interfaces" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Adding-new-interfaces" aria-hidden="true">TOC</a></span></h4>
+<p>已安装头文件中的任何新公开标识符都被视为新 API——这
+包括新函数、结构体、宏、枚举值、typedef，现有结构体中的新字段、
+新的已安装头文件等。添加新 API 时请考虑以下
+准则。
+</p>
+<a name="Motivation"></a>
+<p>虽然添加新 API 相对容易，但由于上述兼容性要求，
+改动或移除它们要困难得多。因此，你应当
+仔细考虑你所添加的功能是否真的需要
+作为新公开 API 暴露给我们的调用者。
+</p>
+<p>你的新 API 应当至少有一个库之外的成熟用例，
+且该用例无法用现有 API 轻易实现。FFmpeg 中的每个库
+也有明确的范围——你的新 API 必须落在其中。
+</p>
+<a name="Replacing-existing-APIs"></a>
+<p>如果你的新 API 用于替换现有 API，它应当严格优于后者，
+使得使用新 API 的收益大于
+调用者改动其代码的代价。添加新 API 之后，你应当
+弃用旧 API 并安排将其移除，如
+<a class="ref" href="#Removing-interfaces">移除接口</a> 所述。
+</p>
+<p>如果你认为某个现有 API 有缺陷并想修复它，大多数情况下的首选做法
+是添加一个命名不同的替代品，并弃用
+现有 API，而不是修改它。重要的是让改动对我们的调用者可见
+（例如通过编译期或运行期的弃用警告），并
+清楚地说明如何迁移到新 API（例如在 Doxygen 文档或
+wiki 上）。
+</p>
+<a name="API-design"></a>
+<p>各类调用者使用 FFmpeg 库来执行各种
+多媒体相关的处理任务。因此，你应当在合理的范围内，尽量
+让新 API 面向尽可能广泛的用例，并避免
+不必要地把它限制在某一类调用者上（例如仅限媒体
+播放或仅限转码）。
+</p>
+<a name="Consistency"></a>
+<p>检查 FFmpeg 中是否已存在类似的 API。如果存在，请尽量参照
+它们来设计你的新增内容，以获得更好的整体一致性。
+</p>
+<p>新标识符的命名应当遵循 <a class="ref" href="#Naming-conventions">命名约定</a>，
+并在适用时与其它类似 API 保持一致。
+</p>
+<a name="Extensibility"></a>
+<p>你还应当考虑你的 API 将来如何以向后兼容的方式
+进行扩展。如果你要添加新的结构体 <code class="code">AVFoo</code>，
+标准做法是要求调用者始终通过一个
+构造函数（通常命名为 <code class="code">av_foo_alloc()</code>）来分配它。这样新增字段
+就可以添加到结构体末尾而不破坏 ABI 兼容性。
+通常你还需要一个析构函数——<code class="code">av_foo_free(AVFoo**)</code>，它
+释放间接传入的对象（及其内容，如适用），并
+向传入的指针写入 <code class="code">NULL</code>，从而消除调用者内存中潜在的
+悬空指针。
+</p>
+<p>如果你要添加新函数，请考虑将来是否可能需要调整
+它们的行为——你可能想添加一个 flags 参数，即使
+它最初并不会被使用。
+</p>
+<a name="Documentation"></a>
+<p>所有新 API 都必须以 Doxygen 格式的注释记录在
+你添加到公开头文件中的标识符上方。你还应当简要地在
+<samp class="file">doc/APIchanges</samp> 中提及该改动。
+</p>
+<a name="Bump-the-version"></a>
+<p>向后不兼容的 API 或 ABI 变更需要递增（提升）
+主版本号，如 <a class="ref" href="#Major-version-bumps">主版本号提升</a> 所述。主版本
+提升是按规定日程发生的重大事件 —— 因此如果你的变更
+确实需要一次主版本提升，你应当将其置于 <code class="code">#if</code> 预处理保护之下，
+使其在下一次主版本提升到来之前保持禁用。
+</p>
+<p>可以在不破坏 API 或 ABI 兼容性的情况下新增的新 API，需要
+递增次版本号。
+</p>
+<p>递增第三个（微）版本组成部分意味着一次值得注意的二进制
+兼容变更（例如对解码器有影响的编码器缺陷修复）。第三个
+组成部分始终从 100 开始，以区分 FFmpeg 与 Libav。
+</p>
+<a class="anchor" id="Removing-interfaces"></a><a name="Removing-interfaces-1"></a>
+<h4 class="subsection">3.4.2 移除接口<span class="pull-right"><a class="anchor hidden-xs" href="#Removing-interfaces" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Removing-interfaces" aria-hidden="true">TOC</a></span></h4>
+<p>由于上述兼容性保证，移除 API 是一个复杂的
+过程，只应当在有充分理由时才进行。通常，一个有缺陷、
+限制过多或在其他方面不够完善的 API 会被更优的 API 取代，不过
+有时确实会出现我们在没有任何替代方案的情况下移除某个 API 的情况（例如当
+它所提供的功能被认为不值得付出维护成本、超出项目
+范围、存在根本性缺陷等）。
+</p>
+<p>移除分两步 —— 首先将该 API 标记为弃用并安排
+移除，但它仍然存在且可用。第二步才是真正
+移除该 API —— 这在 <a class="ref" href="#Major-version-bumps">主版本号提升</a> 中有描述。
+</p>
+<p>要弃用一个 API，你应当向用户发出信号，表明他们应当停止使用
+它。例如，如果你打算移除结构体成员或函数，你应当用
+<code class="code">attribute_deprecated</code> 标记它们。当无法这样做时，或许可以
+在运行时检测到对已弃用 API 的使用并打印一条警告
+（但要注意不要过于频繁地打印）。你还应当记录该弃用
+（以及替代方案，如果适用），写在相关的 Doxygen
+文档块中。
+</p>
+<p>最后，你应当定义一个类似下面这样的弃用保护宏
+<code class="code">#define FF_API_&lt;FOO&gt; (LIBAVBAR_VERSION_MAJOR &lt; XX)</code>（其中 XX 是该 API 将被移除的
+主版本号），位置在 <samp class="file">libavbar/version_major.h</samp>
+（对于 <code class="code">libavutil</code> 则是 <samp class="file">version.h</samp>）。然后用
+<code class="code">#if FF_API_&lt;FOO&gt; .... #endif</code> 包裹所有对已弃用 API 的使用，这样代码会在
+主版本号达到 XX 后自动被禁用。你还可以使用
+<code class="code">FF_DISABLE_DEPRECATION_WARNINGS</code> 和 <code class="code">FF_ENABLE_DEPRECATION_WARNINGS</code>
+来在这些保护宏内部抑制编译器弃用警告。你应当测试
+代码在保护宏求值为 true
+和 false 两种情况下都能编译并正常工作。
+</p>
+<a class="anchor" id="Major-version-bumps"></a><a name="Major-version-bumps-1"></a>
+<h4 class="subsection">3.4.3 主版本号提升<span class="pull-right"><a class="anchor hidden-xs" href="#Major-version-bumps" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Major-version-bumps" aria-hidden="true">TOC</a></span></h4>
+<p>主版本号提升意味着 API 和/或 ABI 兼容性的破坏。为了减少
+对调用方（它们需要调整自己的代码）的负面影响，
+主版本提升期间的向后不兼容变更应当仅限于：
+</p><ul class="itemize mark-bullet">
+<li>移除先前已弃用的 API。
+
+</li><li>执行破坏 ABI 但不破坏 API 的变更，例如重新排列结构体内容。
+</li></ul>
+
+<a name="Documentation_002fOther"></a>
+<h3 class="section">3.5 文档/其他<span class="pull-right"><a class="anchor hidden-xs" href="#Documentation_002fOther" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Documentation_002fOther" aria-hidden="true">TOC</a></span></h3>
+<a name="Subscribe-to-the-ffmpeg_002ddevel-mailing-list_002e"></a>
+<p>订阅
+<a class="uref" href="https://lists.ffmpeg.org/mailman/listinfo/ffmpeg-devel">ffmpeg-devel</a>
+邮件列表很重要。几乎所有非平凡的补丁都要发送到那里进行评审。
+其他开发者可能对你的贡献有意见。我们期望你查看
+这些意见，并在被要求时加以改进。（注意：有经验的提交者
+有其他渠道，并且有时会跳过对琐碎修复的评审。）另外，
+这里关于其他开发者的缺陷修复和 FFmpeg 改进的讨论，可能
+对你有帮助。最后，作为列表订阅者，你的
+贡献会立即发布到列表中，不会像非订阅者的邮件那样
+经历审核滞留。
+</p>
+<p>然而，对项目而言，我们收到你的补丁比
+你订阅 ffmpeg-devel 列表更重要。如果你有补丁，但
+不想订阅和讨论该补丁，那么还请你把它发送到列表
+中。
+</p>
+<a name="Subscribe-to-the-ffmpeg_002dcvslog-mailing-list_002e"></a>
+<p>所有提交的差异都会发送到
+<a class="uref" href="https://lists.ffmpeg.org/mailman/listinfo/ffmpeg-cvslog">ffmpeg-cvslog</a>
+邮件列表。一些开发者会阅读该列表，以评审代码库的
+所有来源的全部变更。订阅该列表不是强制性的。
+</p>
+<a name="Keep-the-documentation-up-to-date_002e"></a>
+<p>如果你改变了行为或添加了功能，请更新文档。如果你
+不确定怎样做最好，请向 ffmpeg-devel 发送补丁，
+文档维护者会评审并提交你的内容。
+</p>
+<a name="Important-discussions-should-be-accessible-to-all_002e"></a>
+<p>请尽量把重要的讨论和请求（也）放在公开的
+开发者邮件列表上，以便所有开发者都能从中受益。
+</p>
+<a name="Check-your-entries-in-MAINTAINERS_002e"></a>
+<p>请确保你所维护的代码库部分没有从
+<samp class="file">MAINTAINERS</samp> 文件中缺失。如果你想维护的某些内容缺失了，请将它连同
+你的名字一起加在后面。
+如果在某个时候你不再想维护某些代码，那么请帮忙
+寻找新的维护者，另外不要忘记更新 <samp class="file">MAINTAINERS</samp> 文件。
+</p>
+<p>我们认为我们的规则不算太难。如果你有意见，请联系我们。
+</p>
+<a class="anchor" id="Submitting-patches"></a><a name="Submitting-patches-1"></a>
+<h2 class="chapter">4 提交补丁<span class="pull-right"><a class="anchor hidden-xs" href="#Submitting-patches" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Submitting-patches" aria-hidden="true">TOC</a></span></h2>
+
+<p>首先，如果你还没有读过上面的 <a class="ref" href="#Coding-Rules">编码规则</a>，请先阅读，特别是
+关于补丁提交的规则。
+</p>
+<p>提交补丁时，请使用 <code class="code">git format-patch</code> 或
+<code class="code">git send-email</code>。我们无法阅读其他形式的差异 :-)。
+</p>
+<p>另外，请不要提交包含多个不相关变更的补丁。
+请把它拆分成独立的、自成一体的片段。这并不意味着按文件
+逐个拆分。相反，请让补丁尽可能小，同时仍然
+把它保持为一个包含单个变更的逻辑单元，即使
+该变更跨越多个文件。这使我们评审你的补丁容易得多，
+并大大增加你的补丁被接受应用的机会。
+</p>
+<p>使用 FFmpeg 的 patcheck 工具来检查你的补丁。
+该工具位于 tools 目录中。
+</p>
+<p>在提交补丁之前运行 <a class="ref" href="#Regression-tests">回归测试</a>，以验证
+它不会引起意外问题。
+</p>
+<p>如果你告诉我们该补丁做了什么（例如
+&rsquo;用 lrintf 替换 lrint&rsquo;），以及为什么（例如 &rsquo;*BSD 不符合 C99
+且没有 lrint()&rsquo;），也会很有帮助。
+</p>
+<p>另外，如果你要发送多个补丁，请把每个补丁作为单独的邮件发送，
+不要在同一封邮件中附加多个不相关的补丁。
+</p>
+<p>补丁应当发布到
+<a class="uref" href="https://code.ffmpeg.org/FFmpeg/FFmpeg/pulls">Forgejo</a> 或
+<a class="uref" href="https://lists.ffmpeg.org/mailman/listinfo/ffmpeg-devel">ffmpeg-devel</a>
+邮件列表。尽可能使用 <code class="code">git send-email</code>，因为它能正确地
+发送补丁，无需额外小心处理。如果你做不到，那就把补丁作为
+base64 编码的附件发送，这样你的补丁在传输过程中
+不会被破坏。同时确保使用正确的 mime 类型
+（text/x-diff、text/x-patch，或者至少 text/plain），并且每封邮件只有
+一个补丁内联或作为附件。
+你可以查看 <a class="url" href="https://patchwork.ffmpeg.org">https://patchwork.ffmpeg.org</a>，如果你的补丁没有出现，很可能是它的 mime 类型
+有误。
+</p>
+<a name="How-to-setup-git-send_002demail_003f"></a>
+
+<p>请参见 <a class="url" href="https://git-send-email.io/">https://git-send-email.io/</a>。
+对于 gmail，另请参见 <a class="url" href="https://shallowsky.com/blog/tech/email/gmail-app-passwds.html">https://shallowsky.com/blog/tech/email/gmail-app-passwds.html</a>。
+</p>
+<a name="Sending-patches-from-email-clients"></a>
+<p>使用 <code class="code">git send-email</code> 可能并非对每个人都合适。下面
+这个技巧可以让你通过电子邮件客户端以安全的
+方式发送补丁。它已在 Outlook 和 Thunderbird（配合 X-Unsent
+扩展）上测试过，可能也适用于其他应用程序。
+</p>
+<p>像这样创建你的补丁：
+</p>
+<pre class="verbatim">git format-patch -s -o &quot;outputfolder&quot; --add-header &quot;X-Unsent: 1&quot; --suffix .eml --to ffmpeg-devel@ffmpeg.org -1 1a2b3c4d
+</pre>
+<p>现在你只需用电子邮件应用程序打开该 eml 文件，
+然后执行 &rsquo;Send&rsquo;。
+</p>
+<a name="Reviews"></a>
+<p>你的补丁或拉取请求将在邮件列表或
+code.ffmpeg.org 上接受评审。你很可能会被要求
+做一些修改，并需要提交一个包含了评审意见中
+各项要求的改进版本。这个过程可能会经历
+多次迭代。一旦你的补丁被认为足够好，某位开发者
+会接手它并将其提交到官方的 FFmpeg 源码树中。
+如果你想要基于 LLM 的评审，请把
+<a class="url" href="https://code.ffmpeg.org/Forgejo_Fairy">Forgejo Fairy</a> 添加为评审者
+到你的拉取请求中。关于 Fairy 自身的问题可以在她的
+<a class="url" href="https://code.ffmpeg.org/michaelni/Fairies">仓库</a> 中报告。
+</p>
+<p>请给我们几天时间作出回应。但如果过了一段时间没有回应，
+请通过电子邮件发送提醒。你的补丁最终应当会得到处理。
+</p>
+
+<a name="New-codecs-or-formats-checklist"></a>
+<h2 class="chapter">5 新编解码器或格式检查清单<span class="pull-right"><a class="anchor hidden-xs" href="#New-codecs-or-formats-checklist" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-New-codecs-or-formats-checklist" aria-hidden="true">TOC</a></span></h2>
+
+<ol class="enumerate">
+<li> 你是否在编解码器初始化和关闭函数中使用了 av_cold？
+
+</li><li> 你是否在 NULL_IF_CONFIG_SMALL 下为 AVCodec 或
+AVInputFormat/AVOutputFormat 结构体添加了 long_name？
+
+</li><li> 你是否提升了次版本号（并重置了微版本号），
+即在 <samp class="file">libavcodec/version.h</samp> 或 <samp class="file">libavformat/version.h</samp> 中？
+
+</li><li> 你是否在 <samp class="file">allcodecs.c</samp> 或 <samp class="file">allformats.c</samp> 中注册了它？
+
+</li><li> 你是否把 AVCodecID 添加到了 <samp class="file">codec_id.h</samp> 中？
+添加新的编解码器 ID 时，还要在
+<samp class="file">libavcodec/codec_desc.c</samp> 的编解码器描述符列表中添加一项。
+
+</li><li> 如果它有 FourCC，你是否把它添加到了 <samp class="file">libavformat/riff.c</samp> 中，
+即使它只是一个解码器？
+
+</li><li> 你是否在 Makefile 中添加了编译相应文件的规则？
+请记住，即使你只是向一个已经由其他规则编译的文件中
+添加一种格式（例如原始解复用器），也要这样做。
+
+</li><li> 你是否向受支持格式或编解码器的表格中添加了一项，
+即 <samp class="file">doc/general_contents.texi</samp>？
+
+</li><li> 你是否在 Changelog 中添加了一项？
+
+</li><li> 如果它依赖于某个解析器或库，你是否在
+configure 中添加了该依赖？
+
+</li><li> 提交之前，你是否 <code class="code">git add</code> 了相应的文件？
+
+</li><li> 你是否确认它可以独立编译，即使用
+<code class="code">configure --disable-everything --enable-decoder=foo</code>
+（或 <code class="code">--enable-demuxer</code>，或对应你所用组件的选项）？
+</li></ol>
+
+
+<a name="Patch-submission-checklist"></a>
+<h2 class="chapter">6 补丁提交检查清单<span class="pull-right"><a class="anchor hidden-xs" href="#Patch-submission-checklist" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Patch-submission-checklist" aria-hidden="true">TOC</a></span></h2>
+
+<ol class="enumerate">
+<li> 应用该补丁后 <code class="code">make fate</code> 是否通过？
+
+</li><li> 该补丁是用 git format-patch 还是 send-email 生成的？
+
+</li><li> 你签署了你的补丁吗？（<code class="code">git commit -s</code>）
+参见 <a class="uref" href="https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/plain/Documentation/process/submitting-patches.rst">签署你的工作</a> 以了解
+<em class="dfn">sign-off</em> 的含义。
+
+</li><li> 你提供了清晰的 git 提交日志信息吗？
+
+</li><li> 该补丁是基于最新的 FFmpeg git master 分支吗？
+
+</li><li> 你订阅了 ffmpeg-devel 吗？
+（由于垃圾邮件，该列表仅限订阅者）
+
+</li><li> 你是否检查过这些变更是最小的，即无法用更小的补丁和/或
+更简单的最终代码达到同样的效果？
+
+</li><li> 如果变更涉及加速关键代码，你是否对它做了基准测试？
+
+</li><li> 如果你做了任何基准测试，你是否在邮件中提供了它们？
+
+</li><li> 你是否检查过该补丁不会引入缓冲区溢出或
+其他安全问题？
+
+</li><li> 你是否用损坏的数据测试过你的解码器或解复用器？如果没有，请参见
+tools/trasher、noise 比特流滤波器，以及
+<a class="uref" href="http://caca.zoy.org/wiki/zzuf">zzuf</a>。你的解码器或解复用器
+不应崩溃、陷入（近乎）无限循环，或在被喂入损坏数据时
+分配荒谬数量的内存。
+
+</li><li> 你是否用样本文件测试过你的解码器或解复用器？
+样本可以在 <a class="url" href="https://samples.ffmpeg.org">https://samples.ffmpeg.org</a> 获取。
+
+</li><li> 该补丁是否没有混合功能性变更和外观性变更？
+
+</li><li> 你是否在代码中添加了制表符或行尾空白字符？两者都是禁止的。
+
+</li><li> 该补丁是否作为附件添加在你发送的邮件中？
+
+</li><li> 该补丁的 mime 类型正确吗？它应当是 text/x-diff 或
+text/x-patch，或者至少是 text/plain，而不是 application/octet-stream。
+
+</li><li> 如果该补丁修复了一个缺陷，你是否提供了对该缺陷的详细分析？
+
+</li><li> 如果该补丁修复了一个缺陷，你是否提供了足够的信息（包括
+一个样本），以便该缺陷可以被复现、修复可以被验证？
+请注意，不要把 &gt;100k 的样本附加到邮件中，而应提供一个
+URL，你可以上传到 <a class="url" href="https://streams.videolan.org/upload/">https://streams.videolan.org/upload/</a>。
+
+</li><li> 你是否提供了关于该补丁改变了什么的详细摘要？
+
+</li><li> 你是否详细解释了它为何这样改变事物？
+
+</li><li> 你是否提供了关于应用该补丁后用户可见的优点和
+缺点的详细摘要？
+
+</li><li> 你是否提供了一个示例，以便我们能轻松验证该补丁
+所添加的新功能？
+
+</li><li> 如果你添加了新文件，你是否插入了许可证头？它应当
+取自 FFmpeg，而不是从别处随意复制粘贴。
+
+</li><li> 在按字母顺序排列的列表中，你应当保持字母顺序，
+只要这样做不会破坏 API/ABI 兼容性。
+
+</li><li> 内容相似的行应当垂直对齐，只要这样做
+能提高可读性。
+
+</li><li> 请考虑为你的代码添加回归测试。所有新模块
+都应当被测试覆盖。这包括解复用器、复用器、解码器、编码器、
+滤波器、比特流滤波器、解析器。如果无法做到，请在
+你的补丁集中说明原因，只要有理由，不测试也是可以的。
+
+</li><li> 如果你添加了 NASM 代码，请检查在 &ndash;disable-x86asm 下是否仍能正常工作。
+
+</li><li> 用 valgrind 和/或 Address Sanitizer 测试你的代码，以确保它没有
+内存泄漏、数组越界访问等问题。
+</li></ol>
+
+<a name="Patch-review-process"></a>
+<h2 class="chapter">7 补丁评审流程<span class="pull-right"><a class="anchor hidden-xs" href="#Patch-review-process" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Patch-review-process" aria-hidden="true">TOC</a></span></h2>
+
+<p>所有发布到 ffmpeg-devel 的补丁都会被评审，除非它们包含
+明确说明该补丁不是针对 git master 分支的备注。
+评审意见和评论将作为对该补丁的回复发布在
+邮件列表上。补丁提交者随后必须处理每一条评论，
+这可以通过重新提交修改后的补丁或通过讨论来完成。重新提交的
+补丁本身也会像其他补丁一样被评审。如果在某个时候
+一个补丁在没有任何评论的情况下通过评审，那么它就被批准了，
+对于简单的小补丁这可以立即发生，而大型补丁通常
+必须经过多次修改和评审才能被批准。
+补丁被批准后会被提交到仓库中。
+</p>
+<p>我们会评审所有提交的补丁，但有时我们非常忙，因此
+尤其是大型补丁，这可能要花上几周时间。
+</p>
+<p>如果你觉得评审流程太慢，并且愿意尝试
+接管你所修改代码区域的维护工作，那么只需克隆
+git master 并在那里维护该代码区域。我们会从
+维护得最好的地方合并每个区域。
+</p>
+<p>重新提交补丁时，请不要做出任何与评审期间收到的
+评论无关的重大变更。这类补丁会
+被拒绝。相反，请把重大变更或新功能作为
+单独的补丁提交。
+</p>
+<p>欢迎所有人评审补丁。另外，如果你正在等待你的补丁
+被评审，请考虑帮忙评审其他补丁，这是让所有人的补丁
+更快得到评审的好办法。
+</p>
+<a class="anchor" id="Regression-tests"></a><a name="Regression-tests-1"></a>
+<h2 class="chapter">8 回归测试<span class="pull-right"><a class="anchor hidden-xs" href="#Regression-tests" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Regression-tests" aria-hidden="true">TOC</a></span></h2>
+
+<p>在提交补丁（或向仓库提交）之前，你至少应当
+测试你没有破坏任何东西。
+</p>
+<p>运行 &rsquo;make fate&rsquo; 即可做到这一点，详情请参见 <a class="url" href="fate.html">fate.html</a>。
+</p>
+<p>[当然，有些补丁可能会改变回归测试的结果。在
+这种情况下，应当相应地修改回归测试的
+参考结果]。
+</p>
+<a name="Adding-files-to-the-fate_002dsuite-dataset"></a>
+<h3 class="section">8.1 向 fate-suite 数据集添加文件<span class="pull-right"><a class="anchor hidden-xs" href="#Adding-files-to-the-fate_002dsuite-dataset" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Adding-files-to-the-fate_002dsuite-dataset" aria-hidden="true">TOC</a></span></h3>
+
+<p>如果你需要上传样本，请发送邮件到 samples-request。
+</p>
+<p>当没有可用的复用器或编码器来为某项
+特定测试生成测试媒体时，该媒体就必须被包含在 fate-suite 中。
+首先请确保样本文件尽可能小，以便充分测试
+相应的解码器或解复用器。大文件会增加网络
+带宽和磁盘空间需求。
+一旦你有了可用的 fate 测试和 fate 样本，请在提交
+信息中，或在你发布到
+ffmpeg-devel 邮件列表的补丁集的引言信息中，提供下载该样本媒体的直接链接。
+</p>
+<a name="Visualizing-Test-Coverage"></a>
+<h3 class="section">8.2 可视化测试覆盖率<span class="pull-right"><a class="anchor hidden-xs" href="#Visualizing-Test-Coverage" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Visualizing-Test-Coverage" aria-hidden="true">TOC</a></span></h3>
+
+<p>FFmpeg 构建系统可以借助覆盖率工具轻松
+<code class="code">gcov</code>/<code class="code">lcov</code> 可视化测试覆盖率。这涉及
+以下步骤：
+</p>
+<ol class="enumerate">
+<li> 配置为启用插桩进行编译：
+    <code class="code">configure --toolchain=gcov</code>.
+
+</li><li> 运行你的测试用例，可以手动运行，也可以通过 FATE 运行。这既可以是
+    完整的 FATE 回归测试套件，也可以是对 FFmpeg 提供的
+    任意前端工具的任意调用，任意组合均可。
+
+</li><li> 运行 <code class="code">make lcov</code> 生成 HTML 格式的覆盖率数据。
+
+</li><li> 用你偏好的 HTML 查看器查看 <code class="code">lcov/index.html</code>。
+</li></ol>
+
+<p>你可以使用命令 <code class="code">make lcov-reset</code> 重置覆盖率
+测量数据。在运行一项
+新测试之后，你需要重新运行 <code class="code">make lcov</code>。
+</p>
+<a name="Using-Valgrind"></a>
+<h3 class="section">8.3 使用 Valgrind<span class="pull-right"><a class="anchor hidden-xs" href="#Using-Valgrind" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Using-Valgrind" aria-hidden="true">TOC</a></span></h3>
+
+<p>configure 脚本提供了一种使用 valgrind 查找与内存处理
+相关的缺陷的捷径。只需在 configure 命令行中
+添加 <code class="code">--toolchain=valgrind-memcheck</code> 或 <code class="code">--toolchain=valgrind-massif</code>
+选项，就会为在 valgrind 套件的 <strong class="strong">memcheck</strong> 或
+<strong class="strong">massif</strong> 工具的监督下运行 FATE
+设置合理的默认值。
+</p>
+<p>如果你需要更精细地控制 valgrind 的调用方式，请改用
+<code class="code">--target-exec='valgrind &lt;your_custom_valgrind_options&gt;</code> 选项，写在
+你的 configure 命令行中。
+</p>
+<a class="anchor" id="Maintenance"></a><a name="Maintenance-process"></a>
+<h2 class="chapter">9 维护流程<span class="pull-right"><a class="anchor hidden-xs" href="#Maintenance-process" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Maintenance-process" aria-hidden="true">TOC</a></span></h2>
+
+<a class="anchor" id="MAINTAINERS"></a><a name="MAINTAINERS-1"></a>
+<h3 class="section">9.1 MAINTAINERS<span class="pull-right"><a class="anchor hidden-xs" href="#MAINTAINERS" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-MAINTAINERS" aria-hidden="true">TOC</a></span></h3>
+
+<p>维护代码库各部分的开发者都列在 <samp class="file">MAINTAINERS</samp> 中。
+被列入 <samp class="file">MAINTAINERS</samp> 后，就获得了对
+该特定仓库的 git 写权限。
+</p>
+<a class="anchor" id="Becoming-a-maintainer"></a><a name="Becoming-a-maintainer-1"></a>
+<h3 class="section">9.2 成为维护者<span class="pull-right"><a class="anchor hidden-xs" href="#Becoming-a-maintainer" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Becoming-a-maintainer" aria-hidden="true">TOC</a></span></h3>
+
+<p>人们通过像发送任何其他代码变更一样发送补丁，把自己加入 <samp class="file">MAINTAINERS</samp>。
+这些补丁会像其他任何补丁一样由社区评审。我们希望
+如果某人对新的维护者有异议，她愿意
+公开以她的全名提出异议，并愿意接管该领域的维护工作。
+</p>
+
+<a class="anchor" id="Release-process"></a><a name="Release-process-1"></a>
+<h2 class="chapter">10 发布流程<span class="pull-right"><a class="anchor hidden-xs" href="#Release-process" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Release-process" aria-hidden="true">TOC</a></span></h2>
+
+<p>FFmpeg 维护着一组 <strong class="strong">发布分支</strong>，它们是
+推荐给系统集成商和发行商（例如
+Linux 发行版等）的交付产物。在固定时间，一位 <strong class="strong">发布
+管理者</strong>会准备、测试并发布 tarball 到
+<a class="url" href="https://ffmpeg.org">https://ffmpeg.org</a> 网站上。
+</p>
+<p>发布分为两种：
+</p>
+<ol class="enumerate">
+<li> <strong class="strong">主版本发布</strong>总是包含最新最出色的
+特性和功能。
+
+</li><li> <strong class="strong">点发布</strong>是从 <strong class="strong">release</strong> 分支上切分出来的，
+这些分支命名为 <code class="code">release/X</code>，其中 <code class="code">X</code> 是发布
+版本号。
+</li></ol>
+
+<p>请注意，我们向用户承诺，任何 FFmpeg 发布版本的共享库
+在任何情况下都不会破坏针对 <strong class="strong">同一发布系列</strong>
+先前版本<strong class="strong">编译</strong>的程序！
+</p>
+<p>不过，我们有时确实会做出需要在应用程序中
+进行适配的 API 变更，这类变更只允许在（新的）主版本发布中进行，并且
+还需要进一步的步骤，例如提升库版本号和/或
+调整符号版本控制文件。请就这类变更及时在
+<strong class="strong">ffmpeg-devel</strong> 邮件列表上讨论，以便提前规划。
+</p>
+<a class="anchor" id="Criteria-for-Point-Releases"></a><a name="Criteria-for-Point-Releases-1"></a>
+<h3 class="section">10.1 点版本发布的标准<span class="pull-right"><a class="anchor hidden-xs" href="#Criteria-for-Point-Releases" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Criteria-for-Point-Releases" aria-hidden="true">TOC</a></span></h3>
+
+<p>符合以下准则的变更是纳入点发布的
+有效候选：
+</p>
+<ol class="enumerate">
+<li> 修复安全问题，最好是由一个 <strong class="strong">CVE
+编号</strong>（由 <a class="url" href="http://cve.mitre.org/">http://cve.mitre.org/</a> 分配）来标识。
+
+</li><li> 修复 <a class="url" href="https://trac.ffmpeg.org">https://trac.ffmpeg.org</a> 中已记录的缺陷。
+
+</li><li> 改进随附的文档。
+
+</li><li> 保持与同一发布分支先前
+点发布的源代码和二进制兼容性。
+</li></ol>
+
+<p>检查这些规则的顺序是 (1 OR 2 OR 3) AND 4。
+</p>
+
+<a name="Release-Checklist"></a>
+<h3 class="section">10.2 发布检查清单<span class="pull-right"><a class="anchor hidden-xs" href="#Release-Checklist" aria-hidden="true">#</a> <a class="anchor hidden-xs"href="#toc-Release-Checklist" aria-hidden="true">TOC</a></span></h3>
+
+<p>发布过程包含以下步骤：
+</p>
+<ol class="enumerate">
+<li> 确保 <samp class="file">RELEASE</samp> 文件包含即将发布版本的
+版本号。
+
+</li><li> 在 <a class="url" href="https://trac.ffmpeg.org/admin/ticket/versions">https://trac.ffmpeg.org/admin/ticket/versions</a> 处添加该发布。
+
+</li><li> 向邮件列表宣布将要进行发布的意图。
+
+</li><li> 确保所有相关的安全修复都已被回溯移植。参见
+<a class="url" href="https://ffmpeg.org/security.html">https://ffmpeg.org/security.html</a>。
+
+</li><li> 确保 FATE 回归测试套件在发布
+分支上至少在 <strong class="strong">i386</strong> 和 <strong class="strong">amd64</strong> 上仍然通过
+（参见 <a class="ref" href="#Regression-tests">回归测试</a>）。
+
+</li><li> 准备 <code class="code">bz2</code> 和 <code class="code">gz</code> 格式的发布 tarball，并
+补充包含 <code class="code">gpg</code> 签名的文件
+
+</li><li> 在 <a class="url" href="https://ffmpeg.org/releases">https://ffmpeg.org/releases</a> 处发布这些 tarball。创建并
+推送形如 <code class="code">nX</code> 的附注标签，其中 <code class="code">X</code>
+包含版本号。
+
+</li><li> 向 <strong class="strong">ffmpeg-devel</strong> 邮件列表提议并发送一个补丁，
+其中包含给网站用的新闻条目。
+
+</li><li> 发布该新闻条目。
+
+</li><li> 向邮件列表发送公告。
+</li></ol>
+
+      <p style="font-size: small;">
+        本文档使用 <a class="uref" href="https://www.gnu.org/software/texinfo/"><em class="emph">makeinfo</em></a> 生成。
+      </p>
+    </div>
+  </body>
+</html>
